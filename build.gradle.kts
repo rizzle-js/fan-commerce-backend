@@ -1,13 +1,13 @@
 plugins {
-    val kotlinVersion = "1.8.20"
-    val springBootVersion = "3.0.5"
-    kotlin("jvm") version kotlinVersion
+    kotlin("jvm")
 
-    kotlin("plugin.spring") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion
+    kotlin("plugin.spring")
+    kotlin("plugin.serialization")
 
-    id("io.spring.dependency-management") version "1.1.0" apply false
-    id("org.springframework.boot") version springBootVersion apply false
+    id("io.spring.dependency-management") apply false
+    id("org.springframework.boot") apply false
+
+    id("com.google.cloud.tools.jib") apply false
 }
 
 group = "com.kakaoent"
@@ -56,7 +56,7 @@ subprojects {
 val springContexts: List<Project> = listOf(
     project(":context"),
     project(":external-service"),
-    project(":application-api")
+    project(":md-api")
 )
 
 configure(springContexts) {

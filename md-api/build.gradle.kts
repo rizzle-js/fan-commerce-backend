@@ -1,3 +1,6 @@
+plugins {
+    id("com.google.cloud.tools.jib")
+}
 
 dependencies {
     implementation(project(":common"))
@@ -14,7 +17,7 @@ dependencies {
 
 tasks.bootJar {
     enabled = true
-    archiveFileName.set("$name-application-api.jar")
+    archiveFileName.set("$name-api.jar")
 }
 
 /**
