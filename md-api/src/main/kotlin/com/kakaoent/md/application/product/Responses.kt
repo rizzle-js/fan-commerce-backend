@@ -1,11 +1,11 @@
 package com.kakaoent.md.application.product
 
-data class GetProductsResponse(
+data class ProductsResponse(
     val products: List<ProductLine>
 )
 
 data class ProductLine(
-    val productId: Long,
+    val productId: String,
     val name: String,
     val status: ProductStatus,
     val quantity: Int,
@@ -24,4 +24,30 @@ enum class ProductStatus {
 enum class ProductType {
     NORMAL,
     BUNDLE
+}
+
+data class ProductDetailResponse(
+    val productId: String,
+    val name: String,
+    val status: ProductStatus,
+    val quantity: Int,
+    val type: ProductType,
+    val price: Int,
+    val tags: List<String>,
+    val productImageUrl: String,
+    val relatedArtistId: Long?,
+    val relatedArtistName: String?,
+    val relatedTicketId: Long?,
+    val relatedTicketName: String?,
+    val productDescription: String,
+    val productInventory: Int,
+    val productShippingInfo: ShippingType,
+)
+
+enum class ShippingType {
+    NORMAL,
+    FAST,
+    FREE,
+    PICKUP,
+    EXPRESS,
 }
