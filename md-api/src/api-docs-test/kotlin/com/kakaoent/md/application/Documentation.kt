@@ -33,11 +33,22 @@ fun ResultActions.andDocument(
     )
 )
 
+data class Parameter(val descriptor: ParameterDescriptor) {
+
+    infix fun optional(value: Boolean): Parameter {
+        if (value) this.descriptor.optional()
+        return this
+    }
+}
+
 class ParameterBuilder {
     private val fields = mutableListOf<ParameterDescriptor>()
 
-    infix fun String.means(description: Any) {
-        fields.add(parameterWithName(this).description(description))
+    infix fun String.means(description: Any): Parameter {
+        val descriptor = parameterWithName(this).description(description)
+        val parameter = Parameter(descriptor)
+        fields.add(parameter.descriptor)
+        return parameter
     }
 
     fun build() = fields.toList()
