@@ -15,7 +15,7 @@ class ProductController {
     ): ProductsResponse {
         return ProductsResponse(
             listOf(
-                ProductLine(
+                Product(
                     productId = UuidGenerator.generate(),
                     name = "상품1",
                     status = ProductStatus.ON_SALE,
@@ -25,7 +25,7 @@ class ProductController {
                     tags = listOf("태그1", "태그2"),
                     productImageUrl = "https://example.com/image1.jpg"
                 ),
-                ProductLine(
+                Product(
                     productId = UuidGenerator.generate(),
                     name = "상품2",
                     status = ProductStatus.ON_SALE,
@@ -39,29 +39,28 @@ class ProductController {
         )
     }
 
-    @GetMapping(GET_PRODUCTS_DETAIL)
-    fun getProduct(@PathVariable id: String): ProductDetailResponse {
+    @GetMapping(GET_PRODUCT_DETAIL)
+    fun getProductDetail(@PathVariable productId: String): ProductDetailResponse {
         return ProductDetailResponse(
-            productId = UuidGenerator.generate(),
+            productId = productId,
             name = "상품1",
             status = ProductStatus.ON_SALE,
-            quantity = 100,
             type = ProductType.NORMAL,
-            relatedArtistId = 1,
+            relatedArtistId = "Artist1",
             relatedArtistName = "아티스트1",
-            relatedTicketId = null,
-            relatedTicketName = null,
+            relatedTicketId = "Ticket1",
+            relatedTicketName = "티켓1",
             price = 1000,
             tags = listOf("태그1", "태그2"),
-            productDescription = "상품 설명",
+            description = "상품 설명",
             productImageUrl = "https://example.com/image1.jpg",
-            productInventory = 100,
-            productShippingInfo = ShippingType.NORMAL
+            stock = 100,
+            shippingInfo = "배송 정보"
         )
     }
 
     companion object {
         const val GET_PRODUCTS = "/products"
-        const val GET_PRODUCTS_DETAIL = "/products/{id}"
+        const val GET_PRODUCT_DETAIL = "/products/{productId}"
     }
 }
