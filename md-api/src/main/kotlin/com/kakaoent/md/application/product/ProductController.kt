@@ -55,12 +55,23 @@ class ProductController {
             description = "상품 설명",
             productImageUrl = "https://example.com/image1.jpg",
             stock = 100,
-            shippingInfo = "배송 정보"
+            shippingInfo = ShippingType.PICKUP
+        )
+    }
+
+    @GetMapping(CHECK_PRODUCT_AVAILABILITY)
+    fun checkProductAvailability(
+        @PathVariable productId: String
+    ): ProductAvailabilityResponse {
+        return ProductAvailabilityResponse(
+            productId = productId,
+            status = ProductStatus.ON_SALE
         )
     }
 
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
+        const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
     }
 }
