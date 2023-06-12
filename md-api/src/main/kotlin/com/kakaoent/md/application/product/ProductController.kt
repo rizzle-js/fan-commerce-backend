@@ -94,10 +94,10 @@ class ProductController {
         @RequestBody request: PurchaseProductRequest
     ): PurchaseProductResponse {
         return PurchaseProductResponse(
-            userId = request.userId,
+            memberKey = request.memberKey,
             productId = request.productId,
             quantity = request.quantity,
-            purchaseDate = Instant.now(),
+            purchaseAt = Instant.now(),
             paymentMethod = request.paymentMethod,
             paymentAmount = 10000,
             deliveryAddress = request.deliveryAddress

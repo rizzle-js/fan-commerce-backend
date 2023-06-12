@@ -1,7 +1,7 @@
 package com.kakaoent.md.application.product
 
 data class PurchaseProductRequest(
-    val userId: String,
+    val memberKey: Long,
     val productId: String,
     val quantity: Int,
     val paymentMethod: PaymentMethod,

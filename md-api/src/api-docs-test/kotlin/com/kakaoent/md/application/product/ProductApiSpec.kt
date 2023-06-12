@@ -15,6 +15,8 @@ import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType
+import org.springframework.restdocs.payload.JsonFieldType.NUMBER
+import org.springframework.restdocs.payload.JsonFieldType.STRING
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
@@ -33,14 +35,14 @@ class ProductApiSpec : ApiSpec() {
             },
             responseBody {
                 "products[]" type JsonFieldType.ARRAY means "상품 목록"
-                "products[].productId" type JsonFieldType.STRING means "상품 ID"
-                "products[].name" type JsonFieldType.STRING means "상품명"
-                "products[].status" type JsonFieldType.STRING means "상품 상태"
-                "products[].quantity" type JsonFieldType.NUMBER means "상품 수량"
-                "products[].type" type JsonFieldType.STRING means "상품 타입"
-                "products[].price" type JsonFieldType.NUMBER means "가격"
+                "products[].productId" type STRING means "상품 ID"
+                "products[].name" type STRING means "상품명"
+                "products[].status" type STRING means "상품 상태"
+                "products[].quantity" type NUMBER means "상품 수량"
+                "products[].type" type STRING means "상품 타입"
+                "products[].price" type NUMBER means "가격"
                 "products[].tags" type JsonFieldType.ARRAY means "태그 목록"
-                "products[].productImageUrl" type JsonFieldType.STRING means "상품 이미지 URL"
+                "products[].productImageUrl" type STRING means "상품 이미지 URL"
             }
         )
     }
@@ -56,20 +58,20 @@ class ProductApiSpec : ApiSpec() {
                 "productId" means "상품 ID"
             },
             responseBody {
-                "productId" type JsonFieldType.STRING means "상품 ID"
-                "name" type JsonFieldType.STRING means "상품명"
-                "status" type JsonFieldType.STRING means "상품 상태"
-                "type" type JsonFieldType.STRING means "상품 타입"
-                "relatedArtistId" type JsonFieldType.STRING means "연관 아티스트 ID"
-                "relatedArtistName" type JsonFieldType.STRING means "연관 아티스트명"
-                "relatedTicketId" type JsonFieldType.STRING means "연관 티켓 ID"
-                "relatedTicketName" type JsonFieldType.STRING means "연관 티켓명"
-                "price" type JsonFieldType.NUMBER means "가격"
+                "productId" type STRING means "상품 ID"
+                "name" type STRING means "상품명"
+                "status" type STRING means "상품 상태"
+                "type" type STRING means "상품 타입"
+                "relatedArtistId" type STRING means "연관 아티스트 ID"
+                "relatedArtistName" type STRING means "연관 아티스트명"
+                "relatedTicketId" type STRING means "연관 티켓 ID"
+                "relatedTicketName" type STRING means "연관 티켓명"
+                "price" type NUMBER means "가격"
                 "tags" type JsonFieldType.ARRAY means "태그 목록"
-                "description" type JsonFieldType.STRING means "상품 설명"
-                "productImageUrl" type JsonFieldType.STRING means "상품 이미지 URL"
-                "stock" type JsonFieldType.NUMBER means "상품 재고"
-                "shippingInfo" type JsonFieldType.STRING means "상품 배송 정보"
+                "description" type STRING means "상품 설명"
+                "productImageUrl" type STRING means "상품 이미지 URL"
+                "stock" type NUMBER means "상품 재고"
+                "shippingInfo" type STRING means "상품 배송 정보"
             }
         )
     }
@@ -85,8 +87,8 @@ class ProductApiSpec : ApiSpec() {
                 "productId" means "상품 ID"
             },
             responseBody {
-                "productId" type JsonFieldType.STRING means "상품 ID"
-                "status" type JsonFieldType.STRING means "상품 상태"
+                "productId" type STRING means "상품 ID"
+                "status" type STRING means "상품 상태"
             }
         )
     }
@@ -103,7 +105,7 @@ class ProductApiSpec : ApiSpec() {
                 "productId" means "상품 ID"
             },
             responseBody {
-                "productId" type JsonFieldType.STRING means "상품 ID"
+                "productId" type STRING means "상품 ID"
                 "cancellationPossible" type JsonFieldType.BOOLEAN means "취소 가능 여부"
             }
         )
@@ -113,7 +115,7 @@ class ProductApiSpec : ApiSpec() {
     fun `상품 구매를 위한 권한을 확인하다`() {
 
         mockMvc.perform(
-            get(CHECK_PURCHASE_PERMISSION, UuidGenerator.generate(), 1L)
+            get(CHECK_PURCHASE_PERMISSION, UuidGenerator.generate(), 1234L)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매를 위한 권한 확인",
@@ -122,8 +124,8 @@ class ProductApiSpec : ApiSpec() {
                 "memberKey" means "회원 키"
             },
             responseBody {
-                "memberKey" type JsonFieldType.NUMBER means "회원 키"
-                "productId" type JsonFieldType.STRING means "상품 ID"
+                "memberKey" type NUMBER means "회원 키"
+                "productId" type STRING means "상품 ID"
                 "purchasePossible" type JsonFieldType.BOOLEAN means "구매 가능 여부"
             }
         )
@@ -132,7 +134,7 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품을 구매하다`() {
         val request = PurchaseProductRequest(
-            userId = "UserId1",
+            memberKey = 1234L,
             productId = "ProductId1",
             quantity = 2,
             paymentMethod = PaymentMethod.CARD,
@@ -146,20 +148,20 @@ class ProductApiSpec : ApiSpec() {
         ).andDocument(
             "상품 구매",
             requestBody {
-                "userId" type JsonFieldType.STRING means "사용자 ID"
-                "productId" type JsonFieldType.STRING means "상품 ID"
-                "quantity" type JsonFieldType.NUMBER means "구매 수량"
-                "paymentMethod" type JsonFieldType.STRING means "결제 방식"
-                "deliveryAddress" type JsonFieldType.STRING means "배송 주소"
+                "memberKey" type NUMBER means "회원 키"
+                "productId" type STRING means "상품 ID"
+                "quantity" type NUMBER means "구매 수량"
+                "paymentMethod" type STRING means "결제 방식"
+                "deliveryAddress" type STRING means "배송 주소"
             },
             responseBody {
-                "userId" type JsonFieldType.STRING means "사용자 ID"
-                "productId" type JsonFieldType.STRING means "상품 ID"
-                "quantity" type JsonFieldType.NUMBER means "구매 수량"
-                "purchaseDate" type JsonFieldType.STRING means "구매 날짜"
-                "paymentMethod" type JsonFieldType.STRING means "결제 방식"
-                "paymentAmount" type JsonFieldType.NUMBER means "결제 금액"
-                "deliveryAddress" type JsonFieldType.STRING means "배송 주소"
+                "memberKey" type NUMBER means "회원 키"
+                "productId" type STRING means "상품 ID"
+                "quantity" type NUMBER means "구매 수량"
+                "purchaseAt" type STRING means "구매 날짜"
+                "paymentMethod" type STRING means "결제 방식"
+                "paymentAmount" type NUMBER means "결제 금액"
+                "deliveryAddress" type STRING means "배송 주소"
             }
         )
     }

@@ -70,10 +70,10 @@ data class PurchasePermissionResponse(
 )
 
 data class PurchaseProductResponse(
-    val userId: String,
+    val memberKey: Long,
     val productId: String,
     val quantity: Int,
-    val purchaseDate: Instant,
+    val purchaseAt: Instant,
     val paymentMethod: PaymentMethod,
     val paymentAmount: Int,
     val deliveryAddress: String
