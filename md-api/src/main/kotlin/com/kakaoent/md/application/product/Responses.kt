@@ -56,3 +56,7 @@ data class ProductAvailabilityResponse(
     val status: ProductStatus
 )
 
+data class ProductCancellationResponse(
+    val productId: String,
+    val cancellationPossible: Boolean
+)

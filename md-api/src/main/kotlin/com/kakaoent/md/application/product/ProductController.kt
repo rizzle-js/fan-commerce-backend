@@ -69,9 +69,21 @@ class ProductController {
         )
     }
 
+    @GetMapping(CHECK_PRODUCT_CANCELLATION)
+    fun checkProductCancellation(
+        @PathVariable productId: String
+    ): ProductCancellationResponse {
+        return ProductCancellationResponse(
+            productId = productId,
+            cancellationPossible = true
+        )
+    }
+
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
+        const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
     }
 }
