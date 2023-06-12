@@ -2,6 +2,7 @@ package com.kakaoent.md.application.product
 
 import com.kakaoent.md.UuidGenerator
 import org.springframework.web.bind.annotation.*
+import java.time.Instant
 
 @RestController
 class ProductController {
@@ -88,11 +89,27 @@ class ProductController {
         )
     }
 
+    @PostMapping(PURCHASE_PRODUCT)
+    fun purchaseProduct(
+        @RequestBody request: PurchaseProductRequest
+    ): PurchaseProductResponse {
+        return PurchaseProductResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            quantity = request.quantity,
+            purchaseAt = Instant.now(),
+            paymentMethod = request.paymentMethod,
+            paymentAmount = 10000,
+            deliveryAddress = request.deliveryAddress
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
         const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
         const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
+        const val PURCHASE_PRODUCT = "/product/purchase"
     }
 }
