@@ -1,10 +1,10 @@
 package com.kakaoent.md.application.product
 
 data class ProductsResponse(
-    val products: List<ProductLine>
+    val products: List<Product>
 )
 
-data class ProductLine(
+data class Product(
     val productId: String,
     val name: String,
     val status: ProductStatus,
@@ -30,18 +30,17 @@ data class ProductDetailResponse(
     val productId: String,
     val name: String,
     val status: ProductStatus,
-    val quantity: Int,
     val type: ProductType,
+    val relatedArtistId: String,
+    val relatedArtistName: String,
+    val relatedTicketId: String,
+    val relatedTicketName: String,
     val price: Int,
     val tags: List<String>,
+    val description: String,
     val productImageUrl: String,
-    val relatedArtistId: Long?,
-    val relatedArtistName: String?,
-    val relatedTicketId: Long?,
-    val relatedTicketName: String?,
-    val productDescription: String,
-    val productInventory: Int,
-    val productShippingInfo: ShippingType,
+    val stock: Int,
+    val shippingInfo: String
 )
 
 enum class ShippingType {
