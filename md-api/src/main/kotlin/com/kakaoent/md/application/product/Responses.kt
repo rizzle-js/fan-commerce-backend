@@ -1,5 +1,7 @@
 package com.kakaoent.md.application.product
 
+import java.time.Instant
+
 data class ProductsResponse(
     val products: List<Product>
 )
@@ -65,4 +67,14 @@ data class PurchasePermissionResponse(
     val memberKey: Long,
     val productId: String,
     val purchasePossible: Boolean
+)
+
+data class PurchaseProductResponse(
+    val userId: String,
+    val productId: String,
+    val quantity: Int,
+    val purchaseDate: Instant,
+    val paymentMethod: PaymentMethod,
+    val paymentAmount: Int,
+    val deliveryAddress: String
 )

@@ -7,10 +7,13 @@ import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRO
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
+import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
+import com.kakaoent.md.config.objectMapper
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType
 
 @WebMvcTest(controllers = [ProductController::class])
@@ -122,6 +125,41 @@ class ProductApiSpec : ApiSpec() {
                 "memberKey" type JsonFieldType.NUMBER means "회원 키"
                 "productId" type JsonFieldType.STRING means "상품 ID"
                 "purchasePossible" type JsonFieldType.BOOLEAN means "구매 가능 여부"
+            }
+        )
+    }
+
+    @Test
+    fun `상품을 구매하다`() {
+        val request = PurchaseProductRequest(
+            userId = "UserId1",
+            productId = "ProductId1",
+            quantity = 2,
+            paymentMethod = PaymentMethod.CARD,
+            deliveryAddress = "서울시 강남구"
+        )
+
+        mockMvc.perform(
+            post(PURCHASE_PRODUCT)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDocument(
+            "상품 구매",
+            requestBody {
+                "userId" type JsonFieldType.STRING means "사용자 ID"
+                "productId" type JsonFieldType.STRING means "상품 ID"
+                "quantity" type JsonFieldType.NUMBER means "구매 수량"
+                "paymentMethod" type JsonFieldType.STRING means "결제 방식"
+                "deliveryAddress" type JsonFieldType.STRING means "배송 주소"
+            },
+            responseBody {
+                "userId" type JsonFieldType.STRING means "사용자 ID"
+                "productId" type JsonFieldType.STRING means "상품 ID"
+                "quantity" type JsonFieldType.NUMBER means "구매 수량"
+                "purchaseDate" type JsonFieldType.STRING means "구매 날짜"
+                "paymentMethod" type JsonFieldType.STRING means "결제 방식"
+                "paymentAmount" type JsonFieldType.NUMBER means "결제 금액"
+                "deliveryAddress" type JsonFieldType.STRING means "배송 주소"
             }
         )
     }
