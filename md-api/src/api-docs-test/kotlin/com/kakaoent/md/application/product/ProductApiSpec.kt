@@ -4,6 +4,7 @@ import com.kakaoent.md.UuidGenerator
 import com.kakaoent.md.application.*
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
+import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import org.junit.jupiter.api.Test
@@ -101,6 +102,26 @@ class ProductApiSpec : ApiSpec() {
             responseBody {
                 "productId" type JsonFieldType.STRING means "상품 ID"
                 "cancellationPossible" type JsonFieldType.BOOLEAN means "취소 가능 여부"
+            }
+        )
+    }
+
+    @Test
+    fun `상품 구매를 위한 권한을 확인하다`() {
+
+        mockMvc.perform(
+            get(CHECK_PURCHASE_PERMISSION, UuidGenerator.generate(), 1L)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andDocument(
+            "상품 구매를 위한 권한 확인",
+            pathVariables {
+                "productId" means "상품 ID"
+                "memberKey" means "회원 키"
+            },
+            responseBody {
+                "memberKey" type JsonFieldType.NUMBER means "회원 키"
+                "productId" type JsonFieldType.STRING means "상품 ID"
+                "purchasePossible" type JsonFieldType.BOOLEAN means "구매 가능 여부"
             }
         )
     }

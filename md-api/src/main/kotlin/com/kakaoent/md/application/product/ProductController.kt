@@ -1,10 +1,7 @@
 package com.kakaoent.md.application.product
 
 import com.kakaoent.md.UuidGenerator
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ProductController {
@@ -79,11 +76,23 @@ class ProductController {
         )
     }
 
+    @GetMapping(CHECK_PURCHASE_PERMISSION)
+    fun checkPurchasePermission(
+        @PathVariable productId: String,
+        @PathVariable memberKey: Long,
+    ): PurchasePermissionResponse {
+        return PurchasePermissionResponse(
+            memberKey = memberKey,
+            productId = productId,
+            purchasePossible = true
+        )
+    }
 
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
         const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
+        const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
     }
 }

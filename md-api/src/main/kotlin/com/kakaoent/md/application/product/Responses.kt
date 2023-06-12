@@ -60,3 +60,9 @@ data class ProductCancellationResponse(
     val productId: String,
     val cancellationPossible: Boolean
 )
+
+data class PurchasePermissionResponse(
+    val memberKey: Long,
+    val productId: String,
+    val purchasePossible: Boolean
+)
