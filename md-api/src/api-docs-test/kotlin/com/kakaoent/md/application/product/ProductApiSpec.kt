@@ -3,6 +3,7 @@ package com.kakaoent.md.application.product
 import com.kakaoent.md.UuidGenerator
 import com.kakaoent.md.application.*
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
+import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import org.junit.jupiter.api.Test
@@ -10,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.payload.JsonFieldType
-import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
@@ -18,7 +18,10 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품 목록을 조회하다`() {
         mockMvc.perform(
-            get("${GET_PRODUCTS}?channelId={channelId}", UuidGenerator.generate()).contentType(MediaType.APPLICATION_JSON_VALUE)
+            get(
+                "${GET_PRODUCTS}?channelId={channelId}",
+                UuidGenerator.generate()
+            ).contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 목록 조회",
             queryParams {
@@ -45,7 +48,7 @@ class ProductApiSpec : ApiSpec() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 상세 조회",
-            pathVariables{
+            pathVariables {
                 "productId" means "상품 ID"
             },
             responseBody {
@@ -74,7 +77,7 @@ class ProductApiSpec : ApiSpec() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매 가능 여부 확인",
-            pathVariables{
+            pathVariables {
                 "productId" means "상품 ID"
             },
             responseBody {
@@ -84,4 +87,21 @@ class ProductApiSpec : ApiSpec() {
         )
     }
 
+    @Test
+    fun `구매 상품 취소 가능 여부를 확인하다`() {
+
+        mockMvc.perform(
+            get(CHECK_PRODUCT_CANCELLATION, UuidGenerator.generate())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andDocument(
+            "구매 상품 취소 가능 여부 확인",
+            pathVariables {
+                "productId" means "상품 ID"
+            },
+            responseBody {
+                "productId" type JsonFieldType.STRING means "상품 ID"
+                "cancellationPossible" type JsonFieldType.BOOLEAN means "취소 가능 여부"
+            }
+        )
+    }
 }
