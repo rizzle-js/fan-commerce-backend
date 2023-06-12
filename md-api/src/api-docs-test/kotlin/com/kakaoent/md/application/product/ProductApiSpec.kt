@@ -2,6 +2,7 @@ package com.kakaoent.md.application.product
 
 import com.kakaoent.md.UuidGenerator
 import com.kakaoent.md.application.*
+import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import org.junit.jupiter.api.Test
@@ -62,6 +63,23 @@ class ProductApiSpec : ApiSpec() {
                 "productImageUrl" type JsonFieldType.STRING means "상품 이미지 URL"
                 "stock" type JsonFieldType.NUMBER means "상품 재고"
                 "shippingInfo" type JsonFieldType.STRING means "상품 배송 정보"
+            }
+        )
+    }
+
+    @Test
+    fun `상품 구매 가능 여부를 확인하다`() {
+        mockMvc.perform(
+            get(CHECK_PRODUCT_AVAILABILITY, UuidGenerator.generate())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ).andDocument(
+            "상품 구매 가능 여부 확인",
+            pathVariables{
+                "productId" means "상품 ID"
+            },
+            responseBody {
+                "productId" type JsonFieldType.STRING means "상품 ID"
+                "status" type JsonFieldType.STRING means "상품 상태"
             }
         )
     }

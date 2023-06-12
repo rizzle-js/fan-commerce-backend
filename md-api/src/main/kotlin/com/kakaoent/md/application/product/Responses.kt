@@ -40,7 +40,7 @@ data class ProductDetailResponse(
     val description: String,
     val productImageUrl: String,
     val stock: Int,
-    val shippingInfo: String
+    val shippingInfo: ShippingType
 )
 
 enum class ShippingType {
@@ -50,3 +50,9 @@ enum class ShippingType {
     PICKUP,
     EXPRESS,
 }
+
+data class ProductAvailabilityResponse(
+    val productId: String,
+    val status: ProductStatus
+)
+
