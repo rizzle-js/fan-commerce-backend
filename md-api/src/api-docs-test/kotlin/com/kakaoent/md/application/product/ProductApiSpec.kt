@@ -1,6 +1,5 @@
 package com.kakaoent.md.application.product
 
-import com.kakaoent.md.UuidGenerator
 import com.kakaoent.md.application.*
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
@@ -26,7 +25,7 @@ class ProductApiSpec : ApiSpec() {
         mockMvc.perform(
             get(
                 "${GET_PRODUCTS}?channelId={channelId}",
-                UuidGenerator.generate()
+                CHANNEL_UUID
             ).contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 목록 조회",
@@ -50,7 +49,7 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품 상세를 조회하다`() {
         mockMvc.perform(
-            get(GET_PRODUCT_DETAIL, UuidGenerator.generate())
+            get(GET_PRODUCT_DETAIL, PRODUCT_UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 상세 조회",
@@ -79,7 +78,7 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품 구매 가능 여부를 확인하다`() {
         mockMvc.perform(
-            get(CHECK_PRODUCT_AVAILABILITY, UuidGenerator.generate())
+            get(CHECK_PRODUCT_AVAILABILITY, PRODUCT_UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매 가능 여부 확인",
@@ -94,13 +93,13 @@ class ProductApiSpec : ApiSpec() {
     }
 
     @Test
-    fun `구매 상품 취소 가능 여부를 확인하다`() {
+    fun `상품 구매 취소 가능 여부를 확인하다`() {
 
         mockMvc.perform(
-            get(CHECK_PRODUCT_CANCELLATION, UuidGenerator.generate())
+            get(CHECK_PRODUCT_CANCELLATION, PRODUCT_UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
-            "구매 상품 취소 가능 여부 확인",
+            "상품 구매 취소 가능 여부 확인",
             pathVariables {
                 "productId" means "상품 ID"
             },
@@ -115,7 +114,7 @@ class ProductApiSpec : ApiSpec() {
     fun `상품 구매를 위한 권한을 확인하다`() {
 
         mockMvc.perform(
-            get(CHECK_PURCHASE_PERMISSION, UuidGenerator.generate(), 1234L)
+            get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID, MEMBER_KEY)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매를 위한 권한 확인",
@@ -134,8 +133,8 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품을 구매하다`() {
         val request = PurchaseProductRequest(
-            memberKey = 1234L,
-            productId = "ProductId1",
+            memberKey = MEMBER_KEY,
+            productId = PRODUCT_UUID,
             quantity = 2,
             paymentMethod = PaymentMethod.CARD,
             deliveryAddress = "서울시 강남구"
@@ -165,4 +164,11 @@ class ProductApiSpec : ApiSpec() {
             }
         )
     }
+
+    companion object {
+        const val CHANNEL_UUID: String = "0WpdogcEJ4jlc9UwIc0kNm"
+        const val PRODUCT_UUID: String = "aWcJagcEJrajc0rggh0jqM"
+        const val MEMBER_KEY: Long = 612374L
+    }
+
 }

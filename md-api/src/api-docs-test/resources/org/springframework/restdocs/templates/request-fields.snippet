@@ -1,12 +1,5 @@
-===== Request Fields
-|===
-|필드명|타입|양식|설명|필수
-
+| Path | Type | Format | Optional | Description |
+| :--- | :--: | :----: | :------: | :---------- |
 {{#fields}}
-    |{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
-    |{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
-    |{{#tableCellContent}}{{#format}}{{.}}{{/format}}{{/tableCellContent}}
-    |{{#tableCellContent}}`+{{description}}+`{{/tableCellContent}}
-    |{{#tableCellContent}}{{^optional}}true{{/optional}}{{/tableCellContent}}
+| `{{path}}` | `{{type}}` | {{#format}}{{.}}{{/format}} | {{^optional}}true{{/optional}} | {{description}} |
 {{/fields}}
-|===
