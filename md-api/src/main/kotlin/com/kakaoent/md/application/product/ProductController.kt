@@ -1,6 +1,5 @@
 package com.kakaoent.md.application.product
 
-import com.kakaoent.md.UuidGenerator
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
 
@@ -14,7 +13,7 @@ class ProductController {
         return ProductsResponse(
             listOf(
                 Product(
-                    productId = UuidGenerator.generate(),
+                    productId = "3h2BHrmKAuABuHedFdH7XT",
                     name = "상품1",
                     status = ProductStatus.ON_SALE,
                     quantity = 100,
@@ -24,7 +23,7 @@ class ProductController {
                     productImageUrl = "https://example.com/image1.jpg"
                 ),
                 Product(
-                    productId = UuidGenerator.generate(),
+                    productId = "3h2BHrmKAuABuHedFdH7XT",
                     name = "상품2",
                     status = ProductStatus.ON_SALE,
                     quantity = 100,
@@ -97,7 +96,7 @@ class ProductController {
             memberKey = request.memberKey,
             productId = request.productId,
             quantity = request.quantity,
-            purchaseAt = Instant.now(),
+            purchaseAt = Instant.ofEpochSecond(1686641320L),
             paymentMethod = request.paymentMethod,
             paymentAmount = 10000,
             deliveryAddress = request.deliveryAddress

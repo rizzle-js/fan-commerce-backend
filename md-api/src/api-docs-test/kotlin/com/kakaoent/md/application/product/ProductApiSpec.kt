@@ -1,6 +1,5 @@
 package com.kakaoent.md.application.product
 
-import com.kakaoent.md.UuidGenerator
 import com.kakaoent.md.application.*
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
@@ -20,13 +19,16 @@ import org.springframework.restdocs.payload.JsonFieldType.STRING
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
+    companion object {
+        const val UUID = "0WpdogcEJ4jlc9UwIc0kNm"
+    }
 
     @Test
     fun `상품 목록을 조회하다`() {
         mockMvc.perform(
             get(
                 "${GET_PRODUCTS}?channelId={channelId}",
-                UuidGenerator.generate()
+                UUID
             ).contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 목록 조회",
@@ -50,7 +52,7 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품 상세를 조회하다`() {
         mockMvc.perform(
-            get(GET_PRODUCT_DETAIL, UuidGenerator.generate())
+            get(GET_PRODUCT_DETAIL, UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 상세 조회",
@@ -79,7 +81,7 @@ class ProductApiSpec : ApiSpec() {
     @Test
     fun `상품 구매 가능 여부를 확인하다`() {
         mockMvc.perform(
-            get(CHECK_PRODUCT_AVAILABILITY, UuidGenerator.generate())
+            get(CHECK_PRODUCT_AVAILABILITY, UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매 가능 여부 확인",
@@ -94,13 +96,13 @@ class ProductApiSpec : ApiSpec() {
     }
 
     @Test
-    fun `구매 상품 취소 가능 여부를 확인하다`() {
+    fun `상품 구매 취소 가능 여부를 확인하다`() {
 
         mockMvc.perform(
-            get(CHECK_PRODUCT_CANCELLATION, UuidGenerator.generate())
+            get(CHECK_PRODUCT_CANCELLATION, UUID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
-            "구매 상품 취소 가능 여부 확인",
+            "상품 구매 취소 가능 여부 확인",
             pathVariables {
                 "productId" means "상품 ID"
             },
@@ -115,7 +117,7 @@ class ProductApiSpec : ApiSpec() {
     fun `상품 구매를 위한 권한을 확인하다`() {
 
         mockMvc.perform(
-            get(CHECK_PURCHASE_PERMISSION, UuidGenerator.generate(), 1234L)
+            get(CHECK_PURCHASE_PERMISSION, UUID, 1234L)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         ).andDocument(
             "상품 구매를 위한 권한 확인",

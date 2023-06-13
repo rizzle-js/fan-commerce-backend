@@ -15,7 +15,11 @@ sourceSets {
 }
 
 val apiDocsTestImplementation: Configuration by configurations.getting {
-    extendsFrom(configurations.implementation.get(), configurations.testImplementation.get(), configurations.integrationTestImplementation.get())
+    extendsFrom(
+        configurations.implementation.get(),
+        configurations.testImplementation.get(),
+        configurations.integrationTestImplementation.get()
+    )
 }
 
 dependencies {
@@ -41,3 +45,12 @@ tasks.bootJar {
  */
 
 val snippetsDirectory = file("build/generated-snippets")
+
+tasks.register<Test>("api-docs-test") {
+    description = "Runs api docs tests."
+    group = "verification"
+    useJUnitPlatform()
+
+    testClassesDirs = sourceSets["api-docs-test"].output.classesDirs
+    classpath = sourceSets["api-docs-test"].runtimeClasspath
+}
