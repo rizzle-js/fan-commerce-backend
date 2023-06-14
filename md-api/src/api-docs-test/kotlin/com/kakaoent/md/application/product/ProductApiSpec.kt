@@ -8,6 +8,7 @@ import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PUR
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
+import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
 import com.kakaoent.md.config.objectMapper
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -17,6 +18,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.pos
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.JsonFieldType.NUMBER
 import org.springframework.restdocs.payload.JsonFieldType.STRING
+import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
@@ -199,6 +201,35 @@ class ProductApiSpec : ApiSpec() {
         )
     }
 
+    @Test
+    fun `상품을 평가하다`() {
+        val request = RateProductRequest(
+            memberKey = MEMBER_KEY,
+            productId = PRODUCT_UUID,
+            rate = 10,
+            comment = "상품평. 좋아요 :)"
+        )
+
+        mockMvc.perform(
+            post(RATE_PRODUCT)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDocument(
+            "상품 평가",
+            requestBody {
+                "memberKey" type NUMBER means "사용자 ID"
+                "productId" type STRING means "상품 ID"
+                "rate" type NUMBER means "평가 점수"
+                "comment" type STRING means "평가 내용"
+            },
+            responseBody {
+                "memberKey" type NUMBER means "사용자 ID"
+                "productId" type STRING means "상품 ID"
+                "rateId" type STRING means "평가 ID"
+                "ratedAt" type NUMBER means "평가 시간"
+            }
+        )
+    }
 
     companion object {
         const val CHANNEL_UUID: String = "0WpdogcEJ4jlc9UwIc0kNm"

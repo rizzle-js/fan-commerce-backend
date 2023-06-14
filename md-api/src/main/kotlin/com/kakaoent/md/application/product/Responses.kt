@@ -95,3 +95,10 @@ enum class RefundStatus {
     COMPLETED,
     FAILED
 }
+
+data class RateProductResponse(
+    val memberKey: Long,
+    val productId: String,
+    val rateId: String,
+    val ratedAt: Instant
+)
