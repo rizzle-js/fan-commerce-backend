@@ -192,6 +192,34 @@ class ProductApiSpec : ApiSpec() {
             )
         }
 
+        test("상품을 평가하다") {
+            val request = RateProductRequest(
+                memberKey = MEMBER_KEY,
+                productId = PRODUCT_UUID,
+                rate = 10,
+                comment = "상품평. 좋아요 :)"
+            )
+
+            mockMvc.perform(
+                post(RATE_PRODUCT)
+                    .contentType(APPLICATION_JSON_VALUE)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDocument(
+                "상품 평가",
+                requestBody {
+                    "memberKey" type NUMBER means "사용자 ID"
+                    "productId" type STRING means "상품 ID"
+                    "rate" type NUMBER means "평가 점수"
+                    "comment" type STRING means "평가 내용"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "사용자 ID"
+                    "productId" type STRING means "상품 ID"
+                    "rateId" type STRING means "평가 ID"
+                    "ratedAt" type NUMBER means "평가 시간"
+                }
+            )
+        }
     }
 
     companion object {
