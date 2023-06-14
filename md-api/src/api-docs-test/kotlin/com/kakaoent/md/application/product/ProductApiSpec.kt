@@ -7,6 +7,7 @@ import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRO
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
+import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_RATES
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_RATE_DETAIL
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
 import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
@@ -198,6 +199,32 @@ class ProductApiSpec : ApiSpec() {
                     "refundMethod" type STRING means "환불 수단"
                     "refundAmount" type NUMBER means "환불 금액"
                     "refundStatus" type STRING means "환불 처리 상태"
+                }
+            )
+        }
+
+        test("상품 평가 목록을 조회하다") {
+            mockMvc.perform(
+                get(GET_PRODUCT_RATES, PRODUCT_UUID).contentType(APPLICATION_JSON_VALUE)
+                    .param("page", "0")
+                    .param("size", "10")
+            ).andDocument(
+                "상품 평가 목록 조회",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
+                queryParams {
+                    "page" means "페이지 번호"
+                    "size" means "페이지 크기"
+                },
+                responseBody {
+                    "productRates[]" type ARRAY means "상품 평가 목록"
+                    "productRates[].rateId" type STRING means "평가 ID"
+                    "productRates[].memberKey" type NUMBER means "사용자 ID"
+                    "productRates[].productId" type STRING means "상품 ID"
+                    "productRates[].rate" type NUMBER means "평가 점수"
+                    "productRates[].comment" type STRING means "평가 내용"
+                    "productRates[].ratedAt" type NUMBER means "평가 시간"
                 }
             )
         }

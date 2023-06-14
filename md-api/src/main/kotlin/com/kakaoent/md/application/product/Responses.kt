@@ -96,14 +96,27 @@ enum class RefundStatus {
     FAILED
 }
 
-data class RateProductResponse(
+data class ProductRatesResponse(
+    val productRates: List<ProductRate>
+)
+
+data class ProductRate(
+    val rateId: String,
+    val memberKey: Long,
+    val productId: String,
+    val rate: Int,
+    val comment: String,
+    val ratedAt: Instant
+)
+
+data class ProductRateResponse(
     val memberKey: Long,
     val productId: String,
     val rateId: String,
     val ratedAt: Instant
 )
 
-data class RateProductDetailResponse(
+data class ProductRateDetailResponse(
     val memberKey: Long,
     val productId: String,
     val rateId: String,
