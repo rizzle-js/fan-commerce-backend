@@ -2,7 +2,6 @@ package com.kakaoent.md.application.product
 
 data class PurchaseProductRequest(
     val memberKey: Long,
-    val productId: String,
     val quantity: Int,
     val paymentMethod: PaymentMethod,
     val deliveryAddress: String
@@ -16,7 +15,6 @@ enum class PaymentMethod {
 
 data class CancelProductRequest(
     val memberKey: Long,
-    val productId: String,
     val reason: String,
     val refundMethod: RefundMethod
 )
@@ -28,7 +26,6 @@ enum class RefundMethod {
 
 data class RateProductRequest(
     val memberKey: Long,
-    val productId: String,
     val rate: Int,
     val comment: String,
 )

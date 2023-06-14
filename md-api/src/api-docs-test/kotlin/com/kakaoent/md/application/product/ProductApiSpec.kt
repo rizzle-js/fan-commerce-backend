@@ -7,9 +7,9 @@ import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRO
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
+import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_RATE_DETAIL
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
 import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
-import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT_DETAIL
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -96,10 +96,14 @@ class ProductApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(CHECK_PRODUCT_CANCELLATION, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON_VALUE)
+                    .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
                 "상품 구매 취소 가능 여부 확인",
                 pathVariables {
                     "productId" means "상품 ID"
+                },
+                queryParams {
+                    "memberKey" means "회원 키"
                 },
                 responseBody {
                     "productId" type STRING means "상품 ID"
@@ -111,12 +115,15 @@ class ProductApiSpec : ApiSpec() {
         test("상품 구매를 위한 권한을 확인하다") {
 
             mockMvc.perform(
-                get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID, MEMBER_KEY)
+                get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON_VALUE)
+                    .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
                 "상품 구매를 위한 권한 확인",
                 pathVariables {
                     "productId" means "상품 ID"
+                },
+                queryParams {
                     "memberKey" means "회원 키"
                 },
                 responseBody {
@@ -130,21 +137,22 @@ class ProductApiSpec : ApiSpec() {
         test("상품을 구매하다") {
             val request = PurchaseProductRequest(
                 memberKey = MEMBER_KEY,
-                productId = PRODUCT_UUID,
                 quantity = 2,
                 paymentMethod = PaymentMethod.CARD,
                 deliveryAddress = "서울시 강남구"
             )
 
             mockMvc.perform(
-                post(PURCHASE_PRODUCT)
+                post(PURCHASE_PRODUCT, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "상품 구매",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
-                    "productId" type STRING means "상품 ID"
                     "quantity" type NUMBER means "구매 수량"
                     "paymentMethod" type STRING means "결제 방식"
                     "deliveryAddress" type STRING means "배송 주소"
@@ -164,20 +172,21 @@ class ProductApiSpec : ApiSpec() {
         test("상품 구매를 취소하다") {
             val request = CancelProductRequest(
                 memberKey = MEMBER_KEY,
-                productId = PRODUCT_UUID,
                 reason = "Reason1... 상품 취소해주세요. lol",
                 refundMethod = RefundMethod.ORIGINAL_PAYMENT_METHOD
             )
 
             mockMvc.perform(
-                post(CANCEL_PRODUCT)
+                post(CANCEL_PRODUCT, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "상품 구매 취소",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
-                    "productId" type STRING means "상품 ID"
                     "reason" type STRING means "취소 사유"
                     "refundMethod" type STRING means "환불 수단"
                 },
@@ -196,20 +205,21 @@ class ProductApiSpec : ApiSpec() {
         test("상품을 평가하다") {
             val request = RateProductRequest(
                 memberKey = MEMBER_KEY,
-                productId = PRODUCT_UUID,
                 rate = 10,
                 comment = "상품평. 좋아요 :)"
             )
 
             mockMvc.perform(
-                post(RATE_PRODUCT)
+                post(RATE_PRODUCT, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "상품 평가",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
                 requestBody {
                     "memberKey" type NUMBER means "사용자 ID"
-                    "productId" type STRING means "상품 ID"
                     "rate" type NUMBER means "평가 점수"
                     "comment" type STRING means "평가 내용"
                 },
@@ -224,10 +234,11 @@ class ProductApiSpec : ApiSpec() {
 
         test("상품 평가를 조회하다") {
             mockMvc.perform(
-                get(RATE_PRODUCT_DETAIL, RATE_UUID).contentType(APPLICATION_JSON_VALUE)
+                get(GET_PRODUCT_RATE_DETAIL, PRODUCT_UUID, RATE_UUID).contentType(APPLICATION_JSON_VALUE)
             ).andDocument(
                 "상품 평가 조회",
                 pathVariables {
+                    "productId" means "상품 ID"
                     "rateId" means "평가 ID"
                 },
                 responseBody {
