@@ -8,6 +8,7 @@ import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PUR
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
+import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
