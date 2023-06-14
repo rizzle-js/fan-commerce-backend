@@ -9,6 +9,7 @@ import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODU
 import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
 import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
+import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT_DETAIL
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -220,11 +221,26 @@ class ProductApiSpec : ApiSpec() {
                 }
             )
         }
+
+        test("상품 평가를 조회하다") {
+            mockMvc.perform(
+                get(RATE_PRODUCT_DETAIL, RATE_UUID).contentType(APPLICATION_JSON_VALUE)
+            ).andDocument(
+                "상품 평가 조회",
+                pathVariables {
+                    "rateId" means "평가 ID"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "사용자 ID"
+                    "productId" type STRING means "상품 ID"
+                    "rateId" type STRING means "평가 ID"
+                    "comment" type STRING means "평가 내용"
+                    "rate" type NUMBER means "평가 점수"
+                    "ratedAt" type NUMBER means "평가 시간"
+                    "reviewImages" type ARRAY means "리뷰 이미지"
+                }
+            )
+        }
     }
 
-    companion object {
-        const val CHANNEL_UUID: String = "0WpdogcEJ4jlc9UwIc0kNm"
-        const val PRODUCT_UUID: String = "aWcJagcEJrajc0rggh0jqM"
-        const val MEMBER_KEY: Long = 612374L
-    }
 }

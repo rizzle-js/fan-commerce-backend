@@ -102,3 +102,13 @@ data class RateProductResponse(
     val rateId: String,
     val ratedAt: Instant
 )
+
+data class RateProductDetailResponse(
+    val memberKey: Long,
+    val productId: String,
+    val rateId: String,
+    val comment: String,
+    val rate: Int,
+    val ratedAt: Instant,
+    val reviewImages: List<String>
+)

@@ -131,14 +131,34 @@ class ProductController {
         )
     }
 
+    @GetMapping(RATE_PRODUCT_DETAIL)
+    fun rateProductDetail(
+        @PathVariable rateId: String,
+    ): RateProductDetailResponse {
+        return RateProductDetailResponse(
+            memberKey = 1234L,
+            productId = "3h2BHrmKAuABuHedFdH7XT",
+            rateId = "rateId",
+            comment = "좋아요 :)",
+            rate = 10,
+            ratedAt = Instant.now(),
+            reviewImages = listOf(
+                "https://example.com/image1.jpg",
+                "https://example.com/image2.jpg",
+                "https://example.com/image3.jpg"
+            )
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
-        const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
-        const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
-        const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
-        const val PURCHASE_PRODUCT = "/product/purchase"
-        const val CANCEL_PRODUCT = "/product/cancel"
+        const val CHECK_PRODUCT_AVAILABILITY = "/products/availability/{productId}"
+        const val CHECK_PRODUCT_CANCELLATION = "/products/cancellation/{productId}"
+        const val CHECK_PURCHASE_PERMISSION = "/products/purchase/permission/{productId}/{memberKey}"
+        const val PURCHASE_PRODUCT = "/products/purchase"
+        const val CANCEL_PRODUCT = "/products/cancel"
         const val RATE_PRODUCT = "/products/rate"
+        const val RATE_PRODUCT_DETAIL = "/products/rate/{rateId}"
     }
 }
