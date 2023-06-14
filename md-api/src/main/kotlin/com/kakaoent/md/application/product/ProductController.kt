@@ -79,7 +79,7 @@ class ProductController {
     @GetMapping(CHECK_PURCHASE_PERMISSION)
     fun checkPurchasePermission(
         @PathVariable productId: String,
-        @PathVariable memberKey: Long,
+        @RequestParam memberKey: Long,
     ): PurchasePermissionResponse {
         return PurchasePermissionResponse(
             memberKey = memberKey,
@@ -90,11 +90,12 @@ class ProductController {
 
     @PostMapping(PURCHASE_PRODUCT)
     fun purchaseProduct(
+        @PathVariable productId: String,
         @RequestBody request: PurchaseProductRequest
     ): PurchaseProductResponse {
         return PurchaseProductResponse(
             memberKey = request.memberKey,
-            productId = request.productId,
+            productId = productId,
             quantity = request.quantity,
             purchaseAt = Instant.ofEpochSecond(1686641320L),
             paymentMethod = request.paymentMethod,
@@ -105,11 +106,12 @@ class ProductController {
 
     @PostMapping(CANCEL_PRODUCT)
     fun cancelProduct(
+        @PathVariable productId: String,
         @RequestBody request: CancelProductRequest
     ): CancelProductResponse {
         return CancelProductResponse(
             memberKey = request.memberKey,
-            productId = request.productId,
+            productId = productId,
             reason = request.reason,
             cancellationAt = Instant.ofEpochSecond(1686641320L),
             refundMethod = request.refundMethod,
@@ -120,25 +122,47 @@ class ProductController {
 
     @PostMapping(RATE_PRODUCT)
     fun rateProduct(
+        @PathVariable productId: String,
         @RequestBody request: RateProductRequest
     ): RateProductResponse {
         // 상품 평가 로직은 생략
         return RateProductResponse(
             memberKey = request.memberKey,
-            productId = request.productId,
+            productId = productId,
             rateId = "07ADpf6TfRU1wYU88Q6KP8",
             ratedAt = Instant.now()
+        )
+    }
+
+    @GetMapping(GET_PRODUCT_RATE_DETAIL)
+    fun getProductRateDetail(
+        @PathVariable productId: String,
+        @PathVariable rateId: String,
+    ): RateProductDetailResponse {
+        return RateProductDetailResponse(
+            memberKey = 1234L,
+            productId = productId,
+            rateId = "rateId",
+            comment = "좋아요 :)",
+            rate = 10,
+            ratedAt = Instant.now(),
+            reviewImages = listOf(
+                "https://example.com/image1.jpg",
+                "https://example.com/image2.jpg",
+                "https://example.com/image3.jpg"
+            )
         )
     }
 
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
-        const val CHECK_PRODUCT_AVAILABILITY = "/product/availability/{productId}"
-        const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
-        const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
-        const val PURCHASE_PRODUCT = "/product/purchase"
-        const val CANCEL_PRODUCT = "/product/cancel"
-        const val RATE_PRODUCT = "/products/rate"
+        const val CHECK_PRODUCT_AVAILABILITY = "/products/{productId}/availability"
+        const val CHECK_PRODUCT_CANCELLATION = "/products/{productId}/cancellation"
+        const val CHECK_PURCHASE_PERMISSION = "/products/{productId}/purchase/permission"
+        const val PURCHASE_PRODUCT = "/products/{productId}/purchase"
+        const val CANCEL_PRODUCT = "/products/{productId}/cancellation"
+        const val RATE_PRODUCT = "/products/{productId}/rates"
+        const val GET_PRODUCT_RATE_DETAIL = "/products/{productId}/rates/{rateId}"
     }
 }
