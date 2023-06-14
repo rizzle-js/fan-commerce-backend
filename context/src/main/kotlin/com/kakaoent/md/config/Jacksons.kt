@@ -1,14 +1,20 @@
 package com.kakaoent.md.config
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import java.time.Instant
+
+class UnixInstantSerializer : JsonSerializer<Instant>() {
+    override fun serialize(value: Instant, gen: JsonGenerator, serializers: SerializerProvider) {
+        gen.writeNumber(value.epochSecond)
+    }
+}
 
 val objectMapper = jsonMapper {
     configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false)
@@ -17,11 +23,13 @@ val objectMapper = jsonMapper {
     configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false)
 
     addModule(kotlinModule())
-    addModule(JavaTimeModule())
+    addModule(JavaTimeModule().apply {
+        addSerializer(Instant::class.java, UnixInstantSerializer())
+    })
 }
 
 @Configuration
-internal class JsonConfig {
+class JsonConfig {
 
     @Bean
     @Primary

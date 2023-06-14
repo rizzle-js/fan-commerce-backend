@@ -103,6 +103,21 @@ class ProductController {
         )
     }
 
+    @PostMapping(CANCEL_PRODUCT)
+    fun cancelProduct(
+        @RequestBody request: CancelProductRequest
+    ): CancelProductResponse {
+        return CancelProductResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            reason = request.reason,
+            cancellationAt = Instant.ofEpochSecond(1686641320L),
+            refundMethod = request.refundMethod,
+            refundAmount = 10000, // This should be determined by business logic
+            refundStatus = RefundStatus.PENDING // Initial refund status
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
@@ -110,5 +125,6 @@ class ProductController {
         const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
         const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
         const val PURCHASE_PRODUCT = "/product/purchase"
+        const val CANCEL_PRODUCT = "/cancel-product"
     }
 }

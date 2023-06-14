@@ -1,6 +1,7 @@
 package com.kakaoent.md.application.product
 
 import com.kakaoent.md.application.*
+import com.kakaoent.md.application.product.ProductController.Companion.CANCEL_PRODUCT
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
 import com.kakaoent.md.application.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
@@ -157,13 +158,47 @@ class ProductApiSpec : ApiSpec() {
                 "memberKey" type NUMBER means "회원 키"
                 "productId" type STRING means "상품 ID"
                 "quantity" type NUMBER means "구매 수량"
-                "purchaseAt" type STRING means "구매 날짜"
+                "purchaseAt" type NUMBER means "구매 날짜"
                 "paymentMethod" type STRING means "결제 방식"
                 "paymentAmount" type NUMBER means "결제 금액"
                 "deliveryAddress" type STRING means "배송 주소"
             }
         )
     }
+
+    @Test
+    fun `상품 구매를 취소하다`() {
+        val request = CancelProductRequest(
+            memberKey = MEMBER_KEY,
+            productId = PRODUCT_UUID,
+            reason = "Reason1... 상품 취소해주세요. lol",
+            refundMethod = RefundMethod.ORIGINAL_PAYMENT_METHOD
+        )
+
+        mockMvc.perform(
+            post(CANCEL_PRODUCT)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request))
+        ).andDocument(
+            "상품 구매 취소",
+            requestBody {
+                "memberKey" type NUMBER means "회원 키"
+                "productId" type STRING means "상품 ID"
+                "reason" type STRING means "취소 사유"
+                "refundMethod" type STRING means "환불 수단"
+            },
+            responseBody {
+                "memberKey" type NUMBER means "사용자 ID"
+                "productId" type STRING means "상품 ID"
+                "reason" type STRING means "취소 사유"
+                "cancellationAt" type NUMBER means "구매 취소 날짜"
+                "refundMethod" type STRING means "환불 수단"
+                "refundAmount" type NUMBER means "환불 금액"
+                "refundStatus" type STRING means "환불 처리 상태"
+            }
+        )
+    }
+
 
     companion object {
         const val CHANNEL_UUID: String = "0WpdogcEJ4jlc9UwIc0kNm"

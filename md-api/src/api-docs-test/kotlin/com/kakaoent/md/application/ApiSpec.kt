@@ -1,5 +1,6 @@
 package com.kakaoent.md.application
 
+import com.kakaoent.md.config.JsonConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -12,7 +13,7 @@ import org.springframework.restdocs.templates.TemplateFormats.markdown
 import org.springframework.test.web.servlet.MockMvc
 
 
-@Import(HttpEncodingAutoConfiguration::class, CustomizationConfiguration::class)
+@Import(HttpEncodingAutoConfiguration::class, CustomizationConfiguration::class, JsonConfig::class)
 @AutoConfigureRestDocs
 abstract class ApiSpec {
 
