@@ -25,3 +25,10 @@ enum class RefundMethod {
     ORIGINAL_PAYMENT_METHOD,
     STORE_CREDIT
 }
+
+data class RateProductRequest(
+    val memberKey: Long,
+    val productId: String,
+    val rate: Int,
+    val comment: String,
+)

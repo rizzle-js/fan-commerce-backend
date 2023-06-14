@@ -118,6 +118,19 @@ class ProductController {
         )
     }
 
+    @PostMapping(RATE_PRODUCT)
+    fun rateProduct(
+        @RequestBody request: RateProductRequest
+    ): RateProductResponse {
+        // 상품 평가 로직은 생략
+        return RateProductResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            rateId = "07ADpf6TfRU1wYU88Q6KP8",
+            ratedAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
@@ -125,6 +138,7 @@ class ProductController {
         const val CHECK_PRODUCT_CANCELLATION = "/product/cancellation/{productId}"
         const val CHECK_PURCHASE_PERMISSION = "/product/purchase/permission/{productId}/{memberKey}"
         const val PURCHASE_PRODUCT = "/product/purchase"
-        const val CANCEL_PRODUCT = "/cancel-product"
+        const val CANCEL_PRODUCT = "/product/cancel"
+        const val RATE_PRODUCT = "/products/rate"
     }
 }
