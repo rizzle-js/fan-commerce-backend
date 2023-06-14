@@ -78,3 +78,20 @@ data class PurchaseProductResponse(
     val paymentAmount: Int,
     val deliveryAddress: String
 )
+
+data class CancelProductResponse(
+    val memberKey: Long,
+    val productId: String,
+    val reason: String,
+    val cancellationAt: Instant,
+    val refundMethod: RefundMethod,
+    val refundAmount: Int,
+    val refundStatus: RefundStatus
+)
+
+enum class RefundStatus {
+    PENDING,
+    PROCESSING,
+    COMPLETED,
+    FAILED
+}

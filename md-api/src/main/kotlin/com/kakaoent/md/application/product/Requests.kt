@@ -13,3 +13,15 @@ enum class PaymentMethod {
     BANK_TRANSFER,
     MOBILE_PAYMENT
 }
+
+data class CancelProductRequest(
+    val memberKey: Long,
+    val productId: String,
+    val reason: String,
+    val refundMethod: RefundMethod
+)
+
+enum class RefundMethod {
+    ORIGINAL_PAYMENT_METHOD,
+    STORE_CREDIT
+}
