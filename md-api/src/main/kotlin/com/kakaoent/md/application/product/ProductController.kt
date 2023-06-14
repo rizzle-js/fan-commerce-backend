@@ -130,7 +130,7 @@ class ProductController {
             memberKey = request.memberKey,
             productId = productId,
             rateId = "07ADpf6TfRU1wYU88Q6KP8",
-            ratedAt = Instant.now()
+            ratedAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 
@@ -145,7 +145,7 @@ class ProductController {
             rateId = "rateId",
             comment = "좋아요 :)",
             rate = 10,
-            ratedAt = Instant.now(),
+            ratedAt = Instant.ofEpochSecond(1686641320L),
             reviewImages = listOf(
                 "https://example.com/image1.jpg",
                 "https://example.com/image2.jpg",
