@@ -10,11 +10,15 @@ import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODU
 import com.kakaoent.md.application.product.ProductController.Companion.PURCHASE_PRODUCT
 import com.kakaoent.md.application.product.ProductController.Companion.RATE_PRODUCT
 import com.kakaoent.md.config.objectMapper
+import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
-import org.springframework.restdocs.payload.JsonFieldType.*
+import org.springframework.restdocs.payload.JsonFieldType
+import org.springframework.restdocs.payload.JsonFieldType.NUMBER
+import org.springframework.restdocs.payload.JsonFieldType.STRING
+import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
