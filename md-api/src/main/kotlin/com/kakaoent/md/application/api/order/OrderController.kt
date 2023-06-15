@@ -20,7 +20,27 @@ class OrderController {
         )
     }
 
+    @PostMapping(CANCEL_ORDER)
+    fun partialCancelOrder(
+        @RequestBody request: PartialCancelOrderRequest
+    ): PartialCancelOrderResponse {
+        return PartialCancelOrderResponse(
+            memberKey = request.memberKey,
+            orderId = request.orderId,
+            cancelProducts = request.cancelProducts.map {
+                CancelProduct(
+                    productId = it.productId,
+                    productName = it.productName,
+                    cancelPrice = it.cancelPrice,
+                    cancelQuantity = it.cancelQuantity
+                )
+            },
+            cancelRequestedAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
     companion object {
         const val CHECKOUT = "/checkout"
+        const val CANCEL_ORDER = "/orders/cancel"
     }
 }
