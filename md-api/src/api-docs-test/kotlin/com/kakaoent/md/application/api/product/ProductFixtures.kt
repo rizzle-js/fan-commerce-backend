@@ -1,4 +1,4 @@
-package com.kakaoent.md.application
+package com.kakaoent.md.application.api.product
 
 const val CHANNEL_UUID: String = "0WpdogcEJ4jlc9UwIc0kNm"
 const val PRODUCT_UUID: String = "aWcJagcEJrajc0rggh0jqM"

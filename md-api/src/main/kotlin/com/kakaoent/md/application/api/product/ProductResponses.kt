@@ -1,4 +1,4 @@
-package com.kakaoent.md.application.product
+package com.kakaoent.md.application.api.product
 
 import java.time.Instant
 

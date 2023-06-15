@@ -1,4 +1,4 @@
-package com.kakaoent.md.application
+package com.kakaoent.md.application.api
 
 import org.springframework.restdocs.cookies.CookieDescriptor
 import org.springframework.restdocs.cookies.CookieDocumentation
