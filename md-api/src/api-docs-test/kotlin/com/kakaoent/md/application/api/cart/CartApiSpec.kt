@@ -21,6 +21,7 @@ class CartApiSpec : ApiSpec() {
 
     init {
         test("장바구니를 조회하다") {
+
             mockMvc.get(GET_CART) {
                 param("memberKey", MEMBER_KEY.toString())
                 contentType = APPLICATION_JSON

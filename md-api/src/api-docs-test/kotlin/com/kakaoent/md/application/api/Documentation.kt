@@ -8,7 +8,7 @@ import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.headers.HeaderDocumentation.*
 import org.springframework.restdocs.headers.RequestHeadersSnippet
 import org.springframework.restdocs.headers.ResponseHeadersSnippet
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.JsonFieldType
@@ -19,32 +19,19 @@ import org.springframework.restdocs.request.*
 import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.restdocs.snippet.Attributes
 import org.springframework.restdocs.snippet.Snippet
-import org.springframework.test.web.servlet.ResultActions
-import org.springframework.test.web.servlet.ResultActionsDsl
+import org.springframework.test.web.servlet.*
 
 fun ResultActions.andDocument(
     identifier: String,
     vararg snippet: Snippet
 ): ResultActions = andDo(
-    MockMvcRestDocumentation.document(
+    document(
         identifier,
         preprocessRequest(prettyPrint()),
         preprocessResponse(prettyPrint()),
         *snippet
     )
 )
-
-fun ResultActionsDsl.andDocument(
-    identifier: String,
-    vararg snippet: Snippet
-): ResultActionsDsl = andDo {
-    MockMvcRestDocumentation.document(
-        identifier,
-        preprocessRequest(prettyPrint()),
-        preprocessResponse(prettyPrint()),
-        *snippet
-    )
-}
 
 data class Parameter(val descriptor: ParameterDescriptor) {
 
