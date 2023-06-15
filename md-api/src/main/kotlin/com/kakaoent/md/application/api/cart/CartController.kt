@@ -73,10 +73,22 @@ class CartController {
         )
     }
 
+    @DeleteMapping(EMPTY_CART)
+    fun emptyCart(
+        @PathVariable memberKey: Long
+    ): EmptyCartResponse {
+        return EmptyCartResponse(
+            memberKey = memberKey,
+            emptiedAt = Instant.ofEpochSecond(1686641320L),
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
+        )
+    }
+
     companion object {
         const val GET_CART = "/cart"
         const val ADD_PRODUCT_TO_CART = "/cart"
         const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/cart"
         const val REMOVE_PRODUCT_FROM_CART = "/cart"
+        const val EMPTY_CART = "/cart/{memberKey}"
     }
 }
