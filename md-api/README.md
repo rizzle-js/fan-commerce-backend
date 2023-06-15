@@ -51,6 +51,43 @@ class ProductIntegrationTest(
 })
 ```
 
-## Api Documentation Test
-> Api Documentation Test는 @WebMvcTest와 @AutoConfigureRestDocs를 사용하여 테스트를 진행한다.
 
+
+## Api Documentation Test
+> Api Documentation Test는 @WebMvcTest와 @AutoConfigureRestDocs를 사용하여 테스트를 진행한다. 테스트 라이브러리는 Kotest를 사용하며 FunSpec를 확장한 ApiSpec로 시나리오 별로 테스트를 작성한다.
+
+### Api Documentation Test 작성 규칙
+- 모든 API에 대한 테스트를 작성해야 한다.
+- 공통으로 사용할 상수는 CommonFixtures 파일에 작성한다.
+
+### 테스트 작성 예시
+
+```kotlin
+@WebMvcTest(controllers = [ProductController::class])
+class ProductApiSpec : ApiSpec() {
+    init {
+        test("상품 목록을 조회하다") {
+            mockMvc.get(GET_PRODUCTS) {
+                param("channelId", CHANNEL_UUID)
+                contentType = APPLICATION_JSON
+            }.andDocument(
+                "상품 목록 조회",
+                queryParams {
+                    "channelId" means "채널. 채널 ID와 컨텐츠 ID 중 하나는 필수"
+                },
+                responseBody {
+                    "products[]" type ARRAY means "상품 목록"
+                    "products[].productId" type STRING means "상품 ID"
+                    "products[].name" type STRING means "상품명"
+                    "products[].status" type STRING means "상품 상태"
+                    "products[].quantity" type NUMBER means "상품 수량"
+                    "products[].type" type STRING means "상품 타입"
+                    "products[].price" type NUMBER means "가격"
+                    "products[].tags" type ARRAY means "태그 목록"
+                    "products[].productImageUrl" type STRING means "상품 이미지 URL"
+                }
+            )
+        }
+    }
+}
+```

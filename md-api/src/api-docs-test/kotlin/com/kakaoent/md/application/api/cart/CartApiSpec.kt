@@ -9,20 +9,24 @@ import com.kakaoent.md.application.api.cart.CartController.Companion.UPDATE_PROD
 import com.kakaoent.md.application.api.product.PRODUCT_UUID
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
+import org.springframework.test.web.servlet.delete
+import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 
 @WebMvcTest(controllers = [CartController::class])
 class CartApiSpec : ApiSpec() {
 
     init {
         test("장바구니를 조회하다") {
-            mockMvc.perform(
-                get(GET_CART)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .param("memberKey", MEMBER_KEY.toString())
-            ).andDocument(
+            mockMvc.get(GET_CART) {
+                param("memberKey", MEMBER_KEY.toString())
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "장바구니 조회",
                 queryParams {
                     "memberKey" means "사용자 ID"
@@ -47,11 +51,10 @@ class CartApiSpec : ApiSpec() {
                 quantity = 1
             )
 
-            mockMvc.perform(
-                post(ADD_PRODUCT_TO_CART)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.post(ADD_PRODUCT_TO_CART) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "장바구니 담기",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
@@ -77,11 +80,10 @@ class CartApiSpec : ApiSpec() {
                 quantity = 2
             )
 
-            mockMvc.perform(
-                put(UPDATE_PRODUCT_QUANTITY_IN_CART)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.put(UPDATE_PRODUCT_QUANTITY_IN_CART) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "장바구니 상품 수량 수정",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
@@ -105,11 +107,10 @@ class CartApiSpec : ApiSpec() {
                 productId = PRODUCT_UUID
             )
 
-            mockMvc.perform(
-                delete(REMOVE_PRODUCT_FROM_CART)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.delete(REMOVE_PRODUCT_FROM_CART) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "장바구니 상품 제거",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
@@ -126,10 +127,9 @@ class CartApiSpec : ApiSpec() {
         }
 
         test("장바구니를 비우다") {
-            mockMvc.perform(
-                delete(EMPTY_CART, MEMBER_KEY)
-                    .contentType(APPLICATION_JSON_VALUE)
-            ).andDocument(
+            mockMvc.delete(EMPTY_CART, MEMBER_KEY) {
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "장바구니 비우기",
                 pathVariables {
                     "memberKey" means "사용자 ID"
@@ -143,3 +143,4 @@ class CartApiSpec : ApiSpec() {
         }
     }
 }
+

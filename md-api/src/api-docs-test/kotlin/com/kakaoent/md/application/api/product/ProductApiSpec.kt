@@ -13,10 +13,13 @@ import com.kakaoent.md.application.api.product.ProductController.Companion.PURCH
 import com.kakaoent.md.application.api.product.ProductController.Companion.RATE_PRODUCT
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType.*
+import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 
 @WebMvcTest(controllers = [ProductController::class])
 class ProductApiSpec : ApiSpec() {
@@ -24,12 +27,11 @@ class ProductApiSpec : ApiSpec() {
     init {
 
         test("상품 목록을 조회하다") {
-            mockMvc.perform(
-                get(
-                    "${GET_PRODUCTS}?channelId={channelId}",
-                    CHANNEL_UUID
-                ).contentType(APPLICATION_JSON_VALUE)
-            ).andDocument(
+
+            mockMvc.get(GET_PRODUCTS) {
+                param("channelId", CHANNEL_UUID)
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "상품 목록 조회",
                 queryParams {
                     "channelId" means "채널. 채널 ID와 컨텐츠 ID 중 하나는 필수"
@@ -49,10 +51,10 @@ class ProductApiSpec : ApiSpec() {
         }
 
         test("상품 상세를 조회하다") {
-            mockMvc.perform(
-                get(GET_PRODUCT_DETAIL, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-            ).andDocument(
+
+            mockMvc.get(GET_PRODUCT_DETAIL, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "상품 상세 조회",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -77,10 +79,9 @@ class ProductApiSpec : ApiSpec() {
         }
 
         test("상품 구매 가능 여부를 확인하다") {
-            mockMvc.perform(
-                get(CHECK_PRODUCT_AVAILABILITY, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-            ).andDocument(
+            mockMvc.get(CHECK_PRODUCT_AVAILABILITY, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "상품 구매 가능 여부 확인",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -94,11 +95,10 @@ class ProductApiSpec : ApiSpec() {
 
         test("상품 구매 취소 가능 여부를 확인하다") {
 
-            mockMvc.perform(
-                get(CHECK_PRODUCT_CANCELLATION, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .param("memberKey", MEMBER_KEY.toString())
-            ).andDocument(
+            mockMvc.get(CHECK_PRODUCT_CANCELLATION, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                param("memberKey", MEMBER_KEY.toString())
+            }.andDocument(
                 "상품 구매 취소 가능 여부 확인",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -115,11 +115,10 @@ class ProductApiSpec : ApiSpec() {
 
         test("상품 구매를 위한 권한을 확인하다") {
 
-            mockMvc.perform(
-                get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .param("memberKey", MEMBER_KEY.toString())
-            ).andDocument(
+            mockMvc.get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                param("memberKey", MEMBER_KEY.toString())
+            }.andDocument(
                 "상품 구매를 위한 권한 확인",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -143,11 +142,10 @@ class ProductApiSpec : ApiSpec() {
                 deliveryAddress = "서울시 강남구"
             )
 
-            mockMvc.perform(
-                post(PURCHASE_PRODUCT, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.post(PURCHASE_PRODUCT, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "상품 구매",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -177,11 +175,10 @@ class ProductApiSpec : ApiSpec() {
                 refundMethod = RefundMethod.ORIGINAL_PAYMENT_METHOD
             )
 
-            mockMvc.perform(
-                post(CANCEL_PRODUCT, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.post(CANCEL_PRODUCT, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "상품 구매 취소",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -204,11 +201,11 @@ class ProductApiSpec : ApiSpec() {
         }
 
         test("상품 평가 목록을 조회하다") {
-            mockMvc.perform(
-                get(GET_PRODUCT_RATES, PRODUCT_UUID).contentType(APPLICATION_JSON_VALUE)
-                    .param("page", "0")
-                    .param("size", "10")
-            ).andDocument(
+            mockMvc.get(GET_PRODUCT_RATES, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                param("page", "0")
+                param("size", "10")
+            }.andDocument(
                 "상품 평가 목록 조회",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -236,11 +233,10 @@ class ProductApiSpec : ApiSpec() {
                 comment = "상품평. 좋아요 :)"
             )
 
-            mockMvc.perform(
-                post(RATE_PRODUCT, PRODUCT_UUID)
-                    .contentType(APPLICATION_JSON_VALUE)
-                    .content(objectMapper.writeValueAsString(request))
-            ).andDocument(
+            mockMvc.post(RATE_PRODUCT, PRODUCT_UUID) {
+                contentType = APPLICATION_JSON
+                content = objectMapper.writeValueAsString(request)
+            }.andDocument(
                 "상품 평가",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -260,9 +256,9 @@ class ProductApiSpec : ApiSpec() {
         }
 
         test("상품 평가를 조회하다") {
-            mockMvc.perform(
-                get(GET_PRODUCT_RATE_DETAIL, PRODUCT_UUID, RATE_UUID).contentType(APPLICATION_JSON_VALUE)
-            ).andDocument(
+            mockMvc.get(GET_PRODUCT_RATE_DETAIL, PRODUCT_UUID, RATE_UUID) {
+                contentType = APPLICATION_JSON
+            }.andDocument(
                 "상품 평가 조회",
                 pathVariables {
                     "productId" means "상품 ID"
@@ -280,5 +276,4 @@ class ProductApiSpec : ApiSpec() {
             )
         }
     }
-
 }
