@@ -2,6 +2,7 @@ package com.kakaoent.md.application.api.cart
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.cart.CartController.Companion.ADD_PRODUCT_TO_CART
+import com.kakaoent.md.application.api.cart.CartController.Companion.EMPTY_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.GET_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.REMOVE_PRODUCT_FROM_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.UPDATE_PRODUCT_QUANTITY_IN_CART
@@ -9,10 +10,7 @@ import com.kakaoent.md.application.api.product.PRODUCT_UUID
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [CartController::class])
@@ -122,6 +120,23 @@ class CartApiSpec : ApiSpec() {
                     "productId" type STRING means "상품 ID"
                     "name" type STRING means "상품명"
                     "removedAt" type NUMBER means "제거한 날짜"
+                    "cartId" type STRING means "장바구니 ID"
+                }
+            )
+        }
+
+        test("장바구니를 비우다") {
+            mockMvc.perform(
+                delete(EMPTY_CART, MEMBER_KEY)
+                    .contentType(APPLICATION_JSON_VALUE)
+            ).andDocument(
+                "장바구니를 비우다",
+                pathVariables {
+                    "memberKey" means "사용자 ID"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "emptiedAt" type NUMBER means "비운 날짜"
                     "cartId" type STRING means "장바구니 ID"
                 }
             )
