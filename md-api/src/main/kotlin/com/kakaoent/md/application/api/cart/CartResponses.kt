@@ -34,3 +34,11 @@ data class UpdateProductQuantityInCartResponse(
     val updatedAt: Instant,
     val cartId: String
 )
+
+data class RemoveProductFromCartResponse(
+    val memberKey: Long,
+    val productId: String,
+    val name: String,
+    val removedAt: Instant,
+    val cartId: String
+)

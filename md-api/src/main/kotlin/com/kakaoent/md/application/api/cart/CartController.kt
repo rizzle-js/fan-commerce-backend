@@ -60,9 +60,23 @@ class CartController {
         )
     }
 
+    @DeleteMapping(REMOVE_PRODUCT_FROM_CART)
+    fun removeProductFromCart(
+        @RequestBody request: RemoveProductFromCartRequest
+    ): RemoveProductFromCartResponse {
+        return RemoveProductFromCartResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            name = "상품명",
+            removedAt = Instant.ofEpochSecond(1686641320L),
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
+        )
+    }
+
     companion object {
         const val GET_CART = "/cart"
         const val ADD_PRODUCT_TO_CART = "/cart"
-        const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/cart/product"
+        const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/cart"
+        const val REMOVE_PRODUCT_FROM_CART = "/cart"
     }
 }
