@@ -1,4 +1,4 @@
-package com.kakaoent.md.application
+package com.kakaoent.md.application.api
 
 import com.kakaoent.md.config.JsonConfig
 import io.kotest.core.extensions.Extension
