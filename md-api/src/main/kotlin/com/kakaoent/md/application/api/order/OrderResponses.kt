@@ -11,3 +11,10 @@ data class CheckoutResponse(
     val checkedOutAt: Instant,
     val deliveryInfo: DeliveryInfo
 )
+
+data class PartialCancelOrderResponse(
+    val memberKey: Long,
+    val orderId: String,
+    val cancelProducts: List<CancelProduct>,
+    val cancelRequestedAt: Instant
+)

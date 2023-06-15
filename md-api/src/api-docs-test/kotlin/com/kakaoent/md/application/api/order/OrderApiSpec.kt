@@ -2,6 +2,7 @@ package com.kakaoent.md.application.api.order
 
 import com.kakaoent.md.application.api.ApiSpec
 import com.kakaoent.md.application.api.andDocument
+import com.kakaoent.md.application.api.order.OrderController.Companion.CANCEL_ORDER
 import com.kakaoent.md.application.api.order.OrderController.Companion.CHECKOUT
 import com.kakaoent.md.application.api.requestBody
 import com.kakaoent.md.application.api.responseBody
@@ -66,6 +67,50 @@ class OrderApiSpec : ApiSpec() {
                     "deliveryInfo.recipientName" type STRING means "수령인 이름"
                     "deliveryInfo.recipientPhone" type STRING means "수령인 전화번호"
                     "deliveryInfo.deliveryAddress" type STRING means "배송지 주소"
+                }
+            )
+        }
+
+        test("주문 부분 취소 요청") {
+            mockMvc.perform(
+                post(CANCEL_ORDER)
+                    .contentType(APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            PartialCancelOrderRequest(
+                                memberKey = 1L,
+                                orderId = "order123",
+                                cancelProducts = listOf(
+                                    CancelProduct(
+                                        productId = "product123",
+                                        productName = "상품1",
+                                        cancelPrice = 10000,
+                                        cancelQuantity = 2
+                                    )
+                                ),
+                            )
+                        )
+                    )
+            ).andDocument(
+                "주문 부분 취소 요청",
+                requestBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "cancelProducts[]" type ARRAY means "취소 상품 목록"
+                    "cancelProducts[].productId" type STRING means "상품 ID"
+                    "cancelProducts[].productName" type STRING means "상품명"
+                    "cancelProducts[].cancelPrice" type NUMBER means "취소할 가격"
+                    "cancelProducts[].cancelQuantity" type NUMBER means "취소할 상품 수량"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "cancelProducts[]" type ARRAY means "취소 된 상품 목록"
+                    "cancelProducts[].productId" type STRING means "상품 ID"
+                    "cancelProducts[].productName" type STRING means "상품명"
+                    "cancelProducts[].cancelPrice" type NUMBER means "취소된 가격"
+                    "cancelProducts[].cancelQuantity" type NUMBER means "취소된 상품 수량"
+                    "cancelRequestedAt" type NUMBER means "취소 요청 날짜"
                 }
             )
         }
