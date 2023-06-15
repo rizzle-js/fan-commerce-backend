@@ -12,3 +12,7 @@ data class UpdateProductQuantityInCartRequest(
     val quantity: Int
 )
 
+data class RemoveProductFromCartRequest(
+    val memberKey: Long,
+    val productId: String
+)
