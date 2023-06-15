@@ -1,5 +1,6 @@
 package com.kakaoent.md.application.product
 
+import com.kakaoent.md.PagingParams
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
 
@@ -123,8 +124,7 @@ class ProductController {
     @GetMapping(GET_PRODUCT_RATES)
     fun getProductRates(
         @PathVariable productId: String,
-        @RequestParam page: Int,
-        @RequestParam size: Int,
+        params: PagingParams
     ): ProductRatesResponse {
         return ProductRatesResponse(
             productRates = listOf(
