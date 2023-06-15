@@ -1,8 +1,7 @@
 package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.IntegrationTestSpec
-import com.kakaoent.md.application.product.ProductController.Companion.GET_PRODUCT_DETAIL
-import com.kakaoent.md.application.product.ProductDetailResponse
+import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.shouldBe
 import org.springframework.http.MediaType.APPLICATION_JSON
