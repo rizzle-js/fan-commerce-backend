@@ -5,7 +5,7 @@ import java.time.Instant
 data class CheckoutResponse(
     val memberKey: Long,
     val orderId: String,
-    val orderItems: List<OrderItem>,
+    val orderProducts: List<OrderProduct>,
     val paymentMethod: String,
     val totalPayment: Int,
     val checkedOutAt: Instant,

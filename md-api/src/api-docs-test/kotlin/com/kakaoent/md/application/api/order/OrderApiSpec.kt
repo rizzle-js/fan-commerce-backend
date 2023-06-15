@@ -17,8 +17,8 @@ class OrderApiSpec : ApiSpec() {
         test("상품 체크아웃") {
             val checkoutRequest = CheckoutRequest(
                 memberKey = 1L,
-                orderItems = listOf(
-                    OrderItem(
+                orderProducts = listOf(
+                    OrderProduct(
                         productId = "product123",
                         productName = "상품1",
                         price = 1000,
@@ -40,11 +40,11 @@ class OrderApiSpec : ApiSpec() {
                 "상품 체크아웃",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
-                    "orderItems[]" type ARRAY means "주문 상품 목록"
-                    "orderItems[].productId" type STRING means "상품 ID"
-                    "orderItems[].productName" type STRING means "상품명"
-                    "orderItems[].price" type NUMBER means "가격"
-                    "orderItems[].quantity" type NUMBER means "수량"
+                    "orderProducts[]" type ARRAY means "주문 상품 목록"
+                    "orderProducts[].productId" type STRING means "상품 ID"
+                    "orderProducts[].productName" type STRING means "상품명"
+                    "orderProducts[].price" type NUMBER means "가격"
+                    "orderProducts[].quantity" type NUMBER means "수량"
                     "paymentMethod" type STRING means "결제 방식"
                     "deliveryInfo" type OBJECT means "배송지 정보"
                     "deliveryInfo.recipientName" type STRING means "수령인 이름"
@@ -54,11 +54,11 @@ class OrderApiSpec : ApiSpec() {
                 responseBody {
                     "memberKey" type NUMBER means "회원 키"
                     "orderId" type STRING means "주문 ID"
-                    "orderItems[]" type ARRAY means "주문 상품 목록"
-                    "orderItems[].productId" type STRING means "상품 ID"
-                    "orderItems[].productName" type STRING means "상품명"
-                    "orderItems[].price" type NUMBER means "가격"
-                    "orderItems[].quantity" type NUMBER means "수량"
+                    "orderProducts[]" type ARRAY means "주문 상품 목록"
+                    "orderProducts[].productId" type STRING means "상품 ID"
+                    "orderProducts[].productName" type STRING means "상품명"
+                    "orderProducts[].price" type NUMBER means "가격"
+                    "orderProducts[].quantity" type NUMBER means "수량"
                     "paymentMethod" type STRING means "결제 방식"
                     "totalPayment" type NUMBER means "결제 총액"
                     "checkedOutAt" type NUMBER means "체크아웃 시각"

@@ -12,9 +12,9 @@ class OrderController {
         return CheckoutResponse(
             memberKey = checkoutRequest.memberKey,
             orderId = "4iat8YRCAFycmqVJydbEHH",
-            orderItems = checkoutRequest.orderItems,
+            orderProducts = checkoutRequest.orderProducts,
             paymentMethod = checkoutRequest.paymentMethod,
-            totalPayment = checkoutRequest.orderItems.sumOf { it.price * it.quantity },
+            totalPayment = checkoutRequest.orderProducts.sumOf { it.price * it.quantity },
             checkedOutAt = Instant.ofEpochSecond(1686641320L),
             deliveryInfo = checkoutRequest.deliveryInfo
         )

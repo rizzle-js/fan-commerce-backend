@@ -2,12 +2,12 @@ package com.kakaoent.md.application.api.order
 
 data class CheckoutRequest(
     val memberKey: Long,
-    val orderItems: List<OrderItem>,
+    val orderProducts: List<OrderProduct>,
     val paymentMethod: String,
     val deliveryInfo: DeliveryInfo
 )
 
-data class OrderItem(
+data class OrderProduct(
     val productId: String,
     val productName: String,
     val price: Int,
