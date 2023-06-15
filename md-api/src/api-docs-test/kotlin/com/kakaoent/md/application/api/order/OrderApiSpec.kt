@@ -8,8 +8,8 @@ import com.kakaoent.md.application.api.responseBody
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType.*
-import org.springframework.test.web.servlet.post
 
 @WebMvcTest(controllers = [OrderController::class])
 class OrderApiSpec : ApiSpec() {
@@ -33,10 +33,10 @@ class OrderApiSpec : ApiSpec() {
                 )
             )
 
-            mockMvc.post(CHECKOUT) {
-                contentType = APPLICATION_JSON
-                content = objectMapper.writeValueAsString(checkoutRequest)
-            }.andDocument(
+            mockMvc.perform(
+                post(CHECKOUT).contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(checkoutRequest))
+            ).andDocument(
                 "상품 체크아웃",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
