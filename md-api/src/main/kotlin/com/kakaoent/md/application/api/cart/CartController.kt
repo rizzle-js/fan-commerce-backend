@@ -46,8 +46,23 @@ class CartController {
         )
     }
 
+    @PutMapping(UPDATE_PRODUCT_QUANTITY_IN_CART)
+    fun updateProductQuantityInCart(
+        @RequestBody request: UpdateProductQuantityInCartRequest
+    ): UpdateProductQuantityInCartResponse {
+        return UpdateProductQuantityInCartResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            name = "상품명",
+            updatedQuantity = request.quantity,
+            updatedAt = Instant.ofEpochSecond(1686641320L),
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
+        )
+    }
+
     companion object {
         const val GET_CART = "/cart"
         const val ADD_PRODUCT_TO_CART = "/cart"
+        const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/cart/product"
     }
 }

@@ -25,3 +25,12 @@ data class AddProductToCartResponse(
     val cartId: String,
     val quantity: Int
 )
+
+data class UpdateProductQuantityInCartResponse(
+    val memberKey: Long,
+    val productId: String,
+    val name: String,
+    val updatedQuantity: Int,
+    val updatedAt: Instant,
+    val cartId: String
+)

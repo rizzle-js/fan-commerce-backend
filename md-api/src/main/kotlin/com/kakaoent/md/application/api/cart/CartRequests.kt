@@ -5,3 +5,10 @@ data class AddProductToCartRequest(
     val productId: String,
     val quantity: Int
 )
+
+data class UpdateProductQuantityInCartRequest(
+    val memberKey: Long,
+    val productId: String,
+    val quantity: Int
+)
+
