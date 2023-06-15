@@ -3,12 +3,14 @@ package com.kakaoent.md.application.api.cart
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.cart.CartController.Companion.ADD_PRODUCT_TO_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.GET_CART
+import com.kakaoent.md.application.api.cart.CartController.Companion.UPDATE_PRODUCT_QUANTITY_IN_CART
 import com.kakaoent.md.application.api.product.PRODUCT_UUID
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [CartController::class])
@@ -64,6 +66,35 @@ class CartApiSpec : ApiSpec() {
                     "addedAt" type NUMBER means "담은 날짜"
                     "cartId" type STRING means "장바구니 ID"
                     "quantity" type NUMBER means "수량"
+                }
+            )
+        }
+
+        test("장바구니의 상품 수량을 수정하다") {
+            val request = UpdateProductQuantityInCartRequest(
+                memberKey = MEMBER_KEY,
+                productId = PRODUCT_UUID,
+                quantity = 2
+            )
+
+            mockMvc.perform(
+                put(UPDATE_PRODUCT_QUANTITY_IN_CART)
+                    .contentType(APPLICATION_JSON_VALUE)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDocument(
+                "장바구니 상품 수량 수정",
+                requestBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "productId" type STRING means "상품 ID"
+                    "quantity" type NUMBER means "수량"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "productId" type STRING means "상품 ID"
+                    "name" type STRING means "상품명"
+                    "updatedQuantity" type NUMBER means "변경된 수량"
+                    "updatedAt" type NUMBER means "수정한 날짜"
+                    "cartId" type STRING means "장바구니 ID"
                 }
             )
         }
