@@ -20,6 +20,7 @@ import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.restdocs.snippet.Attributes
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.servlet.ResultActions
+import org.springframework.test.web.servlet.ResultActionsDsl
 
 fun ResultActions.andDocument(
     identifier: String,
@@ -32,6 +33,18 @@ fun ResultActions.andDocument(
         *snippet
     )
 )
+
+fun ResultActionsDsl.andDocument(
+    identifier: String,
+    vararg snippet: Snippet
+): ResultActionsDsl = andDo {
+    MockMvcRestDocumentation.document(
+        identifier,
+        preprocessRequest(prettyPrint()),
+        preprocessResponse(prettyPrint()),
+        *snippet
+    )
+}
 
 data class Parameter(val descriptor: ParameterDescriptor) {
 
