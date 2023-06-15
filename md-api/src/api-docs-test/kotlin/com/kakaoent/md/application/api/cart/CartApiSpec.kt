@@ -52,7 +52,7 @@ class CartApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "상품을 장바구니 담기",
+                "장바구니 담기",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
                     "productId" type STRING means "상품 ID"
@@ -130,7 +130,7 @@ class CartApiSpec : ApiSpec() {
                 delete(EMPTY_CART, MEMBER_KEY)
                     .contentType(APPLICATION_JSON_VALUE)
             ).andDocument(
-                "장바구니를 비우다",
+                "장바구니 비우기",
                 pathVariables {
                     "memberKey" means "사용자 ID"
                 },
