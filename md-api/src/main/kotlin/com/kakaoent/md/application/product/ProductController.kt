@@ -1,5 +1,6 @@
 package com.kakaoent.md.application.product
 
+import com.kakaoent.md.PagingParams
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
 
@@ -120,13 +121,40 @@ class ProductController {
         )
     }
 
+    @GetMapping(GET_PRODUCT_RATES)
+    fun getProductRates(
+        @PathVariable productId: String,
+        params: PagingParams
+    ): ProductRatesResponse {
+        return ProductRatesResponse(
+            productRates = listOf(
+                ProductRate(
+                    rateId = "2fBs3IHgpHecTZHuGg43u2",
+                    memberKey = 1L,
+                    productId = productId,
+                    rate = 4,
+                    comment = "좋아요 :)",
+                    ratedAt = Instant.ofEpochSecond(1686641320L),
+                ),
+                ProductRate(
+                    rateId = "07AmdtM3GtyWOFug7i8Fog",
+                    memberKey = 2L,
+                    productId = productId,
+                    rate = 5,
+                    comment = "만족합니다.",
+                    ratedAt = Instant.ofEpochSecond(1686641920L),
+                )
+            )
+        )
+    }
+
     @PostMapping(RATE_PRODUCT)
     fun rateProduct(
         @PathVariable productId: String,
         @RequestBody request: RateProductRequest
-    ): RateProductResponse {
+    ): ProductRateResponse {
         // 상품 평가 로직은 생략
-        return RateProductResponse(
+        return ProductRateResponse(
             memberKey = request.memberKey,
             productId = productId,
             rateId = "07ADpf6TfRU1wYU88Q6KP8",
@@ -138,8 +166,8 @@ class ProductController {
     fun getProductRateDetail(
         @PathVariable productId: String,
         @PathVariable rateId: String,
-    ): RateProductDetailResponse {
-        return RateProductDetailResponse(
+    ): ProductRateDetailResponse {
+        return ProductRateDetailResponse(
             memberKey = 1234L,
             productId = productId,
             rateId = "rateId",
@@ -162,6 +190,7 @@ class ProductController {
         const val CHECK_PURCHASE_PERMISSION = "/products/{productId}/purchase/permission"
         const val PURCHASE_PRODUCT = "/products/{productId}/purchase"
         const val CANCEL_PRODUCT = "/products/{productId}/cancellation"
+        const val GET_PRODUCT_RATES = "/products/{productId}/rates"
         const val RATE_PRODUCT = "/products/{productId}/rates"
         const val GET_PRODUCT_RATE_DETAIL = "/products/{productId}/rates/{rateId}"
     }
