@@ -1,8 +1,7 @@
 package com.kakaoent.md.application.api.cart
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.time.Instant
 
 @RestController
 class CartController {
@@ -32,7 +31,23 @@ class CartController {
         )
     }
 
+    @PostMapping(ADD_PRODUCT_TO_CART)
+    fun addProductToCart(
+        @RequestBody request: AddProductToCartRequest
+    ): AddProductToCartResponse {
+        return AddProductToCartResponse(
+            memberKey = request.memberKey,
+            productId = request.productId,
+            name = "상품명",
+            price = 1000,
+            addedAt = Instant.ofEpochSecond(1686641320L),
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
+            quantity = request.quantity
+        )
+    }
+
     companion object {
         const val GET_CART = "/cart"
+        const val ADD_PRODUCT_TO_CART = "/cart"
     }
 }

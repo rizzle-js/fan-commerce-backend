@@ -1,5 +1,7 @@
 package com.kakaoent.md.application.api.cart
 
+import java.time.Instant
+
 data class CartResponse(
     val memberKey: Long,
     val cartId: String,
@@ -12,4 +14,14 @@ data class CartProduct(
     val price: Int,
     val quantity: Int,
     val productImageUrl: String
+)
+
+data class AddProductToCartResponse(
+    val memberKey: Long,
+    val productId: String,
+    val name: String,
+    val price: Int,
+    val addedAt: Instant,
+    val cartId: String,
+    val quantity: Int
 )
