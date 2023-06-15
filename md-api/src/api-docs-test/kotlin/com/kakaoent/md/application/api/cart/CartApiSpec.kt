@@ -2,7 +2,7 @@ package com.kakaoent.md.application.api.cart
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.cart.CartController.Companion.ADD_PRODUCT_TO_CART
-import com.kakaoent.md.application.api.cart.CartController.Companion.EMPTY_CART
+import com.kakaoent.md.application.api.cart.CartController.Companion.CLEAN_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.GET_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.REMOVE_PRODUCT_FROM_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.UPDATE_PRODUCT_QUANTITY_IN_CART
@@ -19,12 +19,11 @@ class CartApiSpec : ApiSpec() {
     init {
         test("장바구니를 조회하다") {
             mockMvc.perform(
-                get(GET_CART).contentType(APPLICATION_JSON)
-                    .param("memberKey", MEMBER_KEY.toString())
+                get(GET_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
             ).andDocument(
                 "장바구니 조회",
-                queryParams {
-                    "memberKey" means "사용자 ID"
+                pathVariables {
+                    "memberKey" means "회원 키"
                 },
                 responseBody {
                     "memberKey" type NUMBER means "회원 키"
@@ -41,18 +40,19 @@ class CartApiSpec : ApiSpec() {
 
         test("상품을 장바구니에 담다") {
             val request = AddProductToCartRequest(
-                memberKey = MEMBER_KEY,
                 productId = PRODUCT_UUID,
                 quantity = 1
             )
 
             mockMvc.perform(
-                post(ADD_PRODUCT_TO_CART).contentType(APPLICATION_JSON)
+                post(ADD_PRODUCT_TO_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "장바구니 담기",
+                pathVariables {
+                    "memberKey" means "회원 키"
+                },
                 requestBody {
-                    "memberKey" type NUMBER means "회원 키"
                     "productId" type STRING means "상품 ID"
                     "quantity" type NUMBER means "수량"
                 },
@@ -70,19 +70,19 @@ class CartApiSpec : ApiSpec() {
 
         test("장바구니의 상품 수량을 수정하다") {
             val request = UpdateProductQuantityInCartRequest(
-                memberKey = MEMBER_KEY,
-                productId = PRODUCT_UUID,
                 quantity = 2
             )
 
             mockMvc.perform(
-                put(UPDATE_PRODUCT_QUANTITY_IN_CART).contentType(APPLICATION_JSON)
+                put(UPDATE_PRODUCT_QUANTITY_IN_CART, MEMBER_KEY, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "장바구니 상품 수량 수정",
+                pathVariables {
+                    "memberKey" means "회원 키"
+                    "productId" means "상품 ID"
+                },
                 requestBody {
-                    "memberKey" type NUMBER means "회원 키"
-                    "productId" type STRING means "상품 ID"
                     "quantity" type NUMBER means "수량"
                 },
                 responseBody {
@@ -97,19 +97,13 @@ class CartApiSpec : ApiSpec() {
         }
 
         test("장바구니에서 상품을 제거하다") {
-            val request = RemoveProductFromCartRequest(
-                memberKey = MEMBER_KEY,
-                productId = PRODUCT_UUID
-            )
-
             mockMvc.perform(
-                delete(REMOVE_PRODUCT_FROM_CART).contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request))
+                delete(REMOVE_PRODUCT_FROM_CART, MEMBER_KEY, PRODUCT_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
                 "장바구니 상품 제거",
-                requestBody {
-                    "memberKey" type NUMBER means "회원 키"
-                    "productId" type STRING means "상품 ID"
+                pathVariables {
+                    "memberKey" means "회원 키"
+                    "productId" means "상품 ID"
                 },
                 responseBody {
                     "memberKey" type NUMBER means "회원 키"
@@ -123,7 +117,7 @@ class CartApiSpec : ApiSpec() {
 
         test("장바구니를 비우다") {
             mockMvc.perform(
-                delete(EMPTY_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
+                delete(CLEAN_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
             ).andDocument(
                 "장바구니 비우기",
                 pathVariables {

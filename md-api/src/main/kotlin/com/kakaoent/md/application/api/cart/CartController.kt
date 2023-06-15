@@ -7,7 +7,7 @@ import java.time.Instant
 class CartController {
     @GetMapping(GET_CART)
     fun getCart(
-        @RequestParam memberKey: Long
+        @PathVariable memberKey: Long
     ): CartResponse {
         return CartResponse(
             memberKey = memberKey,
@@ -33,10 +33,11 @@ class CartController {
 
     @PostMapping(ADD_PRODUCT_TO_CART)
     fun addProductToCart(
+        @PathVariable memberKey: Long,
         @RequestBody request: AddProductToCartRequest
     ): AddProductToCartResponse {
         return AddProductToCartResponse(
-            memberKey = request.memberKey,
+            memberKey = memberKey,
             productId = request.productId,
             name = "상품명",
             price = 1000,
@@ -48,11 +49,13 @@ class CartController {
 
     @PutMapping(UPDATE_PRODUCT_QUANTITY_IN_CART)
     fun updateProductQuantityInCart(
+        @PathVariable memberKey: Long,
+        @PathVariable productId: String,
         @RequestBody request: UpdateProductQuantityInCartRequest
     ): UpdateProductQuantityInCartResponse {
         return UpdateProductQuantityInCartResponse(
-            memberKey = request.memberKey,
-            productId = request.productId,
+            memberKey = memberKey,
+            productId = productId,
             name = "상품명",
             updatedQuantity = request.quantity,
             updatedAt = Instant.ofEpochSecond(1686641320L),
@@ -62,19 +65,20 @@ class CartController {
 
     @DeleteMapping(REMOVE_PRODUCT_FROM_CART)
     fun removeProductFromCart(
-        @RequestBody request: RemoveProductFromCartRequest
+        @PathVariable memberKey: Long,
+        @PathVariable productId: String
     ): RemoveProductFromCartResponse {
         return RemoveProductFromCartResponse(
-            memberKey = request.memberKey,
-            productId = request.productId,
+            memberKey = memberKey,
+            productId = productId,
             name = "상품명",
             removedAt = Instant.ofEpochSecond(1686641320L),
             cartId = "0WpdogcEJ4jlc9UwIc0kNm"
         )
     }
 
-    @DeleteMapping(EMPTY_CART)
-    fun emptyCart(
+    @DeleteMapping(CLEAN_CART)
+    fun cleanCart(
         @PathVariable memberKey: Long
     ): EmptyCartResponse {
         return EmptyCartResponse(
@@ -85,10 +89,10 @@ class CartController {
     }
 
     companion object {
-        const val GET_CART = "/cart"
-        const val ADD_PRODUCT_TO_CART = "/cart"
-        const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/cart"
-        const val REMOVE_PRODUCT_FROM_CART = "/cart"
-        const val EMPTY_CART = "/cart/{memberKey}"
+        const val GET_CART = "/carts/{memberKey}"
+        const val ADD_PRODUCT_TO_CART = "/carts/{memberKey}/products"
+        const val UPDATE_PRODUCT_QUANTITY_IN_CART = "/carts/{memberKey}/products/{productId}"
+        const val REMOVE_PRODUCT_FROM_CART = "/carts/{memberKey}/products/{productId}"
+        const val CLEAN_CART = "/carts/{memberKey}"
     }
 }
