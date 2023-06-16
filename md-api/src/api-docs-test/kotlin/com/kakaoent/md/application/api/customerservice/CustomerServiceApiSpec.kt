@@ -1,12 +1,10 @@
 package com.kakaoent.md.application.api.customerservice
 
-import com.kakaoent.md.application.api.ApiSpec
-import com.kakaoent.md.application.api.andDocument
+import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_CATEGORIES
-import com.kakaoent.md.application.api.pathVariables
-import com.kakaoent.md.application.api.responseBody
+import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_LIST
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
@@ -53,6 +51,27 @@ class CustomerServiceApiSpec : ApiSpec() {
                     "categories[]" type ARRAY means "카테고리 목록"
                     "categories[].categoryId" type NUMBER means "카테고리 ID"
                     "categories[].categoryName" type STRING means "카테고리 이름"
+                }
+            )
+        }
+
+
+        test("1:1 문의 리스트를 조회하다") {
+            mockMvc.perform(
+                get(GET_INQUIRY_LIST).contentType(APPLICATION_JSON)
+                    .param("memberKey", "1")
+            ).andDocument(
+                "CustomerServiceApiSpec 1:1 문의 리스트 조회",
+                queryParams {
+                    "memberKey" means "회원 키"
+                },
+                responseBody {
+                    "inquiries[]" type ARRAY means "문의 목록"
+                    "inquiries[].inquiryId" type NUMBER means "문의 ID"
+                    "inquiries[].category" type STRING means "카테고리"
+                    "inquiries[].content" type STRING means "문의 내용"
+                    "inquiries[].status" type STRING means "문의 상태"
+                    "inquiries[].inquiryAt" type NUMBER means "문의 일시"
                 }
             )
         }

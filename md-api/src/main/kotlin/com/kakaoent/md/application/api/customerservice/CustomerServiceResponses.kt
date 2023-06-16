@@ -1,5 +1,7 @@
 package com.kakaoent.md.application.api.customerservice
 
+import java.time.Instant
+
 data class FAQCategoriesResponse(
     val categories: List<FAQCategory>
 )
@@ -26,3 +28,20 @@ data class InquiryCategory(
     val categoryId: Long,
     val categoryName: String
 )
+
+data class InquiryListResponse(
+    val inquiries: List<Inquiry>,
+)
+
+data class Inquiry(
+    val inquiryId: Long,
+    val category: String,
+    val content: String,
+    val status: InquiryStatus,
+    val inquiryAt: Instant
+)
+
+enum class InquiryStatus {
+    PENDING,
+    ANSWERED
+}

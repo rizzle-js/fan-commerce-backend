@@ -1,6 +1,7 @@
 package com.kakaoent.md.application.api.customerservice
 
 import org.springframework.web.bind.annotation.*
+import java.time.Instant
 
 @RestController
 class CustomerServiceController {
@@ -59,9 +60,34 @@ class CustomerServiceController {
         )
     }
 
+    @GetMapping(GET_INQUIRY_LIST)
+    fun getInquiryList(
+        @RequestParam memberKey: Long
+    ): InquiryListResponse {
+        return InquiryListResponse(
+            inquiries = listOf(
+                Inquiry(
+                    inquiryId = 1,
+                    category = "결제 관련",
+                    content = "결제가 안 됩니다.",
+                    status = InquiryStatus.PENDING,
+                    Instant.ofEpochSecond(1686641320L),
+                ),
+                Inquiry(
+                    inquiryId = 2,
+                    category = "서비스 이용 관련",
+                    content = "상품이 안 나와요.",
+                    status = InquiryStatus.ANSWERED,
+                    Instant.ofEpochSecond(1686641320L),
+                )
+            ),
+        )
+    }
+
     companion object {
-        const val GET_FAQ_CATEGORIES = "/faq/categories"
-        const val GET_FAQ = "/faq/categories/{categoryId}"
-        const val GET_INQUIRY_CATEGORIES = "/inquiry/categories"
+        const val GET_FAQ_CATEGORIES = "/faq-categories"
+        const val GET_FAQ = "/faq-categories/{categoryId}/faqs"
+        const val GET_INQUIRY_CATEGORIES = "/inquiry-categories"
+        const val GET_INQUIRY_LIST = "/inquiries"
     }
 }
