@@ -7,9 +7,7 @@ data class PaymentRequest(
     val amount: Int
 )
 
-data class CompletePaymentRequest(
+data class CancelPaymentRequest(
     val memberKey: Long,
-    val orderId: String,
-    val paymentMethodId: String,
-    val amount: Int
+    val orderId: String
 )

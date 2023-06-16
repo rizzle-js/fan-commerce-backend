@@ -40,23 +40,23 @@ class PaymentController {
         )
     }
 
-    @PostMapping(COMPLETE_PAYMENT)
-    fun completePayment(
+    @PostMapping(CANCEL_PAYMENT)
+    fun cancelPayment(
         @PathVariable paymentId: String,
-        @RequestBody request: CompletePaymentRequest
-    ): CompletePaymentResponse {
-        return CompletePaymentResponse(
+        @RequestBody request: CancelPaymentRequest
+    ): CancelPaymentResponse {
+        // Logic to call the service and handle exceptions
+        return CancelPaymentResponse(
             memberKey = request.memberKey,
             orderId = request.orderId,
-            paymentMethodId = request.paymentMethodId,
-            amount = request.amount,
-            completedAt = Instant.now()
+            paymentId = paymentId,
+            cancelledAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 
     companion object {
         const val GET_PAYMENT_METHODS = "/payment/methods"
         const val REQUEST_PAYMENT = "/payments"
-        const val COMPLETE_PAYMENT = "/payments/{paymentId}/confirmation"
+        const val CANCEL_PAYMENT = "/payments/{paymentId}/cancellation"
     }
 }

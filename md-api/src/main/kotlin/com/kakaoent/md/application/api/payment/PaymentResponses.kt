@@ -21,10 +21,9 @@ data class PaymentResponse(
     val requestedAt: Instant
 )
 
-data class CompletePaymentResponse(
+data class CancelPaymentResponse(
     val memberKey: Long,
     val orderId: String,
-    val paymentMethodId: String,
-    val amount: Int,
-    val completedAt: Instant
+    val paymentId: String,
+    val cancelledAt: Instant
 )

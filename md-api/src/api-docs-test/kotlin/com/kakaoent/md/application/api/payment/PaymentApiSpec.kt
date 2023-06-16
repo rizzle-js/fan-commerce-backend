@@ -2,7 +2,7 @@ package com.kakaoent.md.application.api.payment
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.order.ORDER_UUID
-import com.kakaoent.md.application.api.payment.PaymentController.Companion.COMPLETE_PAYMENT
+import com.kakaoent.md.application.api.payment.PaymentController.Companion.CANCEL_PAYMENT
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.GET_PAYMENT_METHODS
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.REQUEST_PAYMENT
 import com.kakaoent.md.config.objectMapper
@@ -65,32 +65,31 @@ class PaymentApiSpec : ApiSpec() {
             )
         }
 
-        test("상품 결제 완료") {
-            val request = CompletePaymentRequest(
+
+        test("상품 결제 취소 요청") {
+            val request = CancelPaymentRequest(
                 memberKey = 1,
-                orderId = "order123",
-                paymentMethodId = "method123",
-                amount = 1000
+                orderId = "order123"
             )
 
             mockMvc.perform(
-                post(COMPLETE_PAYMENT, PAYMENT_UUID)
+                post(CANCEL_PAYMENT, PAYMENT_UUID)
                     .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "PaymentApiSpec 상품 결제 완료",
+                "PaymentApiSpec 상품 결제 취소 요청",
+                pathVariables {
+                    "paymentId" means "결제 ID"
+                },
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
                     "orderId" type STRING means "주문 ID"
-                    "paymentMethodId" type STRING means "결제 수단 ID"
-                    "amount" type NUMBER means "결제 금액"
                 },
                 responseBody {
                     "memberKey" type NUMBER means "회원 키"
                     "orderId" type STRING means "주문 ID"
-                    "paymentMethodId" type STRING means "결제 수단 ID"
-                    "amount" type NUMBER means "결제 금액"
-                    "completedAt" type NUMBER means "결제 완료 날짜"
+                    "paymentId" type STRING means "결제 ID"
+                    "cancelledAt" type NUMBER means "취소 요청 날짜"
                 }
             )
         }
