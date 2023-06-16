@@ -25,7 +25,22 @@ class PaymentController {
         )
     }
 
+    @PostMapping(REQUEST_PAYMENT)
+    fun requestPayment(
+        @RequestBody request: PaymentRequest
+    ): PaymentResponse {
+        // Logic to call the service and handle exceptions
+        return PaymentResponse(
+            memberKey = request.memberKey,
+            orderId = request.orderId,
+            paymentMethodId = request.paymentMethodId,
+            amount = request.amount,
+            requestedAt = Instant.ofEpochSecond(1686641320L),
+        )
+    }
+
     companion object {
         const val GET_PAYMENT_METHODS = "/payment/methods"
+        const val REQUEST_PAYMENT = "/payments"
     }
 }
