@@ -16,6 +16,7 @@ data class FAQResponse(
 )
 
 data class FAQ(
+    val faqId: String,
     val question: String,
     val answer: String
 )
@@ -25,7 +26,7 @@ data class InquiryCategoriesResponse(
 )
 
 data class InquiryCategory(
-    val categoryId: Long,
+    val categoryId: String,
     val categoryName: String
 )
 
@@ -34,7 +35,7 @@ data class InquiryListResponse(
 )
 
 data class Inquiry(
-    val inquiryId: Long,
+    val inquiryId: String,
     val category: String,
     val content: String,
     val status: InquiryStatus,
@@ -45,3 +46,11 @@ enum class InquiryStatus {
     PENDING,
     ANSWERED
 }
+
+data class InquiryResponse(
+    val memberKey: Long,
+    val inquiryId: String,
+    val category: String,
+    val content: String,
+    val inquiryAt: Instant
+)

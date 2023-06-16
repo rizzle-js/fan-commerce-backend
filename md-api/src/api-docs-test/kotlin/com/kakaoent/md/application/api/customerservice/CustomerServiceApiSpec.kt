@@ -5,9 +5,11 @@ import com.kakaoent.md.application.api.customerservice.CustomerServiceController
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_LIST
+import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.SUBMIT_INQUIRY
+import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [CustomerServiceController::class])
@@ -28,7 +30,7 @@ class CustomerServiceApiSpec : ApiSpec() {
 
         test("FAQ 조회") {
             mockMvc.perform(
-                get(GET_FAQ, CATEGORY_UUID).contentType(APPLICATION_JSON)
+                get(GET_FAQ, FAQ_CATEGORY_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
                 "CustomerServiceApiSpec FAQ 조회",
                 pathVariables {
@@ -36,6 +38,7 @@ class CustomerServiceApiSpec : ApiSpec() {
                 },
                 responseBody {
                     "faqs[]" type ARRAY means "FAQ 리스트"
+                    "faqs[].faqId" type STRING means "FAQ ID"
                     "faqs[].question" type STRING means "질문"
                     "faqs[].answer" type STRING means "답변"
                 }
@@ -49,7 +52,7 @@ class CustomerServiceApiSpec : ApiSpec() {
                 "CustomerServiceApiSpec 1:1 문의 카테고리 조회",
                 responseBody {
                     "categories[]" type ARRAY means "카테고리 목록"
-                    "categories[].categoryId" type NUMBER means "카테고리 ID"
+                    "categories[].categoryId" type STRING means "카테고리 ID"
                     "categories[].categoryName" type STRING means "카테고리 이름"
                 }
             )
@@ -67,11 +70,40 @@ class CustomerServiceApiSpec : ApiSpec() {
                 },
                 responseBody {
                     "inquiries[]" type ARRAY means "문의 목록"
-                    "inquiries[].inquiryId" type NUMBER means "문의 ID"
+                    "inquiries[].inquiryId" type STRING means "문의 ID"
                     "inquiries[].category" type STRING means "카테고리"
                     "inquiries[].content" type STRING means "문의 내용"
                     "inquiries[].status" type STRING means "문의 상태"
                     "inquiries[].inquiryAt" type NUMBER means "문의 일시"
+                }
+            )
+        }
+
+        test("1:1 문의를 하다") {
+            mockMvc.perform(
+                post(SUBMIT_INQUIRY).contentType(APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            InquiryRequest(
+                                memberKey = MEMBER_KEY,
+                                category = "결제 관련",
+                                content = "결제가 안 됩니다."
+                            )
+                        )
+                    )
+            ).andDocument(
+                "CustomerServiceApiSpec 1:1 문의",
+                requestBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "category" type STRING means "카테고리"
+                    "content" type STRING means "문의 내용"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "inquiryId" type STRING means "문의 ID"
+                    "category" type STRING means "카테고리"
+                    "content" type STRING means "문의 내용"
+                    "inquiryAt" type NUMBER means "문의 시각"
                 }
             )
         }
