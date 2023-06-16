@@ -2,6 +2,7 @@ package com.kakaoent.md.application.api.order
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.order.OrderController.Companion.CANCEL_ORDER
+import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_DETAIL
 import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_HISTORY
 import com.kakaoent.md.application.api.order.OrderController.Companion.PROCESS_CHECKOUT
 import com.kakaoent.md.config.objectMapper
@@ -69,13 +70,13 @@ class OrderApiSpec : ApiSpec() {
             )
         }
 
-        test("상품 구매내역 조회") {
+        test("상품 구매 내역 조회") {
             mockMvc.perform(
                 get(GET_PURCHASE_HISTORY)
                     .contentType(APPLICATION_JSON)
                     .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
-                "OrderApiSpec 상품 구매내역 조회",
+                "OrderApiSpec 상품 구매 내역 조회",
                 queryParams {
                     "memberKey" means "회원 키"
                 },
@@ -138,5 +139,35 @@ class OrderApiSpec : ApiSpec() {
                 }
             )
         }
+
+        test("상품 구매 상세 내역 조회") {
+            mockMvc.perform(
+                get(GET_PURCHASE_DETAIL, ORDER_UUID)
+                    .contentType(APPLICATION_JSON)
+                    .param("memberKey", MEMBER_KEY.toString())
+            ).andDocument(
+                "OrderApiSpec 상품 구매 상세 내역 조회",
+                pathVariables {
+                    "orderId" means "주문 ID"
+                },
+                queryParams {
+                    "memberKey" means "멤버 키"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "items[].productId" type STRING means "상품 ID"
+                    "items[].productName" type STRING means "상품명"
+                    "items[].price" type NUMBER means "가격"
+                    "items[].quantity" type NUMBER means "상품 수량"
+                    "paymentMethod" type STRING means "결제 방식"
+                    "paymentAmount" type NUMBER means "결제 금액"
+                    "orderAt" type NUMBER means "주문 날짜"
+                    "shippingInfo.address" type STRING means "배송지 주소"
+                    "shippingInfo.postalCode" type STRING means "우편번호"
+                }
+            )
+        }
+
     }
 }

@@ -37,3 +37,31 @@ data class PurchasedProductResponse(
     val price: Int,
     val quantity: Int
 )
+
+data class PurchaseDetailResponse(
+    val memberKey: Long,
+    val orderId: String,
+    val items: List<PurchasedItemDetailResponse>,
+    val paymentMethod: PaymentMethod,
+    val paymentAmount: Int,
+    val orderAt: Instant,
+    val shippingInfo: ShippingInfo
+)
+
+data class PurchasedItemDetailResponse(
+    val productId: String,
+    val productName: String,
+    val price: Int,
+    val quantity: Int
+)
+
+data class ShippingInfo(
+    val address: String,
+    val postalCode: String
+)
+
+enum class PaymentMethod {
+    CARD,
+    BANK_TRANSFER,
+    MOBILE
+}

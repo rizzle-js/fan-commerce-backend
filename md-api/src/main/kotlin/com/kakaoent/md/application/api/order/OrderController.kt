@@ -46,6 +46,34 @@ class OrderController {
         )
     }
 
+    @GetMapping(GET_PURCHASE_DETAIL)
+    fun getPurchaseDetail(
+        @PathVariable orderId: String,
+        @RequestParam memberKey: Long,
+    ): PurchaseDetailResponse {
+        // Logic to call the service and handle exceptions
+        return PurchaseDetailResponse(
+            memberKey = memberKey,
+            orderId = orderId,
+            items = listOf(
+                PurchasedItemDetailResponse(
+                    productId = "product123",
+                    productName = "상품1",
+                    price = 10000,
+                    quantity = 2
+                )
+                // ... More items
+            ),
+            paymentMethod = PaymentMethod.CARD,
+            paymentAmount = 20000,
+            orderAt = Instant.now(),
+            shippingInfo = ShippingInfo(
+                address = "서울시 중구",
+                postalCode = "100-000"
+            )
+        )
+    }
+
     @PostMapping(CANCEL_ORDER)
     fun cancelOrder(
         @PathVariable orderId: String,
@@ -70,5 +98,6 @@ class OrderController {
         const val PROCESS_CHECKOUT = "/orders"
         const val GET_PURCHASE_HISTORY = "/orders"
         const val CANCEL_ORDER = "/orders/{orderId}/cancellation"
+        const val GET_PURCHASE_DETAIL = "/orders/{orderId}"
     }
 }
