@@ -15,7 +15,16 @@ data class PaymentMethod(
 data class PaymentResponse(
     val memberKey: Long,
     val orderId: String,
+    val paymentId: String,
     val paymentMethodId: String,
     val amount: Int,
     val requestedAt: Instant
+)
+
+data class CompletePaymentResponse(
+    val memberKey: Long,
+    val orderId: String,
+    val paymentMethodId: String,
+    val amount: Int,
+    val completedAt: Instant
 )

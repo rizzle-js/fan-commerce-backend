@@ -33,14 +33,30 @@ class PaymentController {
         return PaymentResponse(
             memberKey = request.memberKey,
             orderId = request.orderId,
+            paymentId = "0rKZoejXFUmw8KrLjahxu6",
             paymentMethodId = request.paymentMethodId,
             amount = request.amount,
             requestedAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 
+    @PostMapping(COMPLETE_PAYMENT)
+    fun completePayment(
+        @PathVariable paymentId: String,
+        @RequestBody request: CompletePaymentRequest
+    ): CompletePaymentResponse {
+        return CompletePaymentResponse(
+            memberKey = request.memberKey,
+            orderId = request.orderId,
+            paymentMethodId = request.paymentMethodId,
+            amount = request.amount,
+            completedAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_PAYMENT_METHODS = "/payment/methods"
         const val REQUEST_PAYMENT = "/payments"
+        const val COMPLETE_PAYMENT = "/payments/{paymentId}/confirmation"
     }
 }

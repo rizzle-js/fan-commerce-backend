@@ -2,6 +2,7 @@ package com.kakaoent.md.application.api.payment
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.order.ORDER_UUID
+import com.kakaoent.md.application.api.payment.PaymentController.Companion.COMPLETE_PAYMENT
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.GET_PAYMENT_METHODS
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.REQUEST_PAYMENT
 import com.kakaoent.md.config.objectMapper
@@ -37,7 +38,7 @@ class PaymentApiSpec : ApiSpec() {
             val request = PaymentRequest(
                 memberKey = MEMBER_KEY,
                 orderId = ORDER_UUID,
-                paymentMethodId = PAYMENT_UUID,
+                paymentMethodId = PAYMENT_METHOD_UUID,
                 amount = 1000
             )
 
@@ -56,9 +57,40 @@ class PaymentApiSpec : ApiSpec() {
                 responseBody {
                     "memberKey" type NUMBER means "회원 키"
                     "orderId" type STRING means "주문 ID"
+                    "paymentId" type STRING means "결제 ID"
                     "paymentMethodId" type STRING means "결제 수단 ID"
                     "amount" type NUMBER means "결제 금액"
                     "requestedAt" type NUMBER means "결제 요청 날짜"
+                }
+            )
+        }
+
+        test("상품 결제 완료") {
+            val request = CompletePaymentRequest(
+                memberKey = 1,
+                orderId = "order123",
+                paymentMethodId = "method123",
+                amount = 1000
+            )
+
+            mockMvc.perform(
+                post(COMPLETE_PAYMENT, PAYMENT_UUID)
+                    .contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDocument(
+                "PaymentApiSpec 상품 결제 완료",
+                requestBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "paymentMethodId" type STRING means "결제 수단 ID"
+                    "amount" type NUMBER means "결제 금액"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "paymentMethodId" type STRING means "결제 수단 ID"
+                    "amount" type NUMBER means "결제 금액"
+                    "completedAt" type NUMBER means "결제 완료 날짜"
                 }
             )
         }
