@@ -102,7 +102,7 @@ class OrderController {
         return ReceiptDownloadResponse(
             memberKey = memberKey,
             orderId = orderId,
-            downloadAt = Instant.now()
+            downloadAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
