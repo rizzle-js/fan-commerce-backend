@@ -39,7 +39,7 @@ class OrderController {
                         )
                     ),
                     paymentAmount = 20000,
-                    orderAt = Instant.now()
+                    orderAt = Instant.ofEpochSecond(1686641320L)
                 )
                 // ... More orders
             )
@@ -66,7 +66,7 @@ class OrderController {
             ),
             paymentMethod = PaymentMethod.CARD,
             paymentAmount = 20000,
-            orderAt = Instant.now(),
+            orderAt = Instant.ofEpochSecond(1686641320L),
             shippingInfo = ShippingInfo(
                 address = "서울시 중구",
                 postalCode = "100-000"
