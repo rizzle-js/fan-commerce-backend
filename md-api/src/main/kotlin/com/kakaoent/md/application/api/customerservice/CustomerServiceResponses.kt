@@ -44,7 +44,8 @@ data class Inquiry(
 
 enum class InquiryStatus {
     PENDING,
-    ANSWERED
+    ANSWERED,
+    CLOSED
 }
 
 data class InquiryResponse(
@@ -60,4 +61,10 @@ data class InquiryResultResponse(
     val status: InquiryStatus,
     val answerContent: String,
     val answerAt: Instant
+)
+
+data class CloseInquiryResponse(
+    val inquiryId: String,
+    val status: InquiryStatus,
+    val closeAt: Instant
 )

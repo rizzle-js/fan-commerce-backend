@@ -1,6 +1,7 @@
 package com.kakaoent.md.application.api.customerservice
 
 import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.CLOSE_INQUIRY
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_CATEGORIES
@@ -10,8 +11,7 @@ import com.kakaoent.md.application.api.customerservice.CustomerServiceController
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [CustomerServiceController::class])
@@ -123,6 +123,22 @@ class CustomerServiceApiSpec : ApiSpec() {
                     "status" type STRING means "문의 상태"
                     "answerContent" type STRING means "답변 내용"
                     "answerAt" type NUMBER means "답변 시각"
+                }
+            )
+        }
+
+        test("1:1 문의를 종료하다") {
+            mockMvc.perform(
+                put(CLOSE_INQUIRY, INQUIRY_ID).contentType(APPLICATION_JSON)
+            ).andDocument(
+                "CustomerServiceApiSpec 1:1 문의 종료",
+                pathVariables {
+                    "inquiryId" means "문의 ID"
+                },
+                responseBody {
+                    "inquiryId" type STRING means "문의 ID"
+                    "status" type STRING means "문의 상태"
+                    "closeAt" type NUMBER means "문의 종료 시각"
                 }
             )
         }

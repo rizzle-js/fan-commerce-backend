@@ -113,6 +113,19 @@ class CustomerServiceController {
         )
     }
 
+    @PutMapping(CLOSE_INQUIRY)
+    fun closeInquiry(
+        @PathVariable inquiryId: String,
+    ): CloseInquiryResponse {
+        // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
+        return CloseInquiryResponse(
+            inquiryId = inquiryId,
+            status = InquiryStatus.CLOSED,
+            closeAt = Instant.ofEpochSecond(1686641320L),
+        )
+    }
+
+
     companion object {
         const val GET_FAQ_CATEGORIES = "/faq-categories"
         const val GET_FAQ = "/faq-categories/{categoryId}/faqs"
@@ -120,5 +133,6 @@ class CustomerServiceController {
         const val GET_INQUIRY_LIST = "/inquiries"
         const val SUBMIT_INQUIRY = "/inquiries"
         const val GET_INQUIRY_RESULT = "/inquiries/{inquiryId}"
+        const val CLOSE_INQUIRY = "/inquiries/{inquiryId}"
     }
 }
