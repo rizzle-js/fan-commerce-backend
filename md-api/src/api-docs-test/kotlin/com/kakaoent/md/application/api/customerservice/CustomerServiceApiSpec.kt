@@ -5,11 +5,13 @@ import com.kakaoent.md.application.api.customerservice.CustomerServiceController
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_CATEGORIES
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_LIST
+import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_RESULT
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.SUBMIT_INQUIRY
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [CustomerServiceController::class])
@@ -104,6 +106,23 @@ class CustomerServiceApiSpec : ApiSpec() {
                     "category" type STRING means "카테고리"
                     "content" type STRING means "문의 내용"
                     "inquiryAt" type NUMBER means "문의 시각"
+                }
+            )
+        }
+
+        test("1:1 문의 결과를 조회하다") {
+            mockMvc.perform(
+                get(GET_INQUIRY_RESULT, INQUIRY_ID).contentType(APPLICATION_JSON)
+            ).andDocument(
+                "CustomerServiceApiSpec 1:1 문의 결과 조회",
+                pathVariables {
+                    "inquiryId" means "문의 ID"
+                },
+                responseBody {
+                    "inquiryId" type STRING means "문의 ID"
+                    "status" type STRING means "문의 상태"
+                    "answerContent" type STRING means "답변 내용"
+                    "answerAt" type NUMBER means "답변 시각"
                 }
             )
         }

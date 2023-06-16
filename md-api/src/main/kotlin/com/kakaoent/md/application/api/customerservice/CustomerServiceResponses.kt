@@ -54,3 +54,10 @@ data class InquiryResponse(
     val content: String,
     val inquiryAt: Instant
 )
+
+data class InquiryResultResponse(
+    val inquiryId: String,
+    val status: InquiryStatus,
+    val answerContent: String,
+    val answerAt: Instant
+)

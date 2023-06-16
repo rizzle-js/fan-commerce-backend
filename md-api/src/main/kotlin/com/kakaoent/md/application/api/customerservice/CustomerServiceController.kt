@@ -100,11 +100,25 @@ class CustomerServiceController {
         )
     }
 
+    @GetMapping(GET_INQUIRY_RESULT)
+    fun getInquiryResult(
+        @PathVariable inquiryId: String,
+    ): InquiryResultResponse {
+        // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
+        return InquiryResultResponse(
+            inquiryId = inquiryId,
+            status = InquiryStatus.ANSWERED,
+            answerContent = "해당 문제는 ~~~ 방법으로 해결 가능합니다.",
+            answerAt = Instant.ofEpochSecond(1686641320L),
+        )
+    }
+
     companion object {
         const val GET_FAQ_CATEGORIES = "/faq-categories"
         const val GET_FAQ = "/faq-categories/{categoryId}/faqs"
         const val GET_INQUIRY_CATEGORIES = "/inquiry-categories"
         const val GET_INQUIRY_LIST = "/inquiries"
         const val SUBMIT_INQUIRY = "/inquiries"
+        const val GET_INQUIRY_RESULT = "/inquiries/{inquiryId}"
     }
 }
