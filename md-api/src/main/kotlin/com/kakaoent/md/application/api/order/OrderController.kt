@@ -94,10 +94,23 @@ class OrderController {
         )
     }
 
+    @GetMapping(DOWNLOAD_RECEIPT)
+    fun downloadReceipt(
+        @PathVariable orderId: String,
+        @RequestParam memberKey: Long,
+    ): ReceiptDownloadResponse {
+        return ReceiptDownloadResponse(
+            memberKey = memberKey,
+            orderId = orderId,
+            downloadAt = Instant.now()
+        )
+    }
+
     companion object {
         const val PROCESS_CHECKOUT = "/orders"
         const val GET_PURCHASE_HISTORY = "/orders"
         const val CANCEL_ORDER = "/orders/{orderId}/cancellation"
         const val GET_PURCHASE_DETAIL = "/orders/{orderId}"
+        const val DOWNLOAD_RECEIPT = "/orders/{orderId}/receipt"
     }
 }

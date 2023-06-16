@@ -65,3 +65,9 @@ enum class PaymentMethod {
     BANK_TRANSFER,
     MOBILE
 }
+
+data class ReceiptDownloadResponse(
+    val memberKey: Long,
+    val orderId: String,
+    val downloadAt: Instant
+)

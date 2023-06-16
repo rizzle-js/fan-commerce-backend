@@ -2,6 +2,7 @@ package com.kakaoent.md.application.api.order
 
 import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.order.OrderController.Companion.CANCEL_ORDER
+import com.kakaoent.md.application.api.order.OrderController.Companion.DOWNLOAD_RECEIPT
 import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_DETAIL
 import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_HISTORY
 import com.kakaoent.md.application.api.order.OrderController.Companion.PROCESS_CHECKOUT
@@ -169,5 +170,25 @@ class OrderApiSpec : ApiSpec() {
             )
         }
 
+        test("상품 구매 영수증 다운로드") {
+            mockMvc.perform(
+                get(DOWNLOAD_RECEIPT, ORDER_UUID)
+                    .contentType(APPLICATION_JSON)
+                    .param("memberKey", "1")
+            ).andDocument(
+                "상품 구매 영수증 다운로드",
+                pathVariables {
+                    "orderId" means "주문 ID"
+                },
+                queryParams {
+                    "memberKey" means "회원 키"
+                },
+                responseBody {
+                    "memberKey" type NUMBER means "회원 키"
+                    "orderId" type STRING means "주문 ID"
+                    "downloadAt" type NUMBER means "다운로드 날짜"
+                }
+            )
+        }
     }
 }
