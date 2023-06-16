@@ -5,8 +5,8 @@ import java.time.Instant
 
 @RestController
 class OrderController {
-    @PostMapping(CHECKOUT)
-    fun checkout(
+    @PostMapping(PROCESS_CHECKOUT)
+    fun processCheckout(
         @RequestBody checkoutRequest: CheckoutRequest
     ): CheckoutResponse {
         return CheckoutResponse(
@@ -21,12 +21,13 @@ class OrderController {
     }
 
     @PostMapping(CANCEL_ORDER)
-    fun partialCancelOrder(
-        @RequestBody request: PartialCancelOrderRequest
-    ): PartialCancelOrderResponse {
-        return PartialCancelOrderResponse(
+    fun cancelOrder(
+        @PathVariable orderId: String,
+        @RequestBody request: CancelOrderRequest
+    ): CancelOrderResponse {
+        return CancelOrderResponse(
             memberKey = request.memberKey,
-            orderId = request.orderId,
+            orderId = orderId,
             cancelProducts = request.cancelProducts.map {
                 CancelProduct(
                     productId = it.productId,
@@ -40,7 +41,7 @@ class OrderController {
     }
 
     companion object {
-        const val CHECKOUT = "/checkout"
-        const val CANCEL_ORDER = "/orders/cancel"
+        const val PROCESS_CHECKOUT = "/orders"
+        const val CANCEL_ORDER = "/orders/{orderId}/cancellation"
     }
 }

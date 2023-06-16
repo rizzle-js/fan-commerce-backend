@@ -12,7 +12,7 @@ data class CheckoutResponse(
     val deliveryInfo: DeliveryInfo
 )
 
-data class PartialCancelOrderResponse(
+data class CancelOrderResponse(
     val memberKey: Long,
     val orderId: String,
     val cancelProducts: List<CancelProduct>,

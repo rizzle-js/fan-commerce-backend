@@ -1,11 +1,8 @@
 package com.kakaoent.md.application.api.order
 
-import com.kakaoent.md.application.api.ApiSpec
-import com.kakaoent.md.application.api.andDocument
+import com.kakaoent.md.application.api.*
 import com.kakaoent.md.application.api.order.OrderController.Companion.CANCEL_ORDER
-import com.kakaoent.md.application.api.order.OrderController.Companion.CHECKOUT
-import com.kakaoent.md.application.api.requestBody
-import com.kakaoent.md.application.api.responseBody
+import com.kakaoent.md.application.api.order.OrderController.Companion.PROCESS_CHECKOUT
 import com.kakaoent.md.config.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
@@ -35,7 +32,7 @@ class OrderApiSpec : ApiSpec() {
             )
 
             mockMvc.perform(
-                post(CHECKOUT).contentType(APPLICATION_JSON)
+                post(PROCESS_CHECKOUT).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(checkoutRequest))
             ).andDocument(
                 "상품 체크아웃",
@@ -73,13 +70,12 @@ class OrderApiSpec : ApiSpec() {
 
         test("주문 부분 취소 요청") {
             mockMvc.perform(
-                post(CANCEL_ORDER)
+                post(CANCEL_ORDER, ORDER_UUID)
                     .contentType(APPLICATION_JSON)
                     .content(
                         objectMapper.writeValueAsString(
-                            PartialCancelOrderRequest(
+                            CancelOrderRequest(
                                 memberKey = 1L,
-                                orderId = "order123",
                                 cancelProducts = listOf(
                                     CancelProduct(
                                         productId = "product123",
@@ -93,9 +89,11 @@ class OrderApiSpec : ApiSpec() {
                     )
             ).andDocument(
                 "주문 부분 취소 요청",
+                pathVariables {
+                    "orderId" means "주문 ID"
+                },
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
-                    "orderId" type STRING means "주문 ID"
                     "cancelProducts[]" type ARRAY means "취소 상품 목록"
                     "cancelProducts[].productId" type STRING means "상품 ID"
                     "cancelProducts[].productName" type STRING means "상품명"

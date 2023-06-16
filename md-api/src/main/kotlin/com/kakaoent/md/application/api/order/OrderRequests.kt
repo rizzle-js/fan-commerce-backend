@@ -20,9 +20,8 @@ data class DeliveryInfo(
     val deliveryAddress: String
 )
 
-data class PartialCancelOrderRequest(
+data class CancelOrderRequest(
     val memberKey: Long,
-    val orderId: String,
     val cancelProducts: List<CancelProduct>
 )
 
