@@ -28,7 +28,7 @@ class ProductApiSpec : ApiSpec() {
                 get(GET_PRODUCTS).contentType(APPLICATION_JSON)
                     .param("channelId", CHANNEL_UUID)
             ).andDocument(
-                "상품 목록 조회",
+                "ProductApiSpec 상품 목록 조회",
                 queryParams {
                     "channelId" means "채널. 채널 ID와 컨텐츠 ID 중 하나는 필수"
                 },
@@ -50,7 +50,7 @@ class ProductApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_PRODUCT_DETAIL, PRODUCT_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "상품 상세 조회",
+                "ProductApiSpec 상품 상세 조회",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -77,7 +77,7 @@ class ProductApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(CHECK_PRODUCT_AVAILABILITY, PRODUCT_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "상품 구매 가능 여부 확인",
+                "ProductApiSpec 상품 구매 가능 여부 확인",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -94,7 +94,7 @@ class ProductApiSpec : ApiSpec() {
                 get(CHECK_PRODUCT_CANCELLATION, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
-                "상품 구매 취소 가능 여부 확인",
+                "ProductApiSpec 상품 구매 취소 가능 여부 확인",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -114,7 +114,7 @@ class ProductApiSpec : ApiSpec() {
                 get(CHECK_PURCHASE_PERMISSION, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
-                "상품 구매를 위한 권한 확인",
+                "ProductApiSpec 상품 구매를 위한 권한 확인",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -141,7 +141,7 @@ class ProductApiSpec : ApiSpec() {
                 post(PURCHASE_PRODUCT, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "상품 구매",
+                "ProductApiSpec 상품 구매",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -174,7 +174,7 @@ class ProductApiSpec : ApiSpec() {
                 post(CANCEL_PRODUCT, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "상품 구매 취소",
+                "ProductApiSpec 상품 구매 취소",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -201,7 +201,7 @@ class ProductApiSpec : ApiSpec() {
                     .param("page", "0")
                     .param("size", "10")
             ).andDocument(
-                "상품 평가 목록 조회",
+                "ProductApiSpec 상품 평가 목록 조회",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -232,7 +232,7 @@ class ProductApiSpec : ApiSpec() {
                 post(RATE_PRODUCT, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "상품 평가",
+                "ProductApiSpec 상품 평가",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -254,7 +254,7 @@ class ProductApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_PRODUCT_RATE_DETAIL, PRODUCT_UUID, RATE_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "상품 평가 조회",
+                "ProductApiSpec 상품 평가 조회",
                 pathVariables {
                     "productId" means "상품 ID"
                     "rateId" means "평가 ID"

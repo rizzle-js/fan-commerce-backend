@@ -36,7 +36,7 @@ class OrderApiSpec : ApiSpec() {
                 post(PROCESS_CHECKOUT).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(checkoutRequest))
             ).andDocument(
-                "상품 체크아웃",
+                "OrderApiSpec 상품 체크아웃",
                 requestBody {
                     "memberKey" type NUMBER means "회원 키"
                     "orderProducts[]" type ARRAY means "주문 상품 목록"
@@ -75,7 +75,7 @@ class OrderApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON)
                     .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
-                "상품 구매내역 조회",
+                "OrderApiSpec 상품 구매내역 조회",
                 queryParams {
                     "memberKey" means "회원 키"
                 },
@@ -114,7 +114,7 @@ class OrderApiSpec : ApiSpec() {
                         )
                     )
             ).andDocument(
-                "주문 부분 취소 요청",
+                "OrderApiSpec 주문 부분 취소 요청",
                 pathVariables {
                     "orderId" means "주문 ID"
                 },

@@ -21,7 +21,7 @@ class CartApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
             ).andDocument(
-                "장바구니 조회",
+                "CartApiSpec 장바구니 조회",
                 pathVariables {
                     "memberKey" means "회원 키"
                 },
@@ -48,7 +48,7 @@ class CartApiSpec : ApiSpec() {
                 post(ADD_PRODUCT_TO_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "장바구니 담기",
+                "CartApiSpec 장바구니 담기",
                 pathVariables {
                     "memberKey" means "회원 키"
                 },
@@ -77,7 +77,7 @@ class CartApiSpec : ApiSpec() {
                 put(UPDATE_PRODUCT_QUANTITY_IN_CART, MEMBER_KEY, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "장바구니 상품 수량 수정",
+                "CartApiSpec 장바구니 상품 수량 수정",
                 pathVariables {
                     "memberKey" means "회원 키"
                     "productId" means "상품 ID"
@@ -100,7 +100,7 @@ class CartApiSpec : ApiSpec() {
             mockMvc.perform(
                 delete(REMOVE_PRODUCT_FROM_CART, MEMBER_KEY, PRODUCT_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "장바구니 상품 제거",
+                "CartApiSpec 장바구니 상품 제거",
                 pathVariables {
                     "memberKey" means "회원 키"
                     "productId" means "상품 ID"
@@ -119,7 +119,7 @@ class CartApiSpec : ApiSpec() {
             mockMvc.perform(
                 delete(CLEAN_CART, MEMBER_KEY).contentType(APPLICATION_JSON)
             ).andDocument(
-                "장바구니 비우기",
+                "CartApiSpec 장바구니 비우기",
                 pathVariables {
                     "memberKey" means "사용자 ID"
                 },
