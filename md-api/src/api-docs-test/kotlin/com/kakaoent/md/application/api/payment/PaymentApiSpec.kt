@@ -16,7 +16,7 @@ class PaymentApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON)
                     .param("memberKey", MEMBER_KEY.toString())
             ).andDocument(
-                "결제 수단 조회",
+                "PaymentApiSpec 결제 수단 조회",
                 queryParams {
                     "memberKey" means "회원 키"
                 },
