@@ -176,7 +176,7 @@ class OrderApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON)
                     .param("memberKey", "1")
             ).andDocument(
-                "상품 구매 영수증 다운로드",
+                "OrderApiSpec 상품 구매 영수증 다운로드",
                 pathVariables {
                     "orderId" means "주문 ID"
                 },
