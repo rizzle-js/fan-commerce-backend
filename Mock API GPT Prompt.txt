@@ -14,8 +14,8 @@
 5. ApiSpec 생성: ApiSpec 클래스를 생성한다.
 
 [제약 사항]
-- 사용자ID는 memberKey로 Long 형식이다.
-- 날짜와 같은 시간은 At을 suffix로 사용하고, Instant 형식이다.
+- 사용자ID는 memberKey로 Long 형식이고, ApiSpec에는 NUMBER를 사용해. (예: "memberKey" type NUMBER means "회원 키")
+- 날짜와 같은 시간은 At을 suffix로 사용하고, Instant 형식이고, ApiSpec에는 NUMBER를 사용해. (예: "loginAt" type NUMBER means "로그인 시각")
 - ApiSpec 코드는 custom 함수를 사용 해 형태를 유지한다.
 
 [응답 양식]
