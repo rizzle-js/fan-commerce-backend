@@ -17,3 +17,12 @@ data class FAQ(
     val question: String,
     val answer: String
 )
+
+data class InquiryCategoriesResponse(
+    val categories: List<InquiryCategory>,
+)
+
+data class InquiryCategory(
+    val categoryId: Long,
+    val categoryName: String
+)

@@ -43,8 +43,25 @@ class CustomerServiceController {
         )
     }
 
+    @GetMapping(GET_INQUIRY_CATEGORIES)
+    fun getInquiryCategories(): InquiryCategoriesResponse {
+        return InquiryCategoriesResponse(
+            categories = listOf(
+                InquiryCategory(
+                    categoryId = 1,
+                    categoryName = "결제 관련"
+                ),
+                InquiryCategory(
+                    categoryId = 2,
+                    categoryName = "서비스 이용 관련"
+                )
+            ),
+        )
+    }
+
     companion object {
         const val GET_FAQ_CATEGORIES = "/faq/categories"
         const val GET_FAQ = "/faq/categories/{categoryId}"
+        const val GET_INQUIRY_CATEGORIES = "/inquiry/categories"
     }
 }
