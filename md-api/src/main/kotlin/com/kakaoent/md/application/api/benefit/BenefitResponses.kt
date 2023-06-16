@@ -19,3 +19,12 @@ data class ValidPeriod(
     val startAt: Instant,
     val endAt: Instant
 )
+
+data class BenefitApplyResponse(
+    val memberKey: Long,
+    val productId: String,
+    val productName: String,
+    val benefitId: String,
+    val benefitName: String,
+    val appliedAt: Instant
+)
