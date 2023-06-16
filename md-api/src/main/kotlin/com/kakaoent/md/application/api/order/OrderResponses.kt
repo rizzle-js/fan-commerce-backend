@@ -18,3 +18,22 @@ data class CancelOrderResponse(
     val cancelProducts: List<CancelProduct>,
     val cancelRequestedAt: Instant
 )
+
+data class PurchaseHistoryResponse(
+    val memberKey: Long,
+    val orders: List<OrderResponse>
+)
+
+data class OrderResponse(
+    val orderId: String,
+    val purchasedProducts: List<PurchasedProductResponse>,
+    val paymentAmount: Int,
+    val orderAt: Instant
+)
+
+data class PurchasedProductResponse(
+    val productId: String,
+    val productName: String,
+    val price: Int,
+    val quantity: Int
+)

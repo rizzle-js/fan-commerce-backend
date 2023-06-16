@@ -20,6 +20,32 @@ class OrderController {
         )
     }
 
+    @GetMapping(GET_PURCHASE_HISTORY)
+    fun getPurchaseHistory(
+        @RequestParam memberKey: Long
+    ): PurchaseHistoryResponse {
+        // Logic to call the service and handle exceptions
+        return PurchaseHistoryResponse(
+            memberKey = memberKey,
+            orders = listOf(
+                OrderResponse(
+                    orderId = "order123",
+                    purchasedProducts = listOf(
+                        PurchasedProductResponse(
+                            productId = "product123",
+                            productName = "상품1",
+                            price = 10000,
+                            quantity = 2
+                        )
+                    ),
+                    paymentAmount = 20000,
+                    orderAt = Instant.now()
+                )
+                // ... More orders
+            )
+        )
+    }
+
     @PostMapping(CANCEL_ORDER)
     fun cancelOrder(
         @PathVariable orderId: String,
@@ -42,6 +68,7 @@ class OrderController {
 
     companion object {
         const val PROCESS_CHECKOUT = "/orders"
+        const val GET_PURCHASE_HISTORY = "/orders"
         const val CANCEL_ORDER = "/orders/{orderId}/cancellation"
     }
 }
