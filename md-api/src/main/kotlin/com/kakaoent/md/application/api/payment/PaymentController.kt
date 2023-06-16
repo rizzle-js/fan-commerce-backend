@@ -26,6 +26,6 @@ class PaymentController {
     }
 
     companion object {
-        const val GET_PAYMENT_METHODS = "/payment-methods"
+        const val GET_PAYMENT_METHODS = "/payment/methods"
     }
 }
