@@ -1,6 +1,7 @@
 package com.kakaoent.md.admin.application.api.channel
 
 import com.kakaoent.md.admin.application.api.ApiSpec
+import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL_GROUP
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL_GROUP
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.UPDATE_CHANNEL_GROUP
@@ -74,6 +75,29 @@ class ChannelApiSpec : ApiSpec() {
                     "groupId" type STRING means "그룹 ID"
                     "groupName" type STRING means "그룹명"
                     "updatedAt" type NUMBER means "수정 날짜"
+                }
+            )
+        }
+
+        test("채널 그룹을 삭제하다") {
+            mockMvc.perform(
+                delete(DELETE_CHANNEL_GROUP).contentType(APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            DeleteChannelGroupRequest(
+                                groupId = CHNNEL_GROUP_UUID
+                            )
+                        )
+                    )
+            ).andDocument(
+                "ChannelApiSpec 채널 그룹 삭제",
+                requestBody {
+                    "groupId" type STRING means "그룹 ID"
+                },
+                responseBody {
+                    "groupId" type STRING means "그룹 ID"
+                    "groupName" type STRING means "그룹명"
+                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }

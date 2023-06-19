@@ -23,3 +23,10 @@ data class UpdateChannelGroupResponse(
     val groupName: String,
     val updatedAt: Instant
 )
+
+data class DeleteChannelGroupResponse(
+    val groupId: String,
+    val groupName: String,
+    val deletedAt: Instant
+)
+

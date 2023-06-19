@@ -32,7 +32,7 @@ class ChannelController {
         return RegisterChannelGroupResponse(
             groupId = "4AaVUXYXBX8ohD3S7eNtxr", // 실제로는 생성된 그룹 ID를 반환해야 합니다.
             groupName = registerChannelGroupRequest.groupName,
-            groupCreatedAt = Instant.now()
+            groupCreatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -44,13 +44,28 @@ class ChannelController {
         return UpdateChannelGroupResponse(
             groupId = updateChannelGroupRequest.groupId,
             groupName = updateChannelGroupRequest.groupName,
-            updatedAt = Instant.now()
+            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
+
+
+    @DeleteMapping(DELETE_CHANNEL_GROUP)
+    fun deleteChannelGroup(
+        @RequestBody deleteChannelGroupRequest: DeleteChannelGroupRequest
+    ): DeleteChannelGroupResponse {
+        // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
+        return DeleteChannelGroupResponse(
+            groupId = deleteChannelGroupRequest.groupId,
+            groupName = "삭제된 그룹명",  // 실제로는 삭제 전 그룹명을 반환해야 합니다.
+            deletedAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
 
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"
         const val REGISTER_CHANNEL_GROUP = "/channel-group"
         const val UPDATE_CHANNEL_GROUP = "/channel-group"
+        const val DELETE_CHANNEL_GROUP = "/channel-group"
     }
 }
