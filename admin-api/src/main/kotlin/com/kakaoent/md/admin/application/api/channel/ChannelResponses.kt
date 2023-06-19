@@ -18,3 +18,8 @@ data class RegisterChannelGroupResponse(
     val groupCreatedAt: Instant
 )
 
+data class UpdateChannelGroupResponse(
+    val groupId: String,
+    val groupName: String,
+    val updatedAt: Instant
+)
