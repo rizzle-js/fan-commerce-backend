@@ -13,3 +13,9 @@ data class RegisterChannelRequest(
     val type: ChannelType,
     val status: ChannelStatus
 )
+
+data class UpdateChannelRequest(
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus
+)

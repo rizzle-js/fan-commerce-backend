@@ -69,3 +69,11 @@ data class RegisterChannelResponse(
     val status: ChannelStatus,
     val createdAt: Instant
 )
+
+data class UpdateChannelResponse(
+    val channelId: String,
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus,
+    val updatedAt: Instant
+)

@@ -111,6 +111,20 @@ class ChannelController {
         )
     }
 
+    @PutMapping(UPDATE_CHANNEL)
+    fun updateChannel(
+        @PathVariable channelId: String,
+        @RequestBody request: UpdateChannelRequest
+    ): UpdateChannelResponse {
+        return UpdateChannelResponse(
+            channelId = channelId,
+            name = request.name,
+            type = request.type,
+            status = request.status,
+            updatedAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"
         const val REGISTER_CHANNEL_GROUP = "/channel-groups"
