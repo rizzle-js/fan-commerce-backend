@@ -10,6 +10,6 @@ object UuidGenerator {
 
 fun main() {
     repeat(100) {
-        println(UuidGenerator.gen().timestamp())
+        println(UuidGenerator.generate())
     }
 }

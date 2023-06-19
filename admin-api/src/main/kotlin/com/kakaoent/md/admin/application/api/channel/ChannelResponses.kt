@@ -7,7 +7,14 @@ data class ChannelGroupListResponse(
 )
 
 data class ChannelGroup(
-    val groupId: Long,
+    val groupId: String,
     val groupName: String,
     val groupCreatedAt: Instant
 )
+
+data class RegisterChannelGroupResponse(
+    val groupId: String,
+    val groupName: String,
+    val groupCreatedAt: Instant
+)
+
