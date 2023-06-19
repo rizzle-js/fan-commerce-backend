@@ -2,6 +2,7 @@ rootProject.name = "melon-fan-md"
 include("common")
 include("context")
 include("md-api")
+include("admin-api")
 include("external-service")
 
 pluginManagement {

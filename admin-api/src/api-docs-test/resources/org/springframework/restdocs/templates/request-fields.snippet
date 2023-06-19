@@ -1,0 +1,5 @@
+| Path | Type | Format | Optional | Description |
+| :--- | :--: | :----: | :------: | :---------- |
+{{#fields}}
+| `{{path}}` | `{{type}}` | {{#format}}{{.}}{{/format}} | {{^optional}}true{{/optional}} | {{description}} |
+{{/fields}}
