@@ -37,3 +37,27 @@ data class ChannelGroupDetailResponse(
     val createdDate: Instant,
     val updatedDate: Instant
 )
+
+data class ChannelsResponse(
+    val channels: List<Channel>
+)
+
+data class Channel(
+    val channelId: String,
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus,
+    val createdAt: Instant
+)
+
+enum class ChannelType {
+    ARTIST,
+    CONTENT,
+    EVENT,
+    ETC
+}
+
+enum class ChannelStatus {
+    ACTIVE,
+    INACTIVE
+}

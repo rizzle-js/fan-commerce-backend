@@ -76,11 +76,39 @@ class ChannelController {
         )
     }
 
+    @GetMapping(GET_CHANNELS)
+    fun getChannels(): ChannelsResponse {
+        return ChannelsResponse(
+            listOf(
+                Channel(
+                    channelId = "3O4cbCd34nAYNYCx3uRns3",
+                    name = "박효신",
+                    type = ChannelType.ARTIST,
+                    status = ChannelStatus.ACTIVE,
+                    createdAt = Instant.ofEpochSecond(1686641320L)
+                ),
+                Channel(
+                    channelId = "1hWgrL5AvH8xMbIXAC7xIU",
+                    name = "베토벤",
+                    type = ChannelType.CONTENT,
+                    status = ChannelStatus.INACTIVE,
+                    createdAt = Instant.ofEpochSecond(1686641320L)
+                )
+            )
+        )
+    }
+
+
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"
         const val REGISTER_CHANNEL_GROUP = "/channel-groups"
         const val UPDATE_CHANNEL_GROUP = "/channel-groups/{groupId}"
         const val DELETE_CHANNEL_GROUP = "/channel-groups/{groupId}"
         const val GET_CHANNEL_GROUP_DETAIL = "/channel-groups/{groupId}"
+        const val GET_CHANNELS = "/channels"
+        const val REGISTER_CHANNEL = "/channels"
+        const val UPDATE_CHANNEL = "/channels/{channelId}"
+        const val DELETE_CHANNEL = "/channels/{channelId}"
+        const val GET_CHANNEL_DETAIL = "/channels/{channelId}"
     }
 }

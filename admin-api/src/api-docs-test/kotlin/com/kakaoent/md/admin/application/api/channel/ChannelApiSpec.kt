@@ -2,6 +2,7 @@ package com.kakaoent.md.admin.application.api.channel
 
 import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL_GROUP
+import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNELS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUP_DETAIL
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL_GROUP
@@ -112,6 +113,22 @@ class ChannelApiSpec : ApiSpec() {
                     "groupDescription" type STRING means "그룹 설명"
                     "createdDate" type NUMBER means "그룹 생성 날짜"
                     "updatedDate" type NUMBER means "그룹 수정 날짜"
+                }
+            )
+        }
+
+        test("채널 목록을 조회하다") {
+            mockMvc.perform(
+                get(GET_CHANNELS).contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ChannelApiSpec 채널 목록 조회",
+                responseBody {
+                    "channels[]" type ARRAY means "채널 목록"
+                    "channels[].channelId" type STRING means "채널 ID"
+                    "channels[].name" type STRING means "채널명"
+                    "channels[].type" type STRING means "채널 타입"
+                    "channels[].status" type STRING means "채널 상태"
+                    "channels[].createdAt" type NUMBER means "생성 날짜"
                 }
             )
         }
