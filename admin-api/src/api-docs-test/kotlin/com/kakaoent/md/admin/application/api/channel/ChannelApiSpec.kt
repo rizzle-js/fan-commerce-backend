@@ -1,9 +1,9 @@
 package com.kakaoent.md.admin.application.api.channel
 
+import com.kakaoent.md.docs.andDocument
+import com.kakaoent.md.docs.responseBody
 import com.kakaoent.md.admin.application.api.ApiSpec
-import com.kakaoent.md.admin.application.api.andDocument
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
-import com.kakaoent.md.admin.application.api.responseBody
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get

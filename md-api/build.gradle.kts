@@ -25,6 +25,7 @@ val apiDocsTestImplementation: Configuration by configurations.getting {
 dependencies {
     implementation(project(":common"))
     implementation(project(":context"))
+    implementation(project(":internal-config"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(module = "spring-boot-starter-tomcat")
     }
@@ -32,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     //api docs
+    apiDocsTestImplementation(testFixtures(project(":internal-config")))
     apiDocsTestImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
 

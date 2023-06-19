@@ -1,13 +1,18 @@
 package com.kakaoent.md.application.api.cart
 
-import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.ApiSpec
+import com.kakaoent.md.application.api.MEMBER_KEY
 import com.kakaoent.md.application.api.cart.CartController.Companion.ADD_PRODUCT_TO_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.CLEAN_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.GET_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.REMOVE_PRODUCT_FROM_CART
 import com.kakaoent.md.application.api.cart.CartController.Companion.UPDATE_PRODUCT_QUANTITY_IN_CART
 import com.kakaoent.md.application.api.product.PRODUCT_UUID
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.andDocument
+import com.kakaoent.md.docs.pathVariables
+import com.kakaoent.md.docs.requestBody
+import com.kakaoent.md.docs.responseBody
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*

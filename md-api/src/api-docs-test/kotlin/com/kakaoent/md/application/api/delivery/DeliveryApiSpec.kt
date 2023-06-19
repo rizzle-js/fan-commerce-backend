@@ -1,10 +1,14 @@
 package com.kakaoent.md.application.api.delivery
 
-import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.ApiSpec
+import com.kakaoent.md.application.api.MEMBER_KEY
 import com.kakaoent.md.application.api.delivery.DeliveryController.Companion.PICKUP
 import com.kakaoent.md.application.api.order.ORDER_UUID
 import com.kakaoent.md.application.api.product.PRODUCT_UUID
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.docs.andDocument
+import com.kakaoent.md.docs.requestBody
+import com.kakaoent.md.docs.responseBody
+import com.kakaoent.md.config.serde.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post

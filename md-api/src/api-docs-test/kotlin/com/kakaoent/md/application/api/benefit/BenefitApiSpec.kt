@@ -1,10 +1,15 @@
 package com.kakaoent.md.application.api.benefit
 
-import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.ApiSpec
+import com.kakaoent.md.application.api.MEMBER_KEY
 import com.kakaoent.md.application.api.benefit.BenefitController.Companion.APPLY_BENEFIT
 import com.kakaoent.md.application.api.benefit.BenefitController.Companion.GET_BENEFIT
 import com.kakaoent.md.application.api.product.PRODUCT_UUID
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.andDocument
+import com.kakaoent.md.docs.pathVariables
+import com.kakaoent.md.docs.requestBody
+import com.kakaoent.md.docs.responseBody
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get

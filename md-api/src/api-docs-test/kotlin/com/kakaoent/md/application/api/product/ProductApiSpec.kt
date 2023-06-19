@@ -1,6 +1,7 @@
 package com.kakaoent.md.application.api.product
 
-import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.ApiSpec
+import com.kakaoent.md.application.api.MEMBER_KEY
 import com.kakaoent.md.application.api.product.ProductController.Companion.CANCEL_PRODUCT
 import com.kakaoent.md.application.api.product.ProductController.Companion.CHECK_PRODUCT_AVAILABILITY
 import com.kakaoent.md.application.api.product.ProductController.Companion.CHECK_PRODUCT_CANCELLATION
@@ -11,7 +12,8 @@ import com.kakaoent.md.application.api.product.ProductController.Companion.GET_P
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_RATE_DETAIL
 import com.kakaoent.md.application.api.product.ProductController.Companion.PURCHASE_PRODUCT
 import com.kakaoent.md.application.api.product.ProductController.Companion.RATE_PRODUCT
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get

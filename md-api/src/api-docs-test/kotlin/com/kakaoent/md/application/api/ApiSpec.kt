@@ -1,6 +1,6 @@
 package com.kakaoent.md.application.api
 
-import com.kakaoent.md.config.JsonConfig
+import com.kakaoent.md.config.serde.JsonConfig
 import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Import
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentationConfigurer
 import org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris
 import org.springframework.restdocs.templates.TemplateFormats.markdown
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 
 

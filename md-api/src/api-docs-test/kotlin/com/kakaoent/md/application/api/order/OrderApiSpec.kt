@@ -6,7 +6,8 @@ import com.kakaoent.md.application.api.order.OrderController.Companion.DOWNLOAD_
 import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_DETAIL
 import com.kakaoent.md.application.api.order.OrderController.Companion.GET_PURCHASE_HISTORY
 import com.kakaoent.md.application.api.order.OrderController.Companion.PROCESS_CHECKOUT
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.docs.*
+import com.kakaoent.md.config.serde.objectMapper
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
