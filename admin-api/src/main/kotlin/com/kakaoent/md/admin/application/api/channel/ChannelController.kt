@@ -107,7 +107,7 @@ class ChannelController {
             name = request.name,
             type = request.type,
             status = request.status,
-            createdAt = Instant.now()
+            createdAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -121,7 +121,18 @@ class ChannelController {
             name = request.name,
             type = request.type,
             status = request.status,
-            updatedAt = Instant.now()
+            updatedAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
+
+    @DeleteMapping(DELETE_CHANNEL)
+    fun deleteChannel(
+        @PathVariable channelId: String,
+    ): DeleteChannelResponse {
+        return DeleteChannelResponse(
+            channelId = channelId,
+            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 

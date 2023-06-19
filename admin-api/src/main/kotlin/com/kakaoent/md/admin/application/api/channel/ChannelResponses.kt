@@ -77,3 +77,8 @@ data class UpdateChannelResponse(
     val status: ChannelStatus,
     val updatedAt: Instant
 )
+
+data class DeleteChannelResponse(
+    val channelId: String,
+    val deletedAt: Instant
+)
