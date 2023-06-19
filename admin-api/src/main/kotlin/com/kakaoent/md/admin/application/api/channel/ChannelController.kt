@@ -38,11 +38,12 @@ class ChannelController {
 
     @PutMapping(UPDATE_CHANNEL_GROUP)
     fun updateChannelGroup(
+        @PathVariable groupId: String,
         @RequestBody updateChannelGroupRequest: UpdateChannelGroupRequest
     ): UpdateChannelGroupResponse {
         // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
         return UpdateChannelGroupResponse(
-            groupId = updateChannelGroupRequest.groupId,
+            groupId = groupId,
             groupName = updateChannelGroupRequest.groupName,
             updatedAt = Instant.ofEpochSecond(1686641320L)
         )
@@ -51,21 +52,35 @@ class ChannelController {
 
     @DeleteMapping(DELETE_CHANNEL_GROUP)
     fun deleteChannelGroup(
-        @RequestBody deleteChannelGroupRequest: DeleteChannelGroupRequest
+        @PathVariable groupId: String,
     ): DeleteChannelGroupResponse {
         // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
         return DeleteChannelGroupResponse(
-            groupId = deleteChannelGroupRequest.groupId,
+            groupId = groupId,
             groupName = "삭제된 그룹명",  // 실제로는 삭제 전 그룹명을 반환해야 합니다.
             deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
+    @GetMapping(GET_CHANNEL_GROUP_DETAIL)
+    fun getChannelGroupDetail(
+        @PathVariable groupId: String,
+    ): ChannelGroupDetailResponse {
+        // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.
+        return ChannelGroupDetailResponse(
+            groupId = groupId,
+            groupName = "그룹 이름",
+            groupDescription = "그룹 설명",
+            createdDate = Instant.ofEpochSecond(1686641320L),
+            updatedDate = Instant.ofEpochSecond(1686641320L)
+        )
+    }
 
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"
-        const val REGISTER_CHANNEL_GROUP = "/channel-group"
-        const val UPDATE_CHANNEL_GROUP = "/channel-group"
-        const val DELETE_CHANNEL_GROUP = "/channel-group"
+        const val REGISTER_CHANNEL_GROUP = "/channel-groups"
+        const val UPDATE_CHANNEL_GROUP = "/channel-groups/{groupId}"
+        const val DELETE_CHANNEL_GROUP = "/channel-groups/{groupId}"
+        const val GET_CHANNEL_GROUP_DETAIL = "/channel-groups/{groupId}"
     }
 }

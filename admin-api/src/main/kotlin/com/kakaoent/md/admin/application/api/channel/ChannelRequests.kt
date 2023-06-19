@@ -5,10 +5,5 @@ data class RegisterChannelGroupRequest(
 )
 
 data class UpdateChannelGroupRequest(
-    val groupId: String,
     val groupName: String
-)
-
-data class DeleteChannelGroupRequest(
-    val groupId: String
 )

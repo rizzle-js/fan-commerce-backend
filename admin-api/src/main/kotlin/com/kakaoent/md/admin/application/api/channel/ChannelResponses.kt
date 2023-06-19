@@ -30,3 +30,10 @@ data class DeleteChannelGroupResponse(
     val deletedAt: Instant
 )
 
+data class ChannelGroupDetailResponse(
+    val groupId: String,
+    val groupName: String,
+    val groupDescription: String,
+    val createdDate: Instant,
+    val updatedDate: Instant
+)

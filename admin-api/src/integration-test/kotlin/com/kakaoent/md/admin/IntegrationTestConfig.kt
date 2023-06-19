@@ -1,7 +1,7 @@
 package com.kakaoent.md.admin
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
 import io.kotest.core.config.AbstractProjectConfig
 import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.IsolationMode
