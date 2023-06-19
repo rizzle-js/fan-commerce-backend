@@ -82,3 +82,12 @@ data class DeleteChannelResponse(
     val channelId: String,
     val deletedAt: Instant
 )
+
+data class GetChannelDetailResponse(
+    val channelId: String,
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus,
+    val createdAt: Instant,
+    val updatedAt: Instant
+)

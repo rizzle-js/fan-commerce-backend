@@ -4,6 +4,7 @@ import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL_GROUP
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNELS
+import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_DETAIL
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUP_DETAIL
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL
@@ -208,6 +209,25 @@ class ChannelApiSpec : ApiSpec() {
                 responseBody {
                     "channelId" type STRING means "채널 ID"
                     "deletedAt" type NUMBER means "삭제 날짜"
+                }
+            )
+        }
+
+        test("채널을 상세 조회하다") {
+            mockMvc.perform(
+                get(GET_CHANNEL_DETAIL, CHNNEL_UUID).contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ChannelApiSpec 채널 상세 조회",
+                pathVariables {
+                    "channelId" means "채널 ID"
+                },
+                responseBody {
+                    "channelId" type STRING means "채널 ID"
+                    "name" type STRING means "채널명"
+                    "type" type STRING means "채널 타입"
+                    "status" type STRING means "채널 상태"
+                    "createdAt" type NUMBER means "생성 날짜"
+                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }

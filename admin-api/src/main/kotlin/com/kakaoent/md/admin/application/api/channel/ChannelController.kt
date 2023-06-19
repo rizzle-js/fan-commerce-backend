@@ -136,6 +136,20 @@ class ChannelController {
         )
     }
 
+    @GetMapping(GET_CHANNEL_DETAIL)
+    fun getChannelDetail(
+        @PathVariable channelId: String,
+    ): GetChannelDetailResponse {
+        return GetChannelDetailResponse(
+            channelId = channelId,
+            name = "베토벤",
+            type = ChannelType.CONTENT,
+            status = ChannelStatus.ACTIVE,
+            createdAt = Instant.ofEpochSecond(1686641320L),
+            updatedAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"
         const val REGISTER_CHANNEL_GROUP = "/channel-groups"
