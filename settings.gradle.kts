@@ -25,3 +25,4 @@ pluginManagement {
         id("com.google.cloud.tools.jib") version "3.3.2"
     }
 }
+include("internal-config")

@@ -55,6 +55,7 @@ subprojects {
  */
 val springContexts: List<Project> = listOf(
     project(":context"),
+    project(":internal-config"),
     project(":external-service"),
     project(":md-api"),
     project(":admin-api"),

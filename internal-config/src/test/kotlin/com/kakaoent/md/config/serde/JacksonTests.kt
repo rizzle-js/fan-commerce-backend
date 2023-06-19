@@ -1,4 +1,4 @@
-package com.kakaoent.md.config
+package com.kakaoent.md.config.serde
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.kotest.core.spec.style.FunSpec

@@ -1,6 +1,6 @@
 package com.kakaoent.md.admin.application.api
 
-import com.kakaoent.md.config.JsonConfig
+import com.kakaoent.md.config.serde.JsonConfig
 import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension

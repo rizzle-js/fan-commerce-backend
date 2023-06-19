@@ -1,6 +1,7 @@
 package com.kakaoent.md.application.api.customerservice
 
-import com.kakaoent.md.application.api.*
+import com.kakaoent.md.application.api.ApiSpec
+import com.kakaoent.md.application.api.MEMBER_KEY
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.CLOSE_INQUIRY
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_FAQ_CATEGORIES
@@ -8,7 +9,8 @@ import com.kakaoent.md.application.api.customerservice.CustomerServiceController
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_LIST
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.GET_INQUIRY_RESULT
 import com.kakaoent.md.application.api.customerservice.CustomerServiceController.Companion.SUBMIT_INQUIRY
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*

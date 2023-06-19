@@ -5,7 +5,8 @@ import com.kakaoent.md.application.api.order.ORDER_UUID
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.CANCEL_PAYMENT
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.GET_PAYMENT_METHODS
 import com.kakaoent.md.application.api.payment.PaymentController.Companion.REQUEST_PAYMENT
-import com.kakaoent.md.config.objectMapper
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
