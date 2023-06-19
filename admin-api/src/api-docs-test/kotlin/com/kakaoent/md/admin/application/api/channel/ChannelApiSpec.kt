@@ -5,6 +5,7 @@ import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNELS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUP_DETAIL
+import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL_GROUP
 import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.UPDATE_CHANNEL_GROUP
 import com.kakaoent.md.config.serde.objectMapper
@@ -129,6 +130,35 @@ class ChannelApiSpec : ApiSpec() {
                     "channels[].type" type STRING means "채널 타입"
                     "channels[].status" type STRING means "채널 상태"
                     "channels[].createdAt" type NUMBER means "생성 날짜"
+                }
+            )
+        }
+
+        test("채널을 등록하다") {
+            mockMvc.perform(
+                post(REGISTER_CHANNEL).contentType(APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            RegisterChannelRequest(
+                                name = "베토벤",
+                                type = ChannelType.ARTIST,
+                                status = ChannelStatus.ACTIVE
+                            )
+                        )
+                    )
+            ).andDocument(
+                "ChannelApiSpec 채널 등록",
+                requestBody {
+                    "name" type STRING means "채널명"
+                    "type" type STRING means "채널 타입"
+                    "status" type STRING means "채널 상태"
+                },
+                responseBody {
+                    "channelId" type STRING means "채널 ID"
+                    "name" type STRING means "채널명"
+                    "type" type STRING means "채널 타입"
+                    "status" type STRING means "채널 상태"
+                    "createdAt" type NUMBER means "생성 날짜"
                 }
             )
         }

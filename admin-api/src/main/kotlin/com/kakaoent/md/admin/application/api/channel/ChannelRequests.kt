@@ -7,3 +7,9 @@ data class RegisterChannelGroupRequest(
 data class UpdateChannelGroupRequest(
     val groupName: String
 )
+
+data class RegisterChannelRequest(
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus
+)

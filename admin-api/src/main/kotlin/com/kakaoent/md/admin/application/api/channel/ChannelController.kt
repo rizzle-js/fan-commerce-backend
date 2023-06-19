@@ -98,6 +98,18 @@ class ChannelController {
         )
     }
 
+    @PostMapping(REGISTER_CHANNEL)
+    fun registerChannel(
+        @RequestBody request: RegisterChannelRequest
+    ): RegisterChannelResponse {
+        return RegisterChannelResponse(
+            channelId = "1hWgrL5AvH8xMbIXAC7xIU",
+            name = request.name,
+            type = request.type,
+            status = request.status,
+            createdAt = Instant.now()
+        )
+    }
 
     companion object {
         const val GET_CHANNEL_GROUPS = "/channel-groups"

@@ -61,3 +61,11 @@ enum class ChannelStatus {
     ACTIVE,
     INACTIVE
 }
+
+data class RegisterChannelResponse(
+    val channelId: String,
+    val name: String,
+    val type: ChannelType,
+    val status: ChannelStatus,
+    val createdAt: Instant
+)
