@@ -56,7 +56,8 @@ subprojects {
 val springContexts: List<Project> = listOf(
     project(":context"),
     project(":external-service"),
-    project(":md-api")
+    project(":md-api"),
+    project(":admin-api"),
 )
 
 configure(springContexts) {
@@ -92,7 +93,11 @@ configure(springContexts) {
             exclude(group = "org.mockito")
         }
         integrationTestImplementation(group = "io.mockk", name = "mockk", version = "1.13.5")
-        integrationTestImplementation(group = "io.kotest.extensions", name = "kotest-extensions-spring", version = "1.1.3")
+        integrationTestImplementation(
+            group = "io.kotest.extensions",
+            name = "kotest-extensions-spring",
+            version = "1.1.3"
+        )
         integrationTestImplementation(group = "com.ninja-squad", name = "springmockk", version = "4.0.2")
     }
 
