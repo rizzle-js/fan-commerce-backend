@@ -73,7 +73,7 @@ class ProductAdminController {
             price = request.price,
             quantity = request.quantity,
             status = request.status,
-            updatedAt = Instant.now()
+            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -83,22 +83,44 @@ class ProductAdminController {
     ): DeleteProductResponse {
         return DeleteProductResponse(
             productId = productId,
-            deletedAt = Instant.now()
+            deletedAt =  Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
+    @GetMapping(GET_PRODUCT_REVIEW_LIST)
+    fun getProductReviewList(
+        @PathVariable productId: String
+    ): ProductReviewListResponse {
+        // 상품의 평가 목록을 조회하는 로직은 이곳에 작성
+        // 여기서는 예시로 임의의 값을 리턴하도록 함
+        return ProductReviewListResponse(
+            reviews = listOf(
+                Review(
+                    reviewId = "5RltWTLOOtQebuc8zhE0p4",
+                    productId = productId,
+                    memberKey = 1L,
+                    content = "Good",
+                    score = 5,
+                    reviewAt =  Instant.ofEpochSecond(1686641320L)
+                )
+            )
         )
     }
 
     @GetMapping(GET_PRODUCT_REVIEW)
     fun getProductReview(
-        @PathVariable productId: Long
+        @PathVariable productId: String,
+        @PathVariable reviewId: String,
     ): ProductReviewResponse {
         // 상품의 평가를 조회하는 로직은 이곳에 작성
         // 여기서는 예시로 임의의 값을 리턴하도록 함
         return ProductReviewResponse(
+            reviewId = reviewId,
             productId = productId,
-            memberKey = 1L,
+            memberKey = 612374L,
             rating = 4.5,
             review = "This is a great product!",
-            reviewAt = Instant.now()
+            reviewAt =  Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -108,6 +130,7 @@ class ProductAdminController {
         const val REGISTER_PRODUCT = "/products"
         const val UPDATE_PRODUCT = "/products/{productId}"
         const val DELETE_PRODUCT = "/products/{productId}"
-        const val GET_PRODUCT_REVIEW = "/products/{productId}/review"
+        const val GET_PRODUCT_REVIEW_LIST = "/products/{productId}/reviews"
+        const val GET_PRODUCT_REVIEW = "/products/{productId}/reviews/{reviewId}"
     }
 }

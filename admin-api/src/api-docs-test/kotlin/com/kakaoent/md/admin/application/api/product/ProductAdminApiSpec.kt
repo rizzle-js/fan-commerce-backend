@@ -141,17 +141,18 @@ class ProductAdminApiSpec : ApiSpec() {
         }
 
         test("상품의 평가를 조회하다") {
-            val productId = 1L
             mockMvc.perform(
-                get(GET_PRODUCT_REVIEW, productId)
+                get(GET_PRODUCT_REVIEW, PRODUCT_UUID, REVIEW_UUID)
                     .contentType(APPLICATION_JSON)
             ).andDocument(
                 "ProductAdminApiSpec 상품의 평가 조회",
                 pathVariables {
                     "productId" means "상품 ID"
+                    "reviewId" means "평가 ID"
                 },
                 responseBody {
-                    "productId" type NUMBER means "상품 ID"
+                    "reviewId" type STRING means "평가 ID"
+                    "productId" type STRING means "상품 ID"
                     "memberKey" type NUMBER means "회원 키"
                     "rating" type NUMBER means "평점"
                     "review" type STRING means "평가 내용"
