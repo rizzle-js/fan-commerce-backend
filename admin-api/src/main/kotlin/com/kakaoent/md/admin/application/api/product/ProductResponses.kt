@@ -30,3 +30,13 @@ data class GetProductDetailResponse(
     val description: String,
     val registeredAt: Instant
 )
+
+data class RegisterProductResponse(
+    val productId: String,
+    val name: String,
+    val price: Int,
+    val quantity: Int,
+    val status: ProductStatus,
+    val registeredAt: Instant
+)
+

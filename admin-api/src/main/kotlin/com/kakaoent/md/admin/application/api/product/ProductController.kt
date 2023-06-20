@@ -18,7 +18,7 @@ class ProductController {
                     price = 1000,
                     quantity = 100,
                     status = ProductStatus.ON_SALE,
-                    registeredAt = Instant.now()
+                    registeredAt = Instant.ofEpochSecond(1686641320L)
                 ),
                 Product(
                     productId = "13JP4ICmLxeBnPFse0CvwZ",
@@ -26,7 +26,7 @@ class ProductController {
                     price = 2000,
                     quantity = 100,
                     status = ProductStatus.ON_SALE,
-                    registeredAt = Instant.now()
+                    registeredAt = Instant.ofEpochSecond(1686641320L)
                 )
             )
         )
@@ -43,12 +43,29 @@ class ProductController {
             quantity = 100,
             status = ProductStatus.ON_SALE,
             description = "상품1의 상세 설명",
-            registeredAt = Instant.now()
+            registeredAt = Instant.ofEpochSecond(1686641320L)
         )
     }
+
+    @PostMapping(REGISTER_PRODUCT)
+    fun registerProduct(
+        @RequestBody request: RegisterProductRequest
+    ): RegisterProductResponse {
+        val productId = "13JP4ICmLxeBnPFse0CvwZ"
+        return RegisterProductResponse(
+            productId = productId,
+            name = request.name,
+            price = request.price,
+            quantity = request.quantity,
+            status = request.status,
+            registeredAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
 
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
+        const val REGISTER_PRODUCT = "/products"
     }
 }

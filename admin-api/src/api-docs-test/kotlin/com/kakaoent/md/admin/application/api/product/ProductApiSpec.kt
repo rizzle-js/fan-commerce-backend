@@ -3,13 +3,12 @@ package com.kakaoent.md.admin.application.api.product
 import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
-import com.kakaoent.md.docs.andDocument
-import com.kakaoent.md.docs.pathVariables
-import com.kakaoent.md.docs.queryParams
-import com.kakaoent.md.docs.responseBody
+import com.kakaoent.md.admin.application.api.product.ProductController.Companion.REGISTER_PRODUCT
+import com.kakaoent.md.config.serde.objectMapper
+import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
 @WebMvcTest(controllers = [ProductController::class])
@@ -53,6 +52,36 @@ class ProductApiSpec : ApiSpec() {
                     "quantity" type NUMBER means "재고"
                     "status" type STRING means "상품 상태"
                     "description" type STRING means "상품 설명"
+                    "registeredAt" type NUMBER means "등록 날짜"
+                }
+            )
+        }
+
+        test("상품을 등록하다") {
+            val request = RegisterProductRequest(
+                name = "상품1",
+                price = 1000,
+                quantity = 100,
+                status = ProductStatus.ON_SALE
+            )
+            mockMvc.perform(
+                post(REGISTER_PRODUCT)
+                    .contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDocument(
+                "ProductApiSpec 상품 등록",
+                requestBody {
+                    "name" type STRING means "상품명"
+                    "price" type NUMBER means "가격"
+                    "quantity" type NUMBER means "재고"
+                    "status" type STRING means "상품 상태"
+                },
+                responseBody {
+                    "productId" type STRING means "상품 ID"
+                    "name" type STRING means "상품명"
+                    "price" type NUMBER means "가격"
+                    "quantity" type NUMBER means "재고"
+                    "status" type STRING means "상품 상태"
                     "registeredAt" type NUMBER means "등록 날짜"
                 }
             )
