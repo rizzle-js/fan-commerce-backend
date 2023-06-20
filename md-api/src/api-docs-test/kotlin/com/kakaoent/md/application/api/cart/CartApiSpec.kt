@@ -95,7 +95,7 @@ class CartApiSpec : ApiSpec() {
                     "productId" type STRING means "상품 ID"
                     "name" type STRING means "상품명"
                     "updatedQuantity" type NUMBER means "변경된 수량"
-                    "updatedAt" type NUMBER means "수정한 날짜"
+                    "updatedAt" type NUMBER means "수정 날짜"
                     "cartId" type STRING means "장바구니 ID"
                 }
             )
