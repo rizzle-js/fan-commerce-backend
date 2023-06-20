@@ -39,7 +39,7 @@ class BenefitAdminController {
             benefitStatus = request.benefitStatus,
             startAt = request.startAt,
             endAt = request.endAt,
-            updateAt = Instant.ofEpochSecond(1686641320L)
+            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -52,13 +52,27 @@ class BenefitAdminController {
         return DeactivateBenefitResponse(
             benefitId = benefitId,
             benefitStatus = BenefitStatus.INACTIVE,
-            updateAt = Instant.ofEpochSecond(1686641320L)
+            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
+
+
+    @DeleteMapping(DELETE_BENEFIT)
+    fun deleteBenefit(
+        @PathVariable benefitId: String
+    ): DeleteBenefitResponse {
+        // 혜택을 삭제하는 로직은 이곳에 작성
+        // 여기서는 예시로 임의의 값을 리턴하도록 함
+        return DeleteBenefitResponse(
+            benefitId = benefitId,
+        )
+    }
+
 
     companion object {
         const val REGISTER_BENEFIT = "/benefits/register"
         const val UPDATE_BENEFIT = "/benefits/{benefitId}"
         const val DEACTIVATE_BENEFIT = "/benefits/{benefitId}/deactivate"
+        const val DELETE_BENEFIT = "/benefits/{benefitId}"
     }
 }

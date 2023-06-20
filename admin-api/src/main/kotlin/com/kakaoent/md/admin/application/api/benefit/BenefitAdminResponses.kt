@@ -22,11 +22,15 @@ data class UpdateBenefitResponse(
     val benefitStatus: BenefitStatus,
     val startAt: Instant,
     val endAt: Instant,
-    val updateAt: Instant
+    val updatedAt: Instant
 )
 
 data class DeactivateBenefitResponse(
     val benefitId: String,
     val benefitStatus: BenefitStatus,
-    val updateAt: Instant
+    val updatedAt: Instant
+)
+
+data class DeleteBenefitResponse(
+    val benefitId: String,
 )

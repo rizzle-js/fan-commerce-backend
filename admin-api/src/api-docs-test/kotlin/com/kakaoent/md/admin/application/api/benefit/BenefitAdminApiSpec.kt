@@ -2,6 +2,7 @@ package com.kakaoent.md.admin.application.api.benefit
 
 import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.DEACTIVATE_BENEFIT
+import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.DELETE_BENEFIT
 import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.REGISTER_BENEFIT
 import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.UPDATE_BENEFIT
 import com.kakaoent.md.config.serde.objectMapper
@@ -12,7 +13,8 @@ import com.kakaoent.md.docs.responseBody
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
-import org.springframework.restdocs.payload.JsonFieldType.*
+import org.springframework.restdocs.payload.JsonFieldType.NUMBER
+import org.springframework.restdocs.payload.JsonFieldType.STRING
 import java.time.Instant
 
 @WebMvcTest(controllers = [BenefitAdminController::class])
@@ -93,7 +95,7 @@ class BenefitAdminApiSpec : ApiSpec() {
                     "benefitStatus" type STRING means "혜택 상태(비활성화)"
                     "startAt" type NUMBER means "시작 날짜"
                     "endAt" type NUMBER means "종료 날짜"
-                    "updateAt" type NUMBER means "수정 날짜"
+                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -105,12 +107,27 @@ class BenefitAdminApiSpec : ApiSpec() {
             ).andDocument(
                 "BenefitAdminApiSpec 혜택 비활성화",
                 pathVariables {
-                    "benefitId" means "혜택ID"
+                    "benefitId" means "혜택 ID"
+                },
+                responseBody {
+                    "benefitId" type STRING means "혜택 ID"
+                    "benefitStatus" type STRING means "혜택 상태(비활성화)"
+                    "updatedAt" type NUMBER means "수정 날짜"
+                }
+            )
+        }
+
+        test("혜택을 삭제하다") {
+            mockMvc.perform(
+                delete(DELETE_BENEFIT, BENEFIT_UUID)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "BenefitAdminApiSpec 혜택 삭제",
+                pathVariables {
+                    "benefitId" means "혜택 ID"
                 },
                 responseBody {
                     "benefitId" type STRING means "혜택ID"
-                    "benefitStatus" type STRING means "혜택 상태(비활성화)"
-                    "updateAt" type NUMBER means "수정 날짜"
                 }
             )
         }
