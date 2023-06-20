@@ -40,3 +40,12 @@ data class RegisterProductResponse(
     val registeredAt: Instant
 )
 
+data class UpdateProductResponse(
+    val productId: String,
+    val name: String,
+    val price: Int,
+    val quantity: Int,
+    val status: ProductStatus,
+    val updatedAt: Instant
+)
+

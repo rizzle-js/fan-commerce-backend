@@ -62,10 +62,25 @@ class ProductController {
         )
     }
 
+    @PutMapping(UPDATE_PRODUCT)
+    fun updateProduct(
+        @PathVariable productId: String,
+        @RequestBody request: UpdateProductRequest
+    ): UpdateProductResponse {
+        return UpdateProductResponse(
+            productId = productId,
+            name = request.name,
+            price = request.price,
+            quantity = request.quantity,
+            status = request.status,
+            updatedAt = Instant.now()
+        )
+    }
 
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val REGISTER_PRODUCT = "/products"
+        const val UPDATE_PRODUCT = "/products/{productId}"
     }
 }

@@ -6,3 +6,11 @@ data class RegisterProductRequest(
     val quantity: Int,
     val status: ProductStatus
 )
+
+data class UpdateProductRequest(
+    val name: String,
+    val price: Int,
+    val quantity: Int,
+    val status: ProductStatus
+)
+

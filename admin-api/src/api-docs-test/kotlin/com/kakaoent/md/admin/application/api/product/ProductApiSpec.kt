@@ -4,6 +4,7 @@ import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.REGISTER_PRODUCT
+import com.kakaoent.md.admin.application.api.product.ProductController.Companion.UPDATE_PRODUCT
 import com.kakaoent.md.config.serde.objectMapper
 import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -83,6 +84,40 @@ class ProductApiSpec : ApiSpec() {
                     "quantity" type NUMBER means "재고"
                     "status" type STRING means "상품 상태"
                     "registeredAt" type NUMBER means "등록 날짜"
+                }
+            )
+        }
+
+        test("상품을 수정하다") {
+            val productId = "some-product-id"
+            val request = UpdateProductRequest(
+                name = "상품1",
+                price = 1000,
+                quantity = 100,
+                status = ProductStatus.ON_SALE
+            )
+            mockMvc.perform(
+                put(UPDATE_PRODUCT, productId)
+                    .contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            ).andDocument(
+                "ProductApiSpec 상품 수정",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
+                requestBody {
+                    "name" type STRING means "상품명"
+                    "price" type NUMBER means "가격"
+                    "quantity" type NUMBER means "재고"
+                    "status" type STRING means "상품 상태"
+                },
+                responseBody {
+                    "productId" type STRING means "상품 ID"
+                    "name" type STRING means "상품명"
+                    "price" type NUMBER means "가격"
+                    "quantity" type NUMBER means "재고"
+                    "status" type STRING means "상품 상태"
+                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
