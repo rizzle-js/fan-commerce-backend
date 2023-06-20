@@ -7,3 +7,9 @@ data class UpdateInquiryCategoryResponse(
     val categoryName: String,
     val updatedAt: Instant
 )
+
+data class RegisterInquiryCategoryResponse(
+    val categoryId: String,
+    val categoryName: String,
+    val addedAt: Instant
+)
