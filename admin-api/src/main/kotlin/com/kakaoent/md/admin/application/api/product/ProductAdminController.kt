@@ -83,7 +83,7 @@ class ProductAdminController {
     ): DeleteProductResponse {
         return DeleteProductResponse(
             productId = productId,
-            deletedAt =  Instant.ofEpochSecond(1686641320L)
+            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -101,7 +101,7 @@ class ProductAdminController {
                     memberKey = 1L,
                     content = "Good",
                     score = 5,
-                    reviewAt =  Instant.ofEpochSecond(1686641320L)
+                    reviewAt = Instant.ofEpochSecond(1686641320L)
                 )
             )
         )
@@ -120,7 +120,7 @@ class ProductAdminController {
             memberKey = 612374L,
             rating = 4.5,
             review = "This is a great product!",
-            reviewAt =  Instant.ofEpochSecond(1686641320L)
+            reviewAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
