@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 import java.time.Instant
 
 @RestController
-class ProductController {
+class ProductAdminController {
     @GetMapping(GET_PRODUCTS)
     fun getProducts(
         params: PagingParams

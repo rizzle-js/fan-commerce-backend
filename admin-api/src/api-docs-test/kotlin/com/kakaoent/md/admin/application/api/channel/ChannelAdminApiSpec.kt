@@ -1,16 +1,16 @@
 package com.kakaoent.md.admin.application.api.channel
 
 import com.kakaoent.md.admin.application.api.ApiSpec
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.DELETE_CHANNEL_GROUP
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNELS
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_DETAIL
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUPS
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.GET_CHANNEL_GROUP_DETAIL
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.REGISTER_CHANNEL_GROUP
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.UPDATE_CHANNEL
-import com.kakaoent.md.admin.application.api.channel.ChannelController.Companion.UPDATE_CHANNEL_GROUP
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.DELETE_CHANNEL
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.DELETE_CHANNEL_GROUP
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.GET_CHANNELS
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.GET_CHANNEL_DETAIL
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.GET_CHANNEL_GROUPS
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.GET_CHANNEL_GROUP_DETAIL
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.REGISTER_CHANNEL
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.REGISTER_CHANNEL_GROUP
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.UPDATE_CHANNEL
+import com.kakaoent.md.admin.application.api.channel.ChannelAdminController.Companion.UPDATE_CHANNEL_GROUP
 import com.kakaoent.md.config.serde.objectMapper
 import com.kakaoent.md.docs.andDocument
 import com.kakaoent.md.docs.pathVariables
@@ -21,14 +21,14 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
-@WebMvcTest(controllers = [ChannelController::class])
-class ChannelApiSpec : ApiSpec() {
+@WebMvcTest(controllers = [ChannelAdminController::class])
+class ChannelAdminApiSpec : ApiSpec() {
     init {
         test("채널 그룹 목록을 조회하다") {
             mockMvc.perform(
                 get(GET_CHANNEL_GROUPS).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 그룹 목록 조회",
+                "ChannelAdminApiSpec 채널 그룹 목록 조회",
                 responseBody {
                     "channelGroups[]" type ARRAY means "채널 그룹 목록"
                     "channelGroups[].groupId" type STRING means "그룹 ID"
@@ -49,7 +49,7 @@ class ChannelApiSpec : ApiSpec() {
                         )
                     )
             ).andDocument(
-                "ChannelApiSpec 채널 그룹 등록",
+                "ChannelAdminApiSpec 채널 그룹 등록",
                 requestBody {
                     "groupName" type STRING means "그룹명"
                 },
@@ -72,7 +72,7 @@ class ChannelApiSpec : ApiSpec() {
                         )
                     )
             ).andDocument(
-                "ChannelApiSpec 채널 그룹 수정",
+                "ChannelAdminApiSpec 채널 그룹 수정",
                 pathVariables {
                     "groupId" means "그룹 ID"
                 },
@@ -91,7 +91,7 @@ class ChannelApiSpec : ApiSpec() {
             mockMvc.perform(
                 delete(DELETE_CHANNEL_GROUP, CHNNEL_GROUP_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 그룹 삭제",
+                "ChannelAdminApiSpec 채널 그룹 삭제",
                 pathVariables {
                     "groupId" means "그룹 ID"
                 },
@@ -107,7 +107,7 @@ class ChannelApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_CHANNEL_GROUP_DETAIL, CHNNEL_GROUP_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 그룹 상세 조회",
+                "ChannelAdminApiSpec 채널 그룹 상세 조회",
                 pathVariables {
                     "groupId" means "그룹 ID"
                 },
@@ -125,7 +125,7 @@ class ChannelApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_CHANNELS).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 목록 조회",
+                "ChannelAdminApiSpec 채널 목록 조회",
                 responseBody {
                     "channels[]" type ARRAY means "채널 목록"
                     "channels[].channelId" type STRING means "채널 ID"
@@ -150,7 +150,7 @@ class ChannelApiSpec : ApiSpec() {
                         )
                     )
             ).andDocument(
-                "ChannelApiSpec 채널 등록",
+                "ChannelAdminApiSpec 채널 등록",
                 requestBody {
                     "name" type STRING means "채널명"
                     "type" type STRING means "채널 타입"
@@ -179,7 +179,7 @@ class ChannelApiSpec : ApiSpec() {
                         )
                     )
             ).andDocument(
-                "ChannelApiSpec 채널 수정",
+                "ChannelAdminApiSpec 채널 수정",
                 pathVariables {
                     "channelId" means "채널 ID"
                 },
@@ -202,7 +202,7 @@ class ChannelApiSpec : ApiSpec() {
             mockMvc.perform(
                 delete(DELETE_CHANNEL, CHNNEL_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 삭제",
+                "ChannelAdminApiSpec 채널 삭제",
                 pathVariables {
                     "channelId" means "채널 ID"
                 },
@@ -217,7 +217,7 @@ class ChannelApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_CHANNEL_DETAIL, CHNNEL_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ChannelApiSpec 채널 상세 조회",
+                "ChannelAdminApiSpec 채널 상세 조회",
                 pathVariables {
                     "channelId" means "채널 ID"
                 },

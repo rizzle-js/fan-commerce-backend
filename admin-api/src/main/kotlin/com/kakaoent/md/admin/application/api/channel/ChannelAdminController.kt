@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*
 import java.time.Instant
 
 @RestController
-class ChannelController {
+class ChannelAdminController {
     @GetMapping(GET_CHANNEL_GROUPS)
     fun getChannelGroups(): ChannelGroupListResponse {
         // 이 부분은 실제로는 서비스로부터 데이터를 받아와야 하지만, 여기서는 임의로 데이터를 생성합니다.

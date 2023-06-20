@@ -1,11 +1,11 @@
 package com.kakaoent.md.admin.application.api.product
 
 import com.kakaoent.md.admin.application.api.ApiSpec
-import com.kakaoent.md.admin.application.api.product.ProductController.Companion.DELETE_PRODUCT
-import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCTS
-import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
-import com.kakaoent.md.admin.application.api.product.ProductController.Companion.REGISTER_PRODUCT
-import com.kakaoent.md.admin.application.api.product.ProductController.Companion.UPDATE_PRODUCT
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.DELETE_PRODUCT
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCTS
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_DETAIL
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.REGISTER_PRODUCT
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.UPDATE_PRODUCT
 import com.kakaoent.md.config.serde.objectMapper
 import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -13,8 +13,8 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.JsonFieldType.*
 
-@WebMvcTest(controllers = [ProductController::class])
-class ProductApiSpec : ApiSpec() {
+@WebMvcTest(controllers = [ProductAdminController::class])
+class ProductAdminApiSpec : ApiSpec() {
     init {
         test("상품 목록을 조회하다") {
             mockMvc.perform(
@@ -22,7 +22,7 @@ class ProductApiSpec : ApiSpec() {
                     .param("page", "0")
                     .param("size", "10")
             ).andDocument(
-                "ProductApiSpec 상품 목록 조회",
+                "ProductAdminApiSpec 상품 목록 조회",
                 queryParams {
                     "page" means "페이지 번호"
                     "size" means "페이지 크기"
@@ -43,7 +43,7 @@ class ProductApiSpec : ApiSpec() {
             mockMvc.perform(
                 get(GET_PRODUCT_DETAIL, PRODUCT_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
-                "ProductApiSpec 상품 상세 정보 조회",
+                "ProductAdminApiSpec 상품 상세 정보 조회",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -71,7 +71,7 @@ class ProductApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "ProductApiSpec 상품 등록",
+                "ProductAdminApiSpec 상품 등록",
                 requestBody {
                     "name" type STRING means "상품명"
                     "price" type NUMBER means "가격"
@@ -102,7 +102,7 @@ class ProductApiSpec : ApiSpec() {
                     .contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
-                "ProductApiSpec 상품 수정",
+                "ProductAdminApiSpec 상품 수정",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
@@ -128,7 +128,7 @@ class ProductApiSpec : ApiSpec() {
                 delete(DELETE_PRODUCT, PRODUCT_UUID)
                     .contentType(APPLICATION_JSON)
             ).andDocument(
-                "ProductApiSpec 상품 삭제",
+                "ProductAdminApiSpec 상품 삭제",
                 pathVariables {
                     "productId" means "상품 ID"
                 },
