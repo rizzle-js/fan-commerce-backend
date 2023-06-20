@@ -2,9 +2,11 @@ package com.kakaoent.md.admin.application.api.product
 
 import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.DELETE_PRODUCT
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.DELETE_PRODUCT_REVIEW
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCTS
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_REVIEW
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_REVIEWS
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.REGISTER_PRODUCT
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.UPDATE_PRODUCT
 import com.kakaoent.md.config.serde.objectMapper
@@ -140,6 +142,27 @@ class ProductAdminApiSpec : ApiSpec() {
             )
         }
 
+        test("상품의 평가 목록을 조회하다") {
+            mockMvc.perform(
+                get(GET_PRODUCT_REVIEWS, PRODUCT_UUID)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ProductAdminApiSpec 상품의 평가 목록 조회",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
+                responseBody {
+                    "reviews[]" type ARRAY means "평가 목록"
+                    "reviews[].reviewId" type STRING means "평가 ID"
+                    "reviews[].productId" type STRING means "상품 ID"
+                    "reviews[].memberKey" type NUMBER means "회원 키"
+                    "reviews[].content" type STRING means "평가 내용"
+                    "reviews[].score" type NUMBER means "평가 점수"
+                    "reviews[].reviewAt" type NUMBER means "평가 날짜"
+                }
+            )
+        }
+
         test("상품의 평가를 조회하다") {
             mockMvc.perform(
                 get(GET_PRODUCT_REVIEW, PRODUCT_UUID, REVIEW_UUID)
@@ -157,6 +180,24 @@ class ProductAdminApiSpec : ApiSpec() {
                     "rating" type NUMBER means "평점"
                     "review" type STRING means "평가 내용"
                     "reviewAt" type NUMBER means "평가 날짜"
+                }
+            )
+        }
+
+        test("상품의 평가를 삭제하다") {
+            mockMvc.perform(
+                delete(DELETE_PRODUCT_REVIEW, PRODUCT_UUID, REVIEW_UUID)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ProductAdminApiSpec 상품의 평가 삭제",
+                pathVariables {
+                    "productId" means "상품 ID"
+                    "reviewId" means "평가 ID"
+                },
+                responseBody {
+                    "reviewId" type STRING means "평가 ID"
+                    "productId" type STRING means "상품 ID"
+                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }

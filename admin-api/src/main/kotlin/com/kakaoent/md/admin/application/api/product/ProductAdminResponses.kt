@@ -75,3 +75,9 @@ data class ProductReviewResponse(
     val review: String,
     val reviewAt: Instant
 )
+
+data class DeleteProductReviewResponse(
+    val reviewId: String,
+    val productId: String,
+    val deletedAt: Instant
+)

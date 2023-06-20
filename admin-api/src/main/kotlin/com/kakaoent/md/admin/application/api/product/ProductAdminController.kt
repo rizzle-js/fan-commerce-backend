@@ -87,8 +87,8 @@ class ProductAdminController {
         )
     }
 
-    @GetMapping(GET_PRODUCT_REVIEW_LIST)
-    fun getProductReviewList(
+    @GetMapping(GET_PRODUCT_REVIEWS)
+    fun getProductReviews(
         @PathVariable productId: String
     ): ProductReviewListResponse {
         // 상품의 평가 목록을 조회하는 로직은 이곳에 작성
@@ -124,13 +124,28 @@ class ProductAdminController {
         )
     }
 
+    @DeleteMapping(DELETE_PRODUCT_REVIEW)
+    fun deleteProductReview(
+        @PathVariable productId: String,
+        @PathVariable reviewId: String,
+    ): DeleteProductReviewResponse {
+        // 상품의 평가를 삭제하는 로직은 이곳에 작성
+        // 여기서는 예시로 임의의 값을 리턴하도록 함
+        return DeleteProductReviewResponse(
+            reviewId = reviewId,
+            productId = productId,
+            deletedAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val REGISTER_PRODUCT = "/products"
         const val UPDATE_PRODUCT = "/products/{productId}"
         const val DELETE_PRODUCT = "/products/{productId}"
-        const val GET_PRODUCT_REVIEW_LIST = "/products/{productId}/reviews"
+        const val GET_PRODUCT_REVIEWS = "/products/{productId}/reviews"
         const val GET_PRODUCT_REVIEW = "/products/{productId}/reviews/{reviewId}"
+        const val DELETE_PRODUCT_REVIEW = "/products/{productId}/reviews/{reviewId}"
     }
 }
