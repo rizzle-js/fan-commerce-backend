@@ -46,12 +46,10 @@ data class UpdateProductResponse(
     val price: Int,
     val quantity: Int,
     val status: ProductStatus,
-    val updatedAt: Instant
 )
 
 data class DeleteProductResponse(
     val productId: String,
-    val deletedAt: Instant
 )
 
 data class ProductReviewListResponse(
@@ -79,5 +77,4 @@ data class ProductReviewResponse(
 data class DeleteProductReviewResponse(
     val reviewId: String,
     val productId: String,
-    val deletedAt: Instant
 )

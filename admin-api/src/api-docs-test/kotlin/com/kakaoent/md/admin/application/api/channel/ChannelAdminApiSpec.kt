@@ -33,7 +33,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                     "channelGroups[]" type ARRAY means "채널 그룹 목록"
                     "channelGroups[].groupId" type STRING means "그룹 ID"
                     "channelGroups[].groupName" type STRING means "그룹명"
-                    "channelGroups[].groupCreatedAt" type NUMBER means "그룹 생성 날짜"
                 }
             )
         }
@@ -56,7 +55,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                 responseBody {
                     "groupId" type STRING means "그룹 ID"
                     "groupName" type STRING means "그룹명"
-                    "groupCreatedAt" type NUMBER means "그룹 생성 날짜"
                 }
             )
         }
@@ -82,7 +80,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                 responseBody {
                     "groupId" type STRING means "그룹 ID"
                     "groupName" type STRING means "그룹명"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -98,7 +95,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                 responseBody {
                     "groupId" type STRING means "그룹 ID"
                     "groupName" type STRING means "그룹명"
-                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }
@@ -132,7 +128,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                     "channels[].name" type STRING means "채널명"
                     "channels[].type" type STRING means "채널 타입"
                     "channels[].status" type STRING means "채널 상태"
-                    "channels[].createdAt" type NUMBER means "생성 날짜"
                 }
             )
         }
@@ -161,7 +156,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                     "name" type STRING means "채널명"
                     "type" type STRING means "채널 타입"
                     "status" type STRING means "채널 상태"
-                    "createdAt" type NUMBER means "생성 날짜"
                 }
             )
         }
@@ -193,7 +187,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                     "name" type STRING means "채널명"
                     "type" type STRING means "채널 타입"
                     "status" type STRING means "채널 상태"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -208,7 +201,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                 },
                 responseBody {
                     "channelId" type STRING means "채널 ID"
-                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }
@@ -226,8 +218,6 @@ class ChannelAdminApiSpec : ApiSpec() {
                     "name" type STRING means "채널명"
                     "type" type STRING means "채널 타입"
                     "status" type STRING means "채널 상태"
-                    "createdAt" type NUMBER means "생성 날짜"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }

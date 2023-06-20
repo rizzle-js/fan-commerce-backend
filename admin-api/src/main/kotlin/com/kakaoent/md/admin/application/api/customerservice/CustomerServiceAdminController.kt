@@ -15,7 +15,6 @@ class CustomerServiceAdminController {
         return UpdateInquiryCategoryResponse(
             categoryId = categoryId,
             categoryName = inquiryCategoryUpdateRequest.categoryName,
-            updatedAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 
@@ -28,7 +27,6 @@ class CustomerServiceAdminController {
         return RegisterInquiryCategoryResponse(
             categoryId = "5WtaxHmN4h6mqFh7BWpXe6",
             categoryName = registerInquiryCategoryRequest.categoryName,
-            addedAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 

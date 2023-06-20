@@ -10,8 +10,8 @@ class CartController {
         @PathVariable memberKey: Long
     ): CartResponse {
         return CartResponse(
-            memberKey = memberKey,
             cartId = "0WpdogcEJ4jlc9UwIc0kNm",
+            memberKey = memberKey,
             products = listOf(
                 CartProduct(
                     productId = "7gLUgb896KkRgpnnHsNH3x",
@@ -37,12 +37,12 @@ class CartController {
         @RequestBody request: AddProductToCartRequest
     ): AddProductToCartResponse {
         return AddProductToCartResponse(
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
             memberKey = memberKey,
             productId = request.productId,
             name = "상품명",
             price = 1000,
             addedAt = Instant.ofEpochSecond(1686641320L),
-            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
             quantity = request.quantity
         )
     }
@@ -54,12 +54,11 @@ class CartController {
         @RequestBody request: UpdateProductQuantityInCartRequest
     ): UpdateProductQuantityInCartResponse {
         return UpdateProductQuantityInCartResponse(
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
             memberKey = memberKey,
             productId = productId,
             name = "상품명",
             updatedQuantity = request.quantity,
-            updatedAt = Instant.ofEpochSecond(1686641320L),
-            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
         )
     }
 
@@ -69,11 +68,10 @@ class CartController {
         @PathVariable productId: String
     ): RemoveProductFromCartResponse {
         return RemoveProductFromCartResponse(
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
             memberKey = memberKey,
             productId = productId,
             name = "상품명",
-            removedAt = Instant.ofEpochSecond(1686641320L),
-            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
         )
     }
 
@@ -82,9 +80,9 @@ class CartController {
         @PathVariable memberKey: Long
     ): EmptyCartResponse {
         return EmptyCartResponse(
+            cartId = "0WpdogcEJ4jlc9UwIc0kNm",
             memberKey = memberKey,
             emptiedAt = Instant.ofEpochSecond(1686641320L),
-            cartId = "0WpdogcEJ4jlc9UwIc0kNm"
         )
     }
 

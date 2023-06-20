@@ -112,7 +112,6 @@ class BenefitAdminApiSpec : ApiSpec() {
                     "status" type STRING means "혜택 상태(비활성화)"
                     "startAt" type NUMBER means "시작 날짜"
                     "endAt" type NUMBER means "종료 날짜"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -129,7 +128,6 @@ class BenefitAdminApiSpec : ApiSpec() {
                 responseBody {
                     "benefitId" type STRING means "혜택 ID"
                     "status" type STRING means "혜택 상태(비활성화)"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }

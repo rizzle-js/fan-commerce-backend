@@ -32,7 +32,6 @@ class CustomerServiceAdminApiSpec : ApiSpec() {
                 responseBody {
                     "categoryId" type STRING means "카테고리 ID"
                     "categoryName" type STRING means "카테고리명"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -53,7 +52,6 @@ class CustomerServiceAdminApiSpec : ApiSpec() {
                 responseBody {
                     "categoryId" type STRING means "카테고리 ID"
                     "categoryName" type STRING means "카테고리명"
-                    "addedAt" type NUMBER means "등록 날짜"
                 }
             )
         }

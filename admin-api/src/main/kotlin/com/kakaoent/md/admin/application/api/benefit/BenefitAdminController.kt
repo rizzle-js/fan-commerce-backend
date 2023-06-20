@@ -56,7 +56,6 @@ class BenefitAdminController {
             status = request.status,
             startAt = request.startAt,
             endAt = request.endAt,
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -69,7 +68,6 @@ class BenefitAdminController {
         return DeactivateBenefitResponse(
             benefitId = benefitId,
             status = BenefitStatus.INACTIVE,
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 

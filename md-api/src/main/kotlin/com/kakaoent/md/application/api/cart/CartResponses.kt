@@ -3,8 +3,8 @@ package com.kakaoent.md.application.api.cart
 import java.time.Instant
 
 data class CartResponse(
-    val memberKey: Long,
     val cartId: String,
+    val memberKey: Long,
     val products: List<CartProduct>
 )
 
@@ -17,34 +17,32 @@ data class CartProduct(
 )
 
 data class AddProductToCartResponse(
+    val cartId: String,
     val memberKey: Long,
     val productId: String,
     val name: String,
     val price: Int,
     val addedAt: Instant,
-    val cartId: String,
     val quantity: Int
 )
 
 data class UpdateProductQuantityInCartResponse(
+    val cartId: String,
     val memberKey: Long,
     val productId: String,
     val name: String,
     val updatedQuantity: Int,
-    val updatedAt: Instant,
-    val cartId: String
 )
 
 data class EmptyCartResponse(
+    val cartId: String,
     val memberKey: Long,
     val emptiedAt: Instant,
-    val cartId: String
 )
 
 data class RemoveProductFromCartResponse(
+    val cartId: String,
     val memberKey: Long,
     val productId: String,
     val name: String,
-    val removedAt: Instant,
-    val cartId: String
 )

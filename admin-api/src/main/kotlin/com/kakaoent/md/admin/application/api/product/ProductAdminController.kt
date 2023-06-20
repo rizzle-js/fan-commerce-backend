@@ -73,7 +73,6 @@ class ProductAdminController {
             price = request.price,
             quantity = request.quantity,
             status = request.status,
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -83,7 +82,6 @@ class ProductAdminController {
     ): DeleteProductResponse {
         return DeleteProductResponse(
             productId = productId,
-            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -134,7 +132,6 @@ class ProductAdminController {
         return DeleteProductReviewResponse(
             reviewId = reviewId,
             productId = productId,
-            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 

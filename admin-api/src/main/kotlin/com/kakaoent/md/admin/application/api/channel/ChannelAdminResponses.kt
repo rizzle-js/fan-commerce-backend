@@ -9,25 +9,21 @@ data class ChannelGroupListResponse(
 data class ChannelGroup(
     val groupId: String,
     val groupName: String,
-    val groupCreatedAt: Instant
 )
 
 data class RegisterChannelGroupResponse(
     val groupId: String,
     val groupName: String,
-    val groupCreatedAt: Instant
 )
 
 data class UpdateChannelGroupResponse(
     val groupId: String,
     val groupName: String,
-    val updatedAt: Instant
 )
 
 data class DeleteChannelGroupResponse(
     val groupId: String,
     val groupName: String,
-    val deletedAt: Instant
 )
 
 data class ChannelGroupDetailResponse(
@@ -47,7 +43,6 @@ data class Channel(
     val name: String,
     val type: ChannelType,
     val status: ChannelStatus,
-    val createdAt: Instant
 )
 
 enum class ChannelType {
@@ -67,7 +62,6 @@ data class RegisterChannelResponse(
     val name: String,
     val type: ChannelType,
     val status: ChannelStatus,
-    val createdAt: Instant
 )
 
 data class UpdateChannelResponse(
@@ -75,12 +69,10 @@ data class UpdateChannelResponse(
     val name: String,
     val type: ChannelType,
     val status: ChannelStatus,
-    val updatedAt: Instant
 )
 
 data class DeleteChannelResponse(
     val channelId: String,
-    val deletedAt: Instant
 )
 
 data class GetChannelDetailResponse(
@@ -88,6 +80,4 @@ data class GetChannelDetailResponse(
     val name: String,
     val type: ChannelType,
     val status: ChannelStatus,
-    val createdAt: Instant,
-    val updatedAt: Instant
 )

@@ -13,12 +13,10 @@ class ChannelAdminController {
                 ChannelGroup(
                     groupId = "2KMEzbB3vT3KWO9U3JLLFN",
                     groupName = "그룹1",
-                    groupCreatedAt = Instant.ofEpochSecond(1686641320L),
                 ),
                 ChannelGroup(
                     groupId = "2g8MC8a6iuPaCj61TD6GdU",
                     groupName = "그룹2",
-                    groupCreatedAt = Instant.ofEpochSecond(1686641340L),
                 )
             )
         )
@@ -32,7 +30,6 @@ class ChannelAdminController {
         return RegisterChannelGroupResponse(
             groupId = "4AaVUXYXBX8ohD3S7eNtxr", // 실제로는 생성된 그룹 ID를 반환해야 합니다.
             groupName = registerChannelGroupRequest.groupName,
-            groupCreatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -45,7 +42,6 @@ class ChannelAdminController {
         return UpdateChannelGroupResponse(
             groupId = groupId,
             groupName = updateChannelGroupRequest.groupName,
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -58,7 +54,6 @@ class ChannelAdminController {
         return DeleteChannelGroupResponse(
             groupId = groupId,
             groupName = "삭제된 그룹명",  // 실제로는 삭제 전 그룹명을 반환해야 합니다.
-            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -85,14 +80,12 @@ class ChannelAdminController {
                     name = "박효신",
                     type = ChannelType.ARTIST,
                     status = ChannelStatus.ACTIVE,
-                    createdAt = Instant.ofEpochSecond(1686641320L)
                 ),
                 Channel(
                     channelId = "1hWgrL5AvH8xMbIXAC7xIU",
                     name = "베토벤",
                     type = ChannelType.CONTENT,
                     status = ChannelStatus.INACTIVE,
-                    createdAt = Instant.ofEpochSecond(1686641320L)
                 )
             )
         )
@@ -107,7 +100,6 @@ class ChannelAdminController {
             name = request.name,
             type = request.type,
             status = request.status,
-            createdAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -121,7 +113,6 @@ class ChannelAdminController {
             name = request.name,
             type = request.type,
             status = request.status,
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -132,7 +123,6 @@ class ChannelAdminController {
     ): DeleteChannelResponse {
         return DeleteChannelResponse(
             channelId = channelId,
-            deletedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 
@@ -145,8 +135,6 @@ class ChannelAdminController {
             name = "베토벤",
             type = ChannelType.CONTENT,
             status = ChannelStatus.ACTIVE,
-            createdAt = Instant.ofEpochSecond(1686641320L),
-            updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
 

@@ -121,7 +121,6 @@ class ProductAdminApiSpec : ApiSpec() {
                     "price" type NUMBER means "가격"
                     "quantity" type NUMBER means "재고"
                     "status" type STRING means "상품 상태"
-                    "updatedAt" type NUMBER means "수정 날짜"
                 }
             )
         }
@@ -137,7 +136,6 @@ class ProductAdminApiSpec : ApiSpec() {
                 },
                 responseBody {
                     "productId" type STRING means "상품 ID"
-                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }
@@ -197,7 +195,6 @@ class ProductAdminApiSpec : ApiSpec() {
                 responseBody {
                     "reviewId" type STRING means "평가 ID"
                     "productId" type STRING means "상품 ID"
-                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }
