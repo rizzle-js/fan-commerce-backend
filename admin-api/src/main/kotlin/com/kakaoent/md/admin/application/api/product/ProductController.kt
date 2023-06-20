@@ -32,7 +32,23 @@ class ProductController {
         )
     }
 
+    @GetMapping(GET_PRODUCT_DETAIL)
+    fun getProductDetail(
+        @PathVariable productId: String
+    ): GetProductDetailResponse {
+        return GetProductDetailResponse(
+            productId = productId,
+            name = "상품1",
+            price = 1000,
+            quantity = 100,
+            status = ProductStatus.ON_SALE,
+            description = "상품1의 상세 설명",
+            registeredAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
+        const val GET_PRODUCT_DETAIL = "/products/{productId}"
     }
 }
