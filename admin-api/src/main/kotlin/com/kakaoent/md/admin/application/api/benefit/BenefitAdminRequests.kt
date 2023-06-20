@@ -7,7 +7,7 @@ data class RegisterBenefitRequest(
     val benefitContent: String,
     val benefitType: BenefitType,
     val applyRange: ApplyRange,
-    val benefitStatus: BenefitStatus,
+    val status: BenefitStatus,
     val startAt: Instant,
     val endAt: Instant
 )
@@ -29,7 +29,7 @@ data class UpdateBenefitRequest(
     val benefitContent: String,
     val benefitType: BenefitType,
     val applyRange: ApplyRange,
-    val benefitStatus: BenefitStatus,
+    val status: BenefitStatus,
     val startAt: Instant,
     val endAt: Instant
 )

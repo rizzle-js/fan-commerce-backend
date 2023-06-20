@@ -8,7 +8,7 @@ data class RegisterBenefitResponse(
     val benefitContent: String,
     val benefitType: BenefitType,
     val applyRange: ApplyRange,
-    val benefitStatus: BenefitStatus,
+    val status: BenefitStatus,
     val startAt: Instant,
     val endAt: Instant
 )
@@ -19,7 +19,7 @@ data class UpdateBenefitResponse(
     val benefitContent: String,
     val benefitType: BenefitType,
     val applyRange: ApplyRange,
-    val benefitStatus: BenefitStatus,
+    val status: BenefitStatus,
     val startAt: Instant,
     val endAt: Instant,
     val updatedAt: Instant
@@ -27,10 +27,23 @@ data class UpdateBenefitResponse(
 
 data class DeactivateBenefitResponse(
     val benefitId: String,
-    val benefitStatus: BenefitStatus,
+    val status: BenefitStatus,
     val updatedAt: Instant
 )
 
 data class DeleteBenefitResponse(
     val benefitId: String,
+)
+
+data class BenefitsResponse(
+    val benefits: List<Benefit>
+)
+
+data class Benefit(
+    val benefitId: String,
+    val benefitName: String,
+    val applyRange: ApplyRange,
+    val status: BenefitStatus,
+    val startAt: Instant,
+    val endAt: Instant,
 )

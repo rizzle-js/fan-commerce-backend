@@ -5,6 +5,23 @@ import java.time.Instant
 
 @RestController
 class BenefitAdminController {
+
+    @GetMapping(GET_BENEFITS)
+    fun getBenefits(): BenefitsResponse {
+        return BenefitsResponse(
+            listOf(
+                Benefit(
+                    benefitId = "4cwmutn4e5qLSa6wmJP3qe",
+                    benefitName = "혜택1",
+                    applyRange = ApplyRange.ALL,
+                    startAt = Instant.ofEpochSecond(1686641320L),
+                    endAt = Instant.ofEpochSecond(1686644320L),
+                    status = BenefitStatus.ACTIVE
+                )
+            )
+        )
+    }
+
     @PostMapping(REGISTER_BENEFIT)
     fun registerBenefit(
         @RequestBody request: RegisterBenefitRequest
@@ -17,7 +34,7 @@ class BenefitAdminController {
             benefitContent = request.benefitContent,
             benefitType = request.benefitType,
             applyRange = request.applyRange,
-            benefitStatus = request.benefitStatus,
+            status = request.status,
             startAt = request.startAt,
             endAt = request.endAt
         )
@@ -36,7 +53,7 @@ class BenefitAdminController {
             benefitContent = request.benefitContent,
             benefitType = request.benefitType,
             applyRange = request.applyRange,
-            benefitStatus = request.benefitStatus,
+            status = request.status,
             startAt = request.startAt,
             endAt = request.endAt,
             updatedAt = Instant.ofEpochSecond(1686641320L)
@@ -51,7 +68,7 @@ class BenefitAdminController {
         // 여기서는 예시로 임의의 값을 리턴하도록 함
         return DeactivateBenefitResponse(
             benefitId = benefitId,
-            benefitStatus = BenefitStatus.INACTIVE,
+            status = BenefitStatus.INACTIVE,
             updatedAt = Instant.ofEpochSecond(1686641320L)
         )
     }
@@ -70,6 +87,7 @@ class BenefitAdminController {
 
 
     companion object {
+        const val GET_BENEFITS = "/benefits"
         const val REGISTER_BENEFIT = "/benefits/register"
         const val UPDATE_BENEFIT = "/benefits/{benefitId}"
         const val DEACTIVATE_BENEFIT = "/benefits/{benefitId}/deactivate"
