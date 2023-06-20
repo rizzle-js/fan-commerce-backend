@@ -49,3 +49,7 @@ data class UpdateProductResponse(
     val updatedAt: Instant
 )
 
+data class DeleteProductResponse(
+    val productId: String,
+    val deletedAt: Instant
+)

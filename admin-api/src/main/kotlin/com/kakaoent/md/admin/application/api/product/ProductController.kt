@@ -77,10 +77,21 @@ class ProductController {
         )
     }
 
+    @DeleteMapping(DELETE_PRODUCT)
+    fun deleteProduct(
+        @PathVariable productId: String
+    ): DeleteProductResponse {
+        return DeleteProductResponse(
+            productId = productId,
+            deletedAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val REGISTER_PRODUCT = "/products"
         const val UPDATE_PRODUCT = "/products/{productId}"
+        const val DELETE_PRODUCT = "/products/{productId}"
     }
 }

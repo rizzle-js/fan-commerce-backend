@@ -1,6 +1,7 @@
 package com.kakaoent.md.admin.application.api.product
 
 import com.kakaoent.md.admin.application.api.ApiSpec
+import com.kakaoent.md.admin.application.api.product.ProductController.Companion.DELETE_PRODUCT
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
 import com.kakaoent.md.admin.application.api.product.ProductController.Companion.REGISTER_PRODUCT
@@ -118,6 +119,22 @@ class ProductApiSpec : ApiSpec() {
                     "quantity" type NUMBER means "재고"
                     "status" type STRING means "상품 상태"
                     "updatedAt" type NUMBER means "수정 날짜"
+                }
+            )
+        }
+
+        test("상품을 삭제하다") {
+            mockMvc.perform(
+                delete(DELETE_PRODUCT, PRODUCT_UUID)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ProductApiSpec 상품 삭제",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
+                responseBody {
+                    "productId" type STRING means "상품 ID"
+                    "deletedAt" type NUMBER means "삭제 날짜"
                 }
             )
         }
