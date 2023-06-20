@@ -23,3 +23,13 @@ enum class ApplyRange {
 enum class BenefitStatus {
     ACTIVE, INACTIVE
 }
+
+data class UpdateBenefitRequest(
+    val benefitName: String,
+    val benefitContent: String,
+    val benefitType: BenefitType,
+    val applyRange: ApplyRange,
+    val benefitStatus: BenefitStatus,
+    val startAt: Instant,
+    val endAt: Instant
+)
