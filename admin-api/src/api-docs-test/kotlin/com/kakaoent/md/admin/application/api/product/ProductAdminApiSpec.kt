@@ -4,6 +4,7 @@ import com.kakaoent.md.admin.application.api.ApiSpec
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.DELETE_PRODUCT
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCTS
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_DETAIL
+import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.GET_PRODUCT_REVIEW
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.REGISTER_PRODUCT
 import com.kakaoent.md.admin.application.api.product.ProductAdminController.Companion.UPDATE_PRODUCT
 import com.kakaoent.md.config.serde.objectMapper
@@ -135,6 +136,26 @@ class ProductAdminApiSpec : ApiSpec() {
                 responseBody {
                     "productId" type STRING means "상품 ID"
                     "deletedAt" type NUMBER means "삭제 날짜"
+                }
+            )
+        }
+
+        test("상품의 평가를 조회하다") {
+            val productId = 1L
+            mockMvc.perform(
+                get(GET_PRODUCT_REVIEW, productId)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "ProductAdminApiSpec 상품의 평가 조회",
+                pathVariables {
+                    "productId" means "상품 ID"
+                },
+                responseBody {
+                    "productId" type NUMBER means "상품 ID"
+                    "memberKey" type NUMBER means "회원 키"
+                    "rating" type NUMBER means "평점"
+                    "review" type STRING means "평가 내용"
+                    "reviewAt" type NUMBER means "평가 날짜"
                 }
             )
         }

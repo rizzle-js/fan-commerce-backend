@@ -87,11 +87,27 @@ class ProductAdminController {
         )
     }
 
+    @GetMapping(GET_PRODUCT_REVIEW)
+    fun getProductReview(
+        @PathVariable productId: Long
+    ): ProductReviewResponse {
+        // 상품의 평가를 조회하는 로직은 이곳에 작성
+        // 여기서는 예시로 임의의 값을 리턴하도록 함
+        return ProductReviewResponse(
+            productId = productId,
+            memberKey = 1L,
+            rating = 4.5,
+            review = "This is a great product!",
+            reviewAt = Instant.now()
+        )
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
         const val REGISTER_PRODUCT = "/products"
         const val UPDATE_PRODUCT = "/products/{productId}"
         const val DELETE_PRODUCT = "/products/{productId}"
+        const val GET_PRODUCT_REVIEW = "/products/{productId}/review"
     }
 }
