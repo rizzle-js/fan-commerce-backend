@@ -43,8 +43,22 @@ class BenefitAdminController {
         )
     }
 
+    @PatchMapping(DEACTIVATE_BENEFIT)
+    fun deactivateBenefit(
+        @PathVariable benefitId: String
+    ): DeactivateBenefitResponse {
+        // 혜택을 비활성화하는 로직은 이곳에 작성
+        // 여기서는 예시로 임의의 값을 리턴하도록 함
+        return DeactivateBenefitResponse(
+            benefitId = benefitId,
+            benefitStatus = BenefitStatus.INACTIVE,
+            updateAt = Instant.ofEpochSecond(1686641320L)
+        )
+    }
+
     companion object {
         const val REGISTER_BENEFIT = "/benefits/register"
         const val UPDATE_BENEFIT = "/benefits/{benefitId}"
+        const val DEACTIVATE_BENEFIT = "/benefits/{benefitId}/deactivate"
     }
 }

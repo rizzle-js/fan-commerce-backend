@@ -24,3 +24,9 @@ data class UpdateBenefitResponse(
     val endAt: Instant,
     val updateAt: Instant
 )
+
+data class DeactivateBenefitResponse(
+    val benefitId: String,
+    val benefitStatus: BenefitStatus,
+    val updateAt: Instant
+)

@@ -1,6 +1,7 @@
 package com.kakaoent.md.admin.application.api.benefit
 
 import com.kakaoent.md.admin.application.api.ApiSpec
+import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.DEACTIVATE_BENEFIT
 import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.REGISTER_BENEFIT
 import com.kakaoent.md.admin.application.api.benefit.BenefitAdminController.Companion.UPDATE_BENEFIT
 import com.kakaoent.md.config.serde.objectMapper
@@ -92,6 +93,23 @@ class BenefitAdminApiSpec : ApiSpec() {
                     "benefitStatus" type STRING means "혜택 상태(비활성화)"
                     "startAt" type NUMBER means "시작 날짜"
                     "endAt" type NUMBER means "종료 날짜"
+                    "updateAt" type NUMBER means "수정 날짜"
+                }
+            )
+        }
+
+        test("혜택을 비활성화하다") {
+            mockMvc.perform(
+                patch(DEACTIVATE_BENEFIT, BENEFIT_UUID)
+                    .contentType(APPLICATION_JSON)
+            ).andDocument(
+                "BenefitAdminApiSpec 혜택 비활성화",
+                pathVariables {
+                    "benefitId" means "혜택ID"
+                },
+                responseBody {
+                    "benefitId" type STRING means "혜택ID"
+                    "benefitStatus" type STRING means "혜택 상태(비활성화)"
                     "updateAt" type NUMBER means "수정 날짜"
                 }
             )
