@@ -24,7 +24,7 @@ enum class RefundMethod {
     STORE_CREDIT
 }
 
-data class RateProductRequest(
+data class ReviewProductRequest(
     val memberKey: Long,
     val rate: Int,
     val comment: String,

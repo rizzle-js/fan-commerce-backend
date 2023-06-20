@@ -121,59 +121,59 @@ class ProductController {
         )
     }
 
-    @GetMapping(GET_PRODUCT_RATES)
-    fun getProductRates(
+    @GetMapping(GET_PRODUCT_REVIEWS)
+    fun getProductReviews(
         @PathVariable productId: String,
         params: PagingParams
-    ): ProductRatesResponse {
-        return ProductRatesResponse(
-            productRates = listOf(
-                ProductRate(
-                    rateId = "2fBs3IHgpHecTZHuGg43u2",
+    ): ProductReviewsResponse {
+        return ProductReviewsResponse(
+            productReviews = listOf(
+                ProductReview(
+                    reviewId = "2fBs3IHgpHecTZHuGg43u2",
                     memberKey = 1L,
                     productId = productId,
                     rate = 4,
                     comment = "좋아요 :)",
-                    ratedAt = Instant.ofEpochSecond(1686641320L),
+                    reviewAt = Instant.ofEpochSecond(1686641320L),
                 ),
-                ProductRate(
-                    rateId = "07AmdtM3GtyWOFug7i8Fog",
+                ProductReview(
+                    reviewId = "07AmdtM3GtyWOFug7i8Fog",
                     memberKey = 2L,
                     productId = productId,
                     rate = 5,
                     comment = "만족합니다.",
-                    ratedAt = Instant.ofEpochSecond(1686641920L),
+                    reviewAt = Instant.ofEpochSecond(1686641920L),
                 )
             )
         )
     }
 
-    @PostMapping(RATE_PRODUCT)
-    fun rateProduct(
+    @PostMapping(REVIEW_PRODUCT)
+    fun reviewProduct(
         @PathVariable productId: String,
-        @RequestBody request: RateProductRequest
-    ): ProductRateResponse {
+        @RequestBody request: ReviewProductRequest
+    ): ProductReviewResponse {
         // 상품 평가 로직은 생략
-        return ProductRateResponse(
+        return ProductReviewResponse(
             memberKey = request.memberKey,
             productId = productId,
-            rateId = "07ADpf6TfRU1wYU88Q6KP8",
-            ratedAt = Instant.ofEpochSecond(1686641320L),
+            reviewId = "07ADpf6TfRU1wYU88Q6KP8",
+            reviewAt = Instant.ofEpochSecond(1686641320L),
         )
     }
 
-    @GetMapping(GET_PRODUCT_RATE_DETAIL)
-    fun getProductRateDetail(
+    @GetMapping(GET_PRODUCT_REVIEW_DETAIL)
+    fun getProductReviewDetail(
         @PathVariable productId: String,
-        @PathVariable rateId: String,
-    ): ProductRateDetailResponse {
-        return ProductRateDetailResponse(
+        @PathVariable reviewId: String,
+    ): ProductReviewDetailResponse {
+        return ProductReviewDetailResponse(
             memberKey = 1234L,
             productId = productId,
-            rateId = "rateId",
+            reviewId = "07ADpf6TfRU1wYU88Q6KP8",
             comment = "좋아요 :)",
             rate = 10,
-            ratedAt = Instant.ofEpochSecond(1686641320L),
+            reviewAt = Instant.ofEpochSecond(1686641320L),
             reviewImages = listOf(
                 "https://example.com/image1.jpg",
                 "https://example.com/image2.jpg",
@@ -190,8 +190,8 @@ class ProductController {
         const val CHECK_PURCHASE_PERMISSION = "/products/{productId}/purchase/permission"
         const val PURCHASE_PRODUCT = "/products/{productId}/purchase"
         const val CANCEL_PRODUCT = "/products/{productId}/cancellation"
-        const val GET_PRODUCT_RATES = "/products/{productId}/rates"
-        const val RATE_PRODUCT = "/products/{productId}/rates"
-        const val GET_PRODUCT_RATE_DETAIL = "/products/{productId}/rates/{rateId}"
+        const val GET_PRODUCT_REVIEWS = "/products/{productId}/reviews"
+        const val REVIEW_PRODUCT = "/products/{productId}/reviews"
+        const val GET_PRODUCT_REVIEW_DETAIL = "/products/{productId}/reviews/{reviewId}"
     }
 }

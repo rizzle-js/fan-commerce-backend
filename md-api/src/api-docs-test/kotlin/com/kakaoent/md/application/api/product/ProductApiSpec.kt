@@ -8,10 +8,10 @@ import com.kakaoent.md.application.api.product.ProductController.Companion.CHECK
 import com.kakaoent.md.application.api.product.ProductController.Companion.CHECK_PURCHASE_PERMISSION
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_DETAIL
-import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_RATES
-import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_RATE_DETAIL
+import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_REVIEWS
+import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT_REVIEW_DETAIL
 import com.kakaoent.md.application.api.product.ProductController.Companion.PURCHASE_PRODUCT
-import com.kakaoent.md.application.api.product.ProductController.Companion.RATE_PRODUCT
+import com.kakaoent.md.application.api.product.ProductController.Companion.REVIEW_PRODUCT
 import com.kakaoent.md.config.serde.objectMapper
 import com.kakaoent.md.docs.*
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -199,7 +199,7 @@ class ProductApiSpec : ApiSpec() {
 
         test("상품 평가 목록을 조회하다") {
             mockMvc.perform(
-                get(GET_PRODUCT_RATES, PRODUCT_UUID).contentType(APPLICATION_JSON)
+                get(GET_PRODUCT_REVIEWS, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .param("page", "0")
                     .param("size", "10")
             ).andDocument(
@@ -212,26 +212,26 @@ class ProductApiSpec : ApiSpec() {
                     "size" means "페이지 크기"
                 },
                 responseBody {
-                    "productRates[]" type ARRAY means "상품 평가 목록"
-                    "productRates[].rateId" type STRING means "평가 ID"
-                    "productRates[].memberKey" type NUMBER means "사용자 ID"
-                    "productRates[].productId" type STRING means "상품 ID"
-                    "productRates[].rate" type NUMBER means "평가 점수"
-                    "productRates[].comment" type STRING means "평가 내용"
-                    "productRates[].ratedAt" type NUMBER means "평가 시간"
+                    "productReviews[]" type ARRAY means "상품 평가 목록"
+                    "productReviews[].reviewId" type STRING means "평가 ID"
+                    "productReviews[].memberKey" type NUMBER means "사용자 ID"
+                    "productReviews[].productId" type STRING means "상품 ID"
+                    "productReviews[].rate" type NUMBER means "평가 점수"
+                    "productReviews[].comment" type STRING means "평가 내용"
+                    "productReviews[].reviewAt" type NUMBER means "평가 시간"
                 }
             )
         }
 
         test("상품을 평가하다") {
-            val request = RateProductRequest(
+            val request = ReviewProductRequest(
                 memberKey = MEMBER_KEY,
                 rate = 10,
                 comment = "상품평. 좋아요 :)"
             )
 
             mockMvc.perform(
-                post(RATE_PRODUCT, PRODUCT_UUID).contentType(APPLICATION_JSON)
+                post(REVIEW_PRODUCT, PRODUCT_UUID).contentType(APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
             ).andDocument(
                 "ProductApiSpec 상품 평가",
@@ -246,28 +246,28 @@ class ProductApiSpec : ApiSpec() {
                 responseBody {
                     "memberKey" type NUMBER means "사용자 ID"
                     "productId" type STRING means "상품 ID"
-                    "rateId" type STRING means "평가 ID"
-                    "ratedAt" type NUMBER means "평가 시간"
+                    "reviewId" type STRING means "평가 ID"
+                    "reviewAt" type NUMBER means "평가 시간"
                 }
             )
         }
 
         test("상품 평가를 조회하다") {
             mockMvc.perform(
-                get(GET_PRODUCT_RATE_DETAIL, PRODUCT_UUID, RATE_UUID).contentType(APPLICATION_JSON)
+                get(GET_PRODUCT_REVIEW_DETAIL, PRODUCT_UUID, REVIEWS_UUID).contentType(APPLICATION_JSON)
             ).andDocument(
                 "ProductApiSpec 상품 평가 조회",
                 pathVariables {
                     "productId" means "상품 ID"
-                    "rateId" means "평가 ID"
+                    "reviewId" means "평가 ID"
                 },
                 responseBody {
                     "memberKey" type NUMBER means "사용자 ID"
                     "productId" type STRING means "상품 ID"
-                    "rateId" type STRING means "평가 ID"
+                    "reviewId" type STRING means "평가 ID"
                     "comment" type STRING means "평가 내용"
                     "rate" type NUMBER means "평가 점수"
-                    "ratedAt" type NUMBER means "평가 시간"
+                    "reviewAt" type NUMBER means "평가 시간"
                     "reviewImages" type ARRAY means "리뷰 이미지"
                 }
             )

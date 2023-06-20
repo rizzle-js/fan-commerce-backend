@@ -53,3 +53,11 @@ data class DeleteProductResponse(
     val productId: String,
     val deletedAt: Instant
 )
+
+data class ProductReviewResponse(
+    val productId: Long,
+    val memberKey: Long,
+    val rating: Double,
+    val review: String,
+    val reviewAt: Instant
+)
