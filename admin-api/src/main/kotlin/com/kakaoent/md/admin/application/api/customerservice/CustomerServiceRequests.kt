@@ -7,3 +7,7 @@ data class UpdateInquiryCategoryRequest(
 data class RegisterInquiryCategoryRequest(
     val categoryName: String
 )
+
+data class AnswerInquiryRequest(
+    val answerContent: String
+)

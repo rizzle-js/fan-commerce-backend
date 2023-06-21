@@ -1,6 +1,7 @@
 package com.kakaoent.md.admin.application.api.customerservice
 
 import com.kakaoent.md.admin.application.api.ApiSpec
+import com.kakaoent.md.admin.application.api.customerservice.CustomerServiceAdminController.Companion.ANSWER_INQUIRY
 import com.kakaoent.md.admin.application.api.customerservice.CustomerServiceAdminController.Companion.DELETE_INQUIRY_CATEGORY
 import com.kakaoent.md.admin.application.api.customerservice.CustomerServiceAdminController.Companion.REGISTER_INQUIRY_CATEGORY
 import com.kakaoent.md.admin.application.api.customerservice.CustomerServiceAdminController.Companion.UPDATE_INQUIRY_CATEGORY
@@ -12,6 +13,7 @@ import com.kakaoent.md.docs.responseBody
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
+import org.springframework.restdocs.payload.JsonFieldType.NUMBER
 import org.springframework.restdocs.payload.JsonFieldType.STRING
 
 @WebMvcTest(controllers = [CustomerServiceAdminController::class])
@@ -69,6 +71,33 @@ class CustomerServiceAdminApiSpec : ApiSpec() {
                 },
                 responseBody {
                     "categoryId" type STRING means "카테고리 ID"
+                }
+            )
+        }
+
+        test("1:1 문의에 답변하다") {
+            mockMvc.perform(
+                post(ANSWER_INQUIRY, INQUIRY_UUID).contentType(APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            AnswerInquiryRequest(
+                                answerContent = "testAnswerContent"
+                            )
+                        )
+                    )
+            ).andDocument(
+                "CustomerServiceAdminApiSpec 1:1 문의 답변",
+                pathVariables {
+                    "inquiryId" means "문의 ID"
+                },
+                requestBody {
+                    "answerContent" type STRING means "답변 내용"
+                },
+                responseBody {
+                    "inquiryId" type STRING means "문의 ID"
+                    "answerId" type STRING means "답변 ID"
+                    "answerContent" type STRING means "답변 내용"
+                    "answeredAt" type NUMBER means "답변 날짜"
                 }
             )
         }
