@@ -9,3 +9,7 @@ data class RegisterInquiryCategoryResponse(
     val categoryId: String,
     val categoryName: String,
 )
+
+data class DeleteInquiryCategoryResponse(
+    val categoryId: String,
+)
