@@ -4,7 +4,6 @@ import java.time.Instant
 
 data class UpdateInquiryCategoryResponse(
     val categoryId: String,
-    val categoryName: String,
 )
 
 data class RegisterInquiryCategoryResponse(
@@ -21,4 +20,9 @@ data class AnswerInquiryResponse(
     val answerId: String,
     val answerContent: String,
     val answeredAt: Instant
+)
+
+data class UpdateInquiryAnswerResponse(
+    val inquiryId: String,
+    val answerId: String,
 )

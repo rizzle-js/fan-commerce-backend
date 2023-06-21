@@ -14,7 +14,6 @@ class CustomerServiceAdminController {
         // 실제로는 이 부분에 카테고리 수정 처리 로직이 들어가야 합니다.
         return UpdateInquiryCategoryResponse(
             categoryId = categoryId,
-            categoryName = inquiryCategoryUpdateRequest.categoryName,
         )
     }
 
@@ -56,10 +55,24 @@ class CustomerServiceAdminController {
         )
     }
 
+    @PutMapping(UPDATE_INQUIRY_ANSWER)
+    fun updateInquiryAnswer(
+        @PathVariable inquiryId: String,
+        @PathVariable answerId: String,
+    ): UpdateInquiryAnswerResponse {
+        // 여기서는 간단하게 수정 요청 받은 문의 ID, 수정된 답변 내용, 현재 시각을 반환하도록 하겠습니다.
+        // 실제로는 이 부분에 문의 답변 수정 처리 로직이 들어가야 합니다.
+        return UpdateInquiryAnswerResponse(
+            inquiryId = inquiryId,
+            answerId = answerId,
+        )
+    }
+
     companion object {
         const val UPDATE_INQUIRY_CATEGORY = "/inquiry-categories/{categoryId}"
         const val REGISTER_INQUIRY_CATEGORY = "/inquiry-categories"
         const val DELETE_INQUIRY_CATEGORY = "/inquiry-categories/{categoryId}"
         const val ANSWER_INQUIRY = "/inquiries/{inquiryId}/answers"
+        const val UPDATE_INQUIRY_ANSWER = "/inquiries/{inquiryId}/answers/{answerId}"
     }
 }
