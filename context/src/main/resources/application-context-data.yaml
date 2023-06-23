@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+        generate_statistics: true
+        session.events.log.LOG_QUERY_SLOWER_THAN_MS: 10
+        default_batch_fetch_size: 500
