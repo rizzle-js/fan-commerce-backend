@@ -13,7 +13,7 @@ noArg {
 
 dependencies {
     implementation(project(":common"))
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    api("org.springframework.boot:spring-boot-starter-data-jpa")
     //runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
 

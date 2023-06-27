@@ -1,7 +1,7 @@
 package com.kakaoent.md.domain.code
 
+import com.fasterxml.jackson.databind.BeanDescription
 import com.kakaoent.md.domain.AuditingEntity
-import com.kakaoent.md.domain.DOMAIN_ID_LENGTH
 import com.kakaoent.md.domain.EXCLUDE_DELETION
 import jakarta.persistence.*
 import org.hibernate.annotations.Where
@@ -9,8 +9,6 @@ import org.hibernate.annotations.Where
 @Entity
 @Table(name = "code_category")
 class CodeCategory(
-    @Column(name = "code_category_id", updatable = false, nullable = false, unique = true, length = DOMAIN_ID_LENGTH)
-    val codeCategoryId: String,
 
     name: String,
 
@@ -19,15 +17,15 @@ class CodeCategory(
     codes: List<Code> = mutableListOf()
 ) : AuditingEntity() {
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 30)
     var name: String = name
         protected set
 
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false, length = 100)
     var description: String = description
         protected set
 
-    @OneToMany(mappedBy = "codeCategory", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "codeCategory", cascade = [CascadeType.ALL])
     @Where(clause = EXCLUDE_DELETION)
     protected val _codes: MutableList<Code> = codes.toMutableList()
     val codes: List<Code> get() = _codes.toList()
@@ -50,6 +48,19 @@ class CodeCategory(
         this.name = name
         this.description = description
     }
+
+    fun updateCode(codeName: String, codeDescription: String) {
+        codes.find { it.name == codeName }
+            ?.update(
+                name = codeName,
+                description = codeDescription
+            )
+    }
+
+    fun deleteCode(codeName: String) {
+        codes.find { it.name == codeName }
+            ?.delete()
+    }
 }
 
 @Entity
@@ -57,7 +68,7 @@ class CodeCategory(
 class Code(
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code_category_id", referencedColumnName = "code_category_id")
+    @JoinColumn(name = "code_id")
     val codeCategory: CodeCategory,
 
     name: String,

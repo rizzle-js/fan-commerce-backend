@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:fan_lounge;MODE=MySQL;
+    url: jdbc:h2:mem:fan_md;MODE=MySQL;
     username: sa
     password:
 
