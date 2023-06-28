@@ -4,7 +4,6 @@ import com.kakaoent.md.domain.code.CodeCategoryDomainService
 import com.kakaoent.md.domain.code.CodeCategoryRepository
 import org.springframework.stereotype.Service
 
-@Service
 internal class CodeCategoryDomainServiceImpl(
     private val repository: CodeCategoryRepository
 ) : CodeCategoryDomainService {
