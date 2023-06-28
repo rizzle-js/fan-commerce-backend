@@ -1,0 +1,41 @@
+spring:
+  cloud:
+    gcp:
+      storage:
+        enabled: false
+        project-id: ""
+        bucket: ""
+---
+spring:
+  config:
+    activate:
+      on-profile: local, test
+  cloud:
+    gcp:
+      storage:
+        enabled: true
+        project-id: "dev-melon-fan-platform-project"
+        bucket: "dev-melon-fan-lounge-static-resources-bucket"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: sandbox
+  cloud:
+    gcp:
+      storage:
+        enabled: true
+        project-id: "dev-melon-fan-platform-project"
+        bucket: "dev-melon-fan-lounge-static-resources-bucket"
+---
+spring:
+  config:
+    activate:
+      on-profile: cbt, prod
+  cloud:
+    gcp:
+      storage:
+        enabled: true
+        project-id: "prod-melon-fanconnect-project"
+        bucket: "prod-melon-fan-lounge-static-resources-bucket"
