@@ -1,5 +1,6 @@
 package com.kakaoent.md.admin.application.api.commoncode
 
+import com.kakaoent.md.config.CODE_CATEGORIES_CACHE
 import com.kakaoent.md.domain.code.Code
 import com.kakaoent.md.domain.code.CodeCategory
 import com.kakaoent.md.domain.code.CodeCategoryRepository
@@ -14,7 +15,7 @@ class CodeCategoryService(
 ) {
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0.name")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0.name")
     fun register(request: RegisterCodeCategoryRequest) {
         val codeCategory = codeCategoryRepository.findByName(request.name)
 
@@ -31,7 +32,7 @@ class CodeCategoryService(
     }
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0.name")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0.name")
     fun update(request: UpdateCodeCategoryRequest) {
         val codeCategory = codeCategoryRepository.getByName(request.name)
 
@@ -42,7 +43,7 @@ class CodeCategoryService(
     }
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0")
     fun delete(codeCategoryName: String) {
         val codeCategory = codeCategoryRepository.getByName(codeCategoryName)
 
@@ -50,7 +51,7 @@ class CodeCategoryService(
     }
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0")
     fun addCode(codeCategoryName: String, addCodeRequest: AddCodeRequest) {
         val codeCategory = codeCategoryRepository.getByName(codeCategoryName)
 
@@ -64,7 +65,7 @@ class CodeCategoryService(
     }
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0")
     fun updateCode(codeCategoryName: String, updateCodeRequest: UpdateCodeRequest) {
         val codeCategory = codeCategoryRepository.getByName(codeCategoryName)
         codeCategory.updateCode(
@@ -74,7 +75,7 @@ class CodeCategoryService(
     }
 
     @Transactional
-    @CacheEvict(value = ["codeCategories"], key = "#p0")
+    @CacheEvict(value = [CODE_CATEGORIES_CACHE], key = "#p0")
     fun deleteCode(codeCategoryName: String, codeName: String) {
         val codeCategory = codeCategoryRepository.getByName(codeCategoryName)
         codeCategory.deleteCode(codeName)

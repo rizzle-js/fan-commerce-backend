@@ -1,5 +1,6 @@
 package com.kakaoent.md.application.api.codecategory
 
+import com.kakaoent.md.config.CODE_CATEGORIES_CACHE
 import com.kakaoent.md.domain.code.CodeCategoryRepository
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cache.annotation.Caching
@@ -13,7 +14,7 @@ class CodeCategoryService(
 ) {
 
     @Caching(
-        cacheable = [Cacheable(value = ["codeCategories"], key = "#p0")]
+        cacheable = [Cacheable(value = [CODE_CATEGORIES_CACHE], key = "#p0")]
     )
     fun getCodeCategory(categoryName: String): CodeCategoryResponse {
         val codeCategory = codeCategoryRepository.getByName(categoryName)

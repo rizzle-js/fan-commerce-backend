@@ -19,6 +19,8 @@ class SpringCacheConfig {
             maxIdleTime = 60 * 60 * 24 * 7
         }
 
-        return RedissonSpringCacheManager(redissonClient, mapOf("codeCategories" to config))
+        return RedissonSpringCacheManager(redissonClient, mapOf(CODE_CATEGORIES_CACHE to config))
     }
 }
+
+const val CODE_CATEGORIES_CACHE = "codeCategories"
