@@ -1,0 +1,19 @@
+server:
+  shutdown: graceful
+  error.whitelabel.enabled: false
+
+spring:
+  profiles:
+    default: local
+  application:
+    name: melon-fan-md
+  config:
+    import:
+      - application-context.yaml
+  autoconfigure.exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local

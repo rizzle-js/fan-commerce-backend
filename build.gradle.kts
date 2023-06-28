@@ -57,8 +57,8 @@ val springContexts: List<Project> = listOf(
     project(":context"),
     project(":internal-config"),
     project(":external-service"),
-    project(":md-api"),
-    project(":admin-api"),
+    project(":application-md-api"),
+    project(":application-admin-api"),
 )
 
 configure(springContexts) {

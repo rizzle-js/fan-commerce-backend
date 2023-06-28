@@ -1,16 +1,10 @@
 package com.kakaoent.md.domain
 
 import jakarta.persistence.*
-import org.hibernate.annotations.Where
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.domain.Persistable
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.NoRepositoryBean
-import java.lang.annotation.Inherited
 import java.time.Instant
 import java.util.*
 
@@ -64,27 +58,16 @@ abstract class AuditingEntity : BaseEntity() {
     protected lateinit var updatedBy: String
 
     @PrePersist
-    private fun prePersist() {
+    protected fun prePersist() {
         if (::createdAt.isInitialized) return
         createdAt = Instant.now()
         updatedAt = Instant.now()
     }
 
     @PreUpdate
-    private fun preUpdate() {
+    protected fun preUpdate() {
         updatedAt = Instant.now()
     }
-}
-
-@NoRepositoryBean
-interface BaseRepository<T : BaseEntity, ID : Any> : CrudRepository<T, ID> {
-
-    @Query("select t from #{#entityName} t where t.deleted = false")
-    override fun findById(id: ID): Optional<T>
-
-    @Query("update #{#entityName} t set t.deleted = true where t = :entity")
-    @Modifying
-    override fun delete(entity: T)
 }
 
 const val EXCLUDE_DELETION = "deleted = false"
