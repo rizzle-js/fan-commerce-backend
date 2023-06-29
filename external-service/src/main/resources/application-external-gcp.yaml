@@ -10,12 +10,6 @@ spring:
   config:
     activate:
       on-profile: local, test
-  cloud:
-    gcp:
-      storage:
-        enabled: true
-        project-id: "dev-melon-fan-platform-project"
-        bucket: "dev-melon-fan-lounge-static-resources-bucket"
 
 ---
 spring:
