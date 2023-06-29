@@ -9,7 +9,7 @@ import com.kakaoent.md.external.storage.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.io.File
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 internal class GoogleCloudStorageService(
@@ -20,13 +20,15 @@ internal class GoogleCloudStorageService(
     @Autowired(required = false)
     private lateinit var storage: Storage
 
-    override fun upload(path: String, file: File): FileMetadata = try {
+    override fun upload(directory: String, file: MultipartFile): FileMetadata = try {
 
-        val fileName = file.name
+        val fileName = file.originalFilename ?: file.name
+
+        val path = "$directory/$fileName"
 
         storage.create(
-            BlobInfo.newBuilder(bucketName, "$path/$fileName").build(),
-            file.readBytes(),
+            BlobInfo.newBuilder(bucketName, path).build(),
+            file.bytes,
             Storage.BlobTargetOption.detectContentType()
         ).let {
             FileMetadata(
@@ -43,7 +45,7 @@ internal class GoogleCloudStorageService(
     }
 
     //google cloud storage에서 bulk upload 지원 안함
-    override fun upload(path: String, files: List<File>): List<FileMetadata> = files.map { upload(path, it) }
+    override fun upload(directory: String, files: List<MultipartFile>): List<FileMetadata> = files.map { upload(directory, it) }
 
     override fun delete(path: String): Boolean = try {
         storage.delete(bucketName, path)

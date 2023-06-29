@@ -13,11 +13,13 @@ import org.springframework.context.annotation.Import
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentationConfigurer
 import org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris
 import org.springframework.restdocs.templates.TemplateFormats.markdown
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 
 
 @Import(HttpEncodingAutoConfiguration::class, CustomizationConfiguration::class, JsonConfig::class)
 @AutoConfigureRestDocs
+@ActiveProfiles("test")
 abstract class ApiSpec : FunSpec() {
 
     override fun extensions(): List<Extension> = listOf(SpringExtension)

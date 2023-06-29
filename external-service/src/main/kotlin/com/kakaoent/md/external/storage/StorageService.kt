@@ -1,16 +1,16 @@
 package com.kakaoent.md.external.storage
 
-import java.io.File
+import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import kotlin.jvm.Throws
 
 interface StorageService {
 
     @Throws(FileUploadFailedException::class)
-    fun upload(path: String, file: File): FileMetadata
+    fun upload(directory: String, file: MultipartFile): FileMetadata
 
     @Throws(FileUploadFailedException::class)
-    fun upload(path: String, files: List<File>): List<FileMetadata>
+    fun upload(directory: String, files: List<MultipartFile>): List<FileMetadata>
 
     @Throws(FileDeleteFailedException::class)
     fun delete(path: String): Boolean
