@@ -42,6 +42,7 @@ internal class GoogleCloudStorageService(
         throw FileUploadFailedException("Failed to upload file: ${file.name}", ex)
     }
 
+    //google cloud storage에서 bulk upload 지원 안함
     override fun upload(path: String, files: List<File>): List<FileMetadata> = files.map { upload(path, it) }
 
     override fun delete(path: String): Boolean = try {
