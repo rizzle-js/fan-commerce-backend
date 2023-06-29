@@ -1,0 +1,155 @@
+name: Main Event Dispatcher
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+    paths-ignore:
+      - '.github/workflows/**'
+
+jobs:
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      shared: ${{ steps.filter.outputs.shared }}
+      rest-api: ${{ steps.filter.outputs.rest-api }}
+      admin-api: ${{ steps.filter.outputs.admin-api }}
+      any: ${{ steps.filter.outputs.any }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - 'build.gradle.kts'
+              - 'gradle.properties'
+              - 'settings.gradle.kts'
+              - 'common/**'
+              - 'internal-config/**'
+              - 'context/**'
+              - 'external-service/**'
+            md-api: &md-api
+              - 'application-md-api/**'
+            admin-api: &admin-api
+              - 'application-admin-api/**'
+            any:
+              - *shared
+              - *md-api
+              - *admin-api
+  call-shared-ci-action:
+    name: Call Shared CI Action
+    needs: [changes]
+    if: ${{ needs.changes.outputs.any == 'true' }}
+    uses: ./.github/workflows/action-ci.yml
+    with:
+      appName: shared
+      buildArgs: :common:test :context:test :context:integration-test :external-service:test :external-service:integration-test :internal-config:test
+      shouldUploadArtifacts: none
+      shouldUploadImage: false
+
+  call-md-api-ci-action:
+    name: Call MD Api CI Action
+    needs: [changes]
+    if: ${{ needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-api == 'true' }}
+    uses: ./.github/workflows/action-ci.yml
+    with:
+      appName: md-api
+      buildArgs: :application-md-api:test :application-md-api:integration-test :application-md-api:api-docs-test :application-md-api:packageReference
+      useJib: true
+      # jdkVersion: 11 # default is 17
+      shouldUploadArtifacts: reference # can be multiple value with space sperator. options) package, openapi, reference
+      # packageGlobPath: build/libs/app.jar
+      # packageUploadDestination: 'dev-mcp-app-kor-bucket/broker-github-artifacts/${{ github.run_number }}/''
+#      openapiGlobPath: rest-api/build/api-spec/openapi3.yaml
+#      openapiUploadDestination: dev-melon-fan-platform-kor-bucket/swagger/melon-fan-lounge
+      referenceGlobPath: build/docs/reference.tgz
+      referenceUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-api
+#      referenceFontPath: src/docs/asciidoc/resources/fonts/*
+      shouldUploadImage: ${{ github.event_name == 'push' }}
+      imageRegistry: asia-northeast3-docker.pkg.dev
+      imageRepository: dev-melon-fan-platform-project/fan-platform/melon-fan-md-api
+      imageTag:  BUILD-${{ github.run_number }}
+    secrets:
+      gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+  call-admin-api-ci-action:
+    name: Call AdminApi CI Action
+    needs: [changes]
+    if: ${{ needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true' }}
+    uses: ./.github/workflows/action-ci.yml
+    with:
+      appName: admin-api
+      buildArgs: :admin-api:test :admin-api:integration-test :admin-api:api-docs-test :admin-api:packageReference #test integration-test openapi3 bootJar packageReference
+      useJib: true
+      # jdkVersion: 11 # default is 17
+      shouldUploadArtifacts: reference # can be multiple value with space sperator. options) package, openapi, reference
+      # packageGlobPath: build/libs/app.jar
+      # packageUploadDestination: 'dev-mcp-app-kor-bucket/broker-github-artifacts/${{ github.run_number }}/''
+#      openapiGlobPath: admin-api/build/api-spec/openapi3.yaml
+#      openapiUploadDestination: dev-melon-fan-platform-kor-bucket/swagger/melon-fan-lounge
+      referenceGlobPath: build/docs/reference.tgz
+      referenceUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-admin-api
+      # referenceFontPath: src/docs/asciidoc/resources/fonts/*
+      shouldUploadImage: ${{ github.event_name == 'push' }}
+      imageRegistry: asia-northeast3-docker.pkg.dev
+      imageRepository: dev-melon-fan-platform-project/fan-platform/melon-fan-md-admin-api
+      imageTag:  BUILD-${{ github.run_number }}
+    secrets:
+      gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+#  call-md-api-gitops-action:
+#    name: Call RestApi GitOps Action
+#    needs: [changes, call-shared-ci-action, call-rest-api-ci-action]
+#    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.rest-api == 'true') }}
+#    uses: ./.github/workflows/action-gitops.yml
+#    with:
+#      targetRepo: kakaoent/melon-fan-platform-manifests
+#      gitOpsName: melon-fan-lounge-api
+#      gitOpsTargetPath: k8s/gke/melon-fan-lounge-api/overlays/sandbox
+#      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-lounge-api
+#      appTagName: BUILD-${{ github.run_number }}
+#      appTagType: IMAGE
+#    secrets:
+#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+#
+#  call-admin-api-gitops-action:
+#    name: Call AdminApi GitOps Action
+#    needs: [changes, call-shared-ci-action, call-admin-api-ci-action]
+#    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true') }}
+#    uses: ./.github/workflows/action-gitops.yml
+#    with:
+#      targetRepo: kakaoent/melon-fan-platform-manifests
+#      gitOpsName: melon-fan-lounge-admin-api
+#      gitOpsTargetPath: k8s/gke/melon-fan-lounge-admin-api/overlays/sandbox
+#      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-lounge-admin-api
+#      appTagName: BUILD-${{ github.run_number }}
+#      appTagType: IMAGE
+#    secrets:
+#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+#
+#  call-docs-server-gitops-action:
+#    name: Call DocsServer GitOps Action
+#    needs: [changes, call-rest-api-ci-action, call-admin-api-ci-action]
+#    if: |
+#      !cancelled() &&
+#      !contains(needs.*.result, 'failure') &&
+#      !contains(needs.*.result, 'cancelled') &&
+#      github.event_name == 'push' &&
+#      needs.changes.outputs.any == 'true'
+#    uses: ./.github/workflows/action-gitops.yml
+#    with:
+#      targetRepo: kakaoent/melon-fan-platform-manifests
+#      gitOpsName: docs-server
+#      gitOpsTargetPath: k8s/gke/docs/docs-server
+#      appTagType: ANNOTATION
+#      appTagName: BUILD-${{ github.run_number }}
+#    secrets:
+#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}

@@ -56,3 +56,16 @@ tasks.register<Test>("api-docs-test") {
     testClassesDirs = sourceSets["api-docs-test"].output.classesDirs
     classpath = sourceSets["api-docs-test"].runtimeClasspath
 }
+
+val packagedReferenceDirectory = file("build/docs")
+
+tasks.register<Tar>("packageReference") {
+    dependsOn("api-docs-test")
+    description = "Packages api reference."
+    group = "documentation"
+
+    compression = Compression.GZIP
+    archiveFileName.set("reference.tgz")
+    destinationDirectory.set(packagedReferenceDirectory)
+    from(snippetsDirectory)
+}

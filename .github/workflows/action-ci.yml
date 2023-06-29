@@ -1,0 +1,200 @@
+name: CI Action
+
+on:
+  workflow_call:
+    inputs:
+      appName:
+        required: true
+        type: string
+      buildArgs:
+        required: true
+        type: string
+      useJib:
+        required: false
+        type: boolean
+        default: false
+      jdkVersion:
+        required: false
+        type: string
+        default: '17'
+      shouldUploadArtifacts:
+        required: false
+        type: string
+        default: none
+      packageGlobPath:
+        required: false
+        type: string
+        default: none
+      packageUploadDestination:
+        required: false
+        type: string
+        default: none
+      openapiGlobPath:
+        required: false
+        type: string
+        default: none
+      openapiUploadDestination:
+        required: false
+        type: string
+        default: none
+      referenceGlobPath:
+        required: false
+        type: string
+        default: none
+      referenceUploadDestination:
+        required: false
+        type: string
+        default: none
+      referenceFontPath:
+        required: false
+        type: string
+        default: none
+      shouldUploadImage:
+        required: true
+        type: boolean
+      imageRegistry:
+        required: false
+        type: string
+        default: none
+      imageRepository:
+        required: false
+        type: string
+        default: none
+      imageTag:
+        required: false
+        type: string
+        default: none
+
+    secrets:
+      gcpWorkloadIdentityProvider:
+        required: false
+      gcpServiceAccount:
+        required: false
+
+jobs:
+  test:
+    name: Build And Test
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      issues: read
+      pull-requests: write
+    steps:
+      - name: Checks-out Code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ inputs.jdkVersion }}
+          distribution: 'temurin'
+
+      - name: Set up Graphviz
+        if: ${{ inputs.referenceFontPath != 'none' }}
+        uses: ts-graphviz/setup-graphviz@v1
+
+      - name: Copy and Build the fonts
+        if: ${{ inputs.referenceFontPath != 'none' }}
+        run: mkdir -p ~/.local/share/fonts && cp -r src/docs/asciidoc/resources/fonts/* ~/.local/share/fonts/ && fc-cache -rv
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.6
+          arguments: ${{ inputs.buildArgs }}
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: '**/build/test-results/**/*.xml'
+          github_retries: 3
+
+      - name: Configure Google Cloud credentials
+        if: ${{ inputs.shouldUploadArtifacts != 'none' }}
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.gcpWorkloadIdentityProvider }}
+          service_account: ${{ secrets.gcpServiceAccount }}
+
+      - name: Upload Artifact to Cloud Storage Bucket
+        if: ${{ !inputs.useJib && contains(inputs.shouldUploadArtifacts, 'package') }}
+        uses: google-github-actions/upload-cloud-storage@v1
+        with:
+          path: '.'
+          destination: ${{ inputs.packageUploadDestination }}
+          glob: ${{ inputs.packageGlobPath }}
+
+      - name: Upload OpenApi3-Spec to Cloud Storage Bucket
+        if: ${{ contains(inputs.shouldUploadArtifacts, 'openapi') }}
+        uses: google-github-actions/upload-cloud-storage@v1
+        with:
+          path: '.'
+          destination: ${{ inputs.openapiUploadDestination }}
+          glob: ${{ inputs.openapiGlobPath }}
+
+      - name: Upload Reference to Cloud Storage Bucket
+        if: ${{ contains(inputs.shouldUploadArtifacts, 'reference') }}
+        uses: google-github-actions/upload-cloud-storage@v1
+        with:
+          path: '.'
+          destination: ${{ inputs.referenceUploadDestination }}
+          glob: ${{ inputs.referenceGlobPath }}
+
+
+
+  dockerize:
+    name: Dockerize
+    if: ${{ inputs.shouldUploadImage }}
+    needs: [test]
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ inputs.jdkVersion }}
+          distribution: 'temurin'
+
+      - name: Configure Google Cloud credentials
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.gcpWorkloadIdentityProvider }}
+          service_account: ${{ secrets.gcpServiceAccount }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Download Artifact from Cloud Storage Bucket
+        if: ${{ !inputs.useJib && contains(inputs.shouldUploadArtifacts, 'package') }}
+        run: |
+          gsutil -m cp -r 'gs://${{ inputs.packageUploadDestination }}/*' .
+
+      - name: Without JIB - Build, tag, and push image to Google Cloud Artifact Registry
+        if: ${{ !inputs.useJib }}
+        id: build-image-without-jib
+        env:
+          DOCKER_FILE_PATH: ./Dockerfile
+          CONTAINER_REGISTRY: ${{ inputs.imageRegistry }}
+          CONTAINER_REPOSITORY: ${{ inputs.imageRepository }}
+          IMAGE_TAG: ${{ inputs.imageTag }}
+        run: |
+          gcloud auth configure-docker $CONTAINER_REGISTRY
+          docker build -t $CONTAINER_REGISTRY/$CONTAINER_REPOSITORY:$IMAGE_TAG -f $DOCKER_FILE_PATH .
+          docker push $CONTAINER_REGISTRY/$CONTAINER_REPOSITORY:$IMAGE_TAG
+
+      - name: With JIB - Build, tag, and push image to Google Cloud Artifact Registry
+        if: ${{ inputs.useJib }}
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.6
+          arguments: '-PisAmd64 :${{ inputs.appName }}:jib --image=${{ inputs.imageRegistry }}/${{ inputs.imageRepository}}:${{ inputs.imageTag }}'
