@@ -5,12 +5,15 @@ spring:
         enabled: false
         project-id: ""
         bucket: ""
+
+app.melon.static.host: ""
 ---
 spring:
   config:
     activate:
       on-profile: local, test
 
+app.melon.static.host: https://sandbox-fan-static.melon.com
 ---
 spring:
   config:
@@ -22,6 +25,7 @@ spring:
         enabled: true
         project-id: "dev-melon-fan-platform-project"
         bucket: "dev-melon-fan-lounge-static-resources-bucket"
+app.melon.static.host: https://sandbox-fan-static.melon.com
 ---
 spring:
   config:
@@ -33,3 +37,4 @@ spring:
         enabled: true
         project-id: "prod-melon-fanconnect-project"
         bucket: "prod-melon-fan-lounge-static-resources-bucket"
+app.melon.static.host: https://cbt-fan-static.melon.com

@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":context"))
     implementation(project(":internal-config"))
+    implementation(project(":external-service"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(module = "spring-boot-starter-tomcat")
     }
