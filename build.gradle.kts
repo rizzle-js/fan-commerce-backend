@@ -112,5 +112,4 @@ configure(springContexts) {
 
         shouldRunAfter(tasks.test)
     }
-
 }

@@ -86,7 +86,7 @@ jobs:
     uses: ./.github/workflows/action-ci.yml
     with:
       appName: admin-api
-      buildArgs: :admin-api:test :admin-api:integration-test :admin-api:api-docs-test :admin-api:packageReference #test integration-test openapi3 bootJar packageReference
+      buildArgs: :application-admin-api:test :application-admin-api:integration-test :application-admin-api:api-docs-test :application-admin-api:packageReference #test integration-test openapi3 bootJar packageReference
       useJib: true
       # jdkVersion: 11 # default is 17
       shouldUploadArtifacts: reference # can be multiple value with space sperator. options) package, openapi, reference
