@@ -7,11 +7,6 @@ data class PaymentMethodResponse(
     val paymentMethods: List<PaymentMethod>
 )
 
-data class PaymentMethod(
-    val name: String,
-    val details: String
-)
-
 data class PaymentResponse(
     val memberKey: Long,
     val orderId: String,
