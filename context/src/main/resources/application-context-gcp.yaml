@@ -1,9 +1,5 @@
 spring:
   config:
-    import: sm://
----
-spring:
-  config:
     activate:
       on-profile: local, test
   cloud:
@@ -15,3 +11,8 @@ spring:
       secretmanager:
         enabled: false
 ---
+spring:
+  config:
+    activate:
+      on-profile: sandbox, cbt, prod
+    import: sm://
