@@ -59,7 +59,7 @@ jobs:
     if: ${{ needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-api == 'true' }}
     uses: ./.github/workflows/action-ci.yml
     with:
-      appName: md-api
+      appName: application-md-api
       buildArgs: :application-md-api:test :application-md-api:integration-test :application-md-api:api-docs-test :application-md-api:packageReference
       useJib: true
       # jdkVersion: 11 # default is 17
@@ -68,7 +68,7 @@ jobs:
       # packageUploadDestination: 'dev-mcp-app-kor-bucket/broker-github-artifacts/${{ github.run_number }}/''
 #      openapiGlobPath: rest-api/build/api-spec/openapi3.yaml
 #      openapiUploadDestination: dev-melon-fan-platform-kor-bucket/swagger/melon-fan-lounge
-      referenceGlobPath: build/docs/reference.tgz
+      referenceGlobPath: application-md-api/build/docs/reference.tgz
       referenceUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-api
 #      referenceFontPath: src/docs/asciidoc/resources/fonts/*
       shouldUploadImage: ${{ github.event_name == 'push' }}
@@ -85,7 +85,7 @@ jobs:
     if: ${{ needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true' }}
     uses: ./.github/workflows/action-ci.yml
     with:
-      appName: admin-api
+      appName: application-admin-api
       buildArgs: :application-admin-api:test :application-admin-api:integration-test :application-admin-api:api-docs-test :application-admin-api:packageReference #test integration-test openapi3 bootJar packageReference
       useJib: true
       # jdkVersion: 11 # default is 17
@@ -94,7 +94,7 @@ jobs:
       # packageUploadDestination: 'dev-mcp-app-kor-bucket/broker-github-artifacts/${{ github.run_number }}/''
 #      openapiGlobPath: admin-api/build/api-spec/openapi3.yaml
 #      openapiUploadDestination: dev-melon-fan-platform-kor-bucket/swagger/melon-fan-lounge
-      referenceGlobPath: build/docs/reference.tgz
+      referenceGlobPath: application-admin-api/build/docs/reference.tgz
       referenceUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-admin-api
       # referenceFontPath: src/docs/asciidoc/resources/fonts/*
       shouldUploadImage: ${{ github.event_name == 'push' }}
