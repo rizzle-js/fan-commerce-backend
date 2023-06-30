@@ -18,8 +18,10 @@ dependencies {
     implementation("it.ozimov:embedded-redis:0.7.3") {
         exclude(group ="org.slf4j", module = "slf4j-simple" )
     }
+    implementation("com.google.cloud:spring-cloud-gcp-starter-secretmanager")
+    implementation("com.google.cloud:spring-cloud-gcp-starter-logging")
 
-    //runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("com.h2database:h2")
 
     integrationTestImplementation("com.h2database:h2")

@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.spring")
     kotlin("plugin.serialization")
 
-    id("io.spring.dependency-management") apply false
+    id("io.spring.dependency-management")
     id("org.springframework.boot") apply false
 
     id("com.google.cloud.tools.jib") apply false
@@ -19,6 +19,7 @@ repositories {
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "kotlinx-serialization")
+    apply(plugin = "io.spring.dependency-management")
 
     repositories {
         mavenCentral()
@@ -26,6 +27,8 @@ subprojects {
     }
 
     val kotestVersion = "5.6.2"
+    extra["snakeyaml.version"] = "2.0"
+
 
     dependencies {
         implementation(kotlin("stdlib"))
@@ -63,9 +66,9 @@ val springContexts: List<Project> = listOf(
 
 configure(springContexts) {
     apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
+
 
     sourceSets {
         create("integration-test") {
@@ -81,6 +84,13 @@ configure(springContexts) {
 
     val integrationTestImplementation: Configuration by configurations.getting {
         extendsFrom(configurations.implementation.get(), configurations.testImplementation.get())
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("com.google.cloud:spring-cloud-gcp-dependencies:4.5.1")
+            mavenBom("io.micrometer:micrometer-tracing-bom:latest.release")
+        }
     }
 
     dependencies {

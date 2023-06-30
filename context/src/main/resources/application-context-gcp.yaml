@@ -1,0 +1,17 @@
+spring:
+  config:
+    import: sm://
+---
+spring:
+  config:
+    activate:
+      on-profile: local, test
+  cloud:
+    gcp:
+      core:
+        enabled: false
+      logging:
+        enabled: false
+      secretmanager:
+        enabled: false
+---

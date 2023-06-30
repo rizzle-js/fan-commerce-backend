@@ -7,7 +7,7 @@ include("external-service")
 
 pluginManagement {
     val kotlinVersion: String = "1.8.20"
-    val springBootVersion: String = "3.1.0"
+    val springBootVersion: String = "3.1.1"
 
     plugins {
         id("org.springframework.boot") version springBootVersion

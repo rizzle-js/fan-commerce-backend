@@ -1,3 +1,5 @@
+import com.google.cloud.tools.jib.api.buildplan.ImageFormat
+
 plugins {
     id("com.google.cloud.tools.jib")
 }
@@ -31,6 +33,13 @@ dependencies {
     }
     implementation("org.springframework.boot:spring-boot-starter-undertow")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // tracing
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+
+    // prometheus exporter
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+    implementation("org.hibernate:hibernate-micrometer:6.2.5.Final")
 
     //api docs
     apiDocsTestImplementation(testFixtures(project(":internal-config")))
@@ -68,4 +77,23 @@ tasks.register<Tar>("packageReference") {
     archiveFileName.set("reference.tgz")
     destinationDirectory.set(packagedReferenceDirectory)
     from(snippetsDirectory)
+}
+
+jib {
+    from {
+        if (project.hasProperty("isAmd64")) {
+            image = "gcr.io/distroless/java17-debian11"
+        } else {
+            image = "arm64v8/eclipse-temurin:17-jre-jammy"
+        }
+    }
+    to {
+        image = "melon-fan-md-api"
+    }
+    container {
+        user = "65534"
+        ports = listOf("8080")
+        environment = mapOf()
+        format = ImageFormat.OCI
+    }
 }

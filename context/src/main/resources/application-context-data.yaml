@@ -34,3 +34,23 @@ spring:
     url: jdbc:h2:mem:fan_md;MODE=MySQL;
     username: sa
     password:
+
+---
+spring:
+  config:
+    activate:
+      on-profile: sandbox
+  cloud:
+    gcp:
+      sql:
+        database-name: dev-melon-fan-platform-kr-mysql
+        instance-connection-name: dev-melon-fan-platform-project:asia-northeast3:dev-melon-fan-platform-kr-mysql
+  data:
+    redis:
+      host: 10.157.72.3
+      port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://sandbox-fan-lounge-mydb.kakaoent.io:3306/fan_md
+    username: ${sm://spring-datasource-username}
+    password: ${sm://spring-datasource-password}

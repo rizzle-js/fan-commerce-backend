@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="com/google/cloud/spring/logging/logback-json-appender.xml" />
+
+    <springProfile name="local,test">
+        <property name="appenderName" value="CONSOLE"/>
+    </springProfile>
+
+    <springProfile name="sandbox,cbt,prod">
+        <property name="appenderName" value="CONSOLE_JSON"/>
+    </springProfile>
+
+
+    <root level="info">
+        <appender-ref ref="${appenderName}"/>
+    </root>
+
+</configuration>

@@ -1,7 +1,6 @@
 server:
   shutdown: graceful
   error.whitelabel.enabled: false
-
 spring:
   profiles:
     default: local
@@ -18,8 +17,21 @@ spring:
       max-request-size: 21MB
   jackson:
     default-property-inclusion: non_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
 ---
 spring:
   config:
     activate:
       on-profile: local
+---
+spring:
+  config:
+    activate:
+      on-profile: sandbox
+  jpa:
+    hibernate:
+      ddl-auto: create
