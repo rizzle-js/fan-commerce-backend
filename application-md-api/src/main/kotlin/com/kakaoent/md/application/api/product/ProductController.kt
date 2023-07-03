@@ -121,67 +121,6 @@ class ProductController {
         )
     }
 
-    @GetMapping(GET_PRODUCT_REVIEWS)
-    fun getProductReviews(
-        @PathVariable productId: String,
-        params: PagingParams
-    ): ProductReviewsResponse {
-        return ProductReviewsResponse(
-            productReviews = listOf(
-                ProductReview(
-                    reviewId = "2fBs3IHgpHecTZHuGg43u2",
-                    memberKey = 1L,
-                    productId = productId,
-                    rate = 4,
-                    comment = "좋아요 :)",
-                    reviewAt = Instant.ofEpochSecond(1686641320L),
-                ),
-                ProductReview(
-                    reviewId = "07AmdtM3GtyWOFug7i8Fog",
-                    memberKey = 2L,
-                    productId = productId,
-                    rate = 5,
-                    comment = "만족합니다.",
-                    reviewAt = Instant.ofEpochSecond(1686641920L),
-                )
-            )
-        )
-    }
-
-    @PostMapping(REVIEW_PRODUCT)
-    fun reviewProduct(
-        @PathVariable productId: String,
-        @RequestBody request: ReviewProductRequest
-    ): ProductReviewResponse {
-        // 상품 평가 로직은 생략
-        return ProductReviewResponse(
-            memberKey = request.memberKey,
-            productId = productId,
-            reviewId = "07ADpf6TfRU1wYU88Q6KP8",
-            reviewAt = Instant.ofEpochSecond(1686641320L),
-        )
-    }
-
-    @GetMapping(GET_PRODUCT_REVIEW_DETAIL)
-    fun getProductReviewDetail(
-        @PathVariable productId: String,
-        @PathVariable reviewId: String,
-    ): ProductReviewDetailResponse {
-        return ProductReviewDetailResponse(
-            memberKey = 1234L,
-            productId = productId,
-            reviewId = "07ADpf6TfRU1wYU88Q6KP8",
-            comment = "좋아요 :)",
-            rate = 10,
-            reviewAt = Instant.ofEpochSecond(1686641320L),
-            reviewImages = listOf(
-                "https://example.com/image1.jpg",
-                "https://example.com/image2.jpg",
-                "https://example.com/image3.jpg"
-            )
-        )
-    }
-
     companion object {
         const val GET_PRODUCTS = "/products"
         const val GET_PRODUCT_DETAIL = "/products/{productId}"
@@ -190,8 +129,5 @@ class ProductController {
         const val CHECK_PURCHASE_PERMISSION = "/products/{productId}/purchase/permission"
         const val PURCHASE_PRODUCT = "/products/{productId}/purchase"
         const val CANCEL_PRODUCT = "/products/{productId}/cancellation"
-        const val GET_PRODUCT_REVIEWS = "/products/{productId}/reviews"
-        const val REVIEW_PRODUCT = "/products/{productId}/reviews"
-        const val GET_PRODUCT_REVIEW_DETAIL = "/products/{productId}/reviews/{reviewId}"
     }
 }
