@@ -29,6 +29,7 @@ class RedisConfig(
     }
 }
 
+@Profile("local", "test")
 @Configuration
 internal class LocalRedisConfig(
     @Value("\${spring.data.redis.port}")
