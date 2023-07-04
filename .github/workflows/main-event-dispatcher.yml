@@ -134,22 +134,33 @@ jobs:
       appTagType: IMAGE
     secrets:
       botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
-#
-#  call-docs-server-gitops-action:
-#    name: Call DocsServer GitOps Action
-#    needs: [changes, call-rest-api-ci-action, call-admin-api-ci-action]
-#    if: |
-#      !cancelled() &&
-#      !contains(needs.*.result, 'failure') &&
-#      !contains(needs.*.result, 'cancelled') &&
-#      github.event_name == 'push' &&
-#      needs.changes.outputs.any == 'true'
-#    uses: ./.github/workflows/action-gitops.yml
-#    with:
-#      targetRepo: kakaoent/melon-fan-platform-manifests
-#      gitOpsName: docs-server
-#      gitOpsTargetPath: k8s/gke/docs/docs-server
-#      appTagType: ANNOTATION
-#      appTagName: BUILD-${{ github.run_number }}
-#    secrets:
-#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+
+  call-md-api-ref-update-action:
+    name: Call MD Api Reference Update Action
+    needs: [changes, call-shared-ci-action, call-md-api-ci-action]
+    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-api == 'true') }}
+    uses: ./.github/workflows/action-ref-update.yml
+    with:
+      targetRepo: kakaoent/melon-fan-md-docs
+      refName: md
+      targetPath: ./snippets/
+      refUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-api/application-md-api/build/docs/reference.tgz
+    secrets:
+      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+      gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+  call-md-admin-api-ref-update-action:
+    name: Call MD Admin Api Reference Update Action
+    needs: [changes, call-shared-ci-action, call-md-admin-api-ci-action]
+    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-admin-api == 'true') }}
+    uses: ./.github/workflows/action-ref-update.yml
+    with:
+      targetRepo: kakaoent/melon-fan-md-docs
+      refName: admin
+      targetPath: ./snippets/
+      refUploadDestination: dev-melon-fan-platform-kor-bucket/reference/melon-fan-md-admin-api/application-admin-api/build/docs/reference.tgz
+    secrets:
+      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+      gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}

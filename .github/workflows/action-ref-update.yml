@@ -1,0 +1,78 @@
+name: Reference Update Action
+
+on:
+  workflow_call:
+    inputs:
+      targetRepo:
+        required: true
+        type: string
+      refName:
+        required: true
+        type: string
+      targetPath:
+        required: true
+        type: string
+      refUploadDestination:
+        required: true
+        type: string
+    secrets:
+      botPAT:
+        required: true
+      gcpWorkloadIdentityProvider:
+        required: false
+      gcpServiceAccount:
+        required: false
+
+jobs:
+  ref-update:
+    runs-on: ubuntu-latest
+    env:
+      REF_NAME: ${{ inputs.refName }}
+      REF_UPLOAD_DESTINATION: ${{ inputs.refUploadDestination }}
+      TARGET_PATH: ${{ inputs.targetPath }}
+    steps:
+      - name: Checkout Manifests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.targetRepo }}
+          token: ${{ secrets.botPAT }}
+
+      - name: Configure Google Cloud credentials
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.gcpWorkloadIdentityProvider }}
+          service_account: ${{ secrets.gcpServiceAccount }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Create Temp DIR
+        run: |
+          mkdir -p ./tmp/$REF_NAME
+
+      - name: Download Reference from Cloud Storage Bucket
+        run: |
+          gsutil -m cp -r 'gs://$REF_UPLOAD_DESTINATION' ./tmp/$REF_NAME
+
+      - name: Update Reference
+        run: |
+          tar -xvf ./tmp/$REF_NAME/*.tgz -C ./tmp/$REF_NAME
+          rm -f ./tmp/$REF_NAME/*.tgz
+          cp -R ./tmp/$REF_NAME $TARGET_PATH 
+
+      - name: Delete Temp DIR
+        run: |
+          rm -rf ./tmp/$REF_NAME
+
+      - name: Push Update
+        env:
+          REF_GIT_BRANCH: main
+          REF_GIT_USERNAME: cicd-bot
+          REF_GIT_EMAIL: cicd-bot@kakaoent.com
+        run: |
+          git config --local user.name $REF_GIT_USERNAME
+          git config --local user.email $REF_GIT_EMAIL
+          git config --local pull.rebase true
+          git diff-index --quiet HEAD || git commit -am "Sync Reference From ${{ github.repository }} Build No. ${{ github.run_number }}"
+          (git pull origin $REF_GIT_BRANCH && git push origin $REF_GIT_BRANCH) || \
+          (echo "===== Retry Pushing Again =====" && sleep 3 && git pull origin $REF_GIT_BRANCH && git push origin $REF_GIT_BRANCH)
