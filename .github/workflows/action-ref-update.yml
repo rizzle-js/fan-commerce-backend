@@ -80,6 +80,6 @@ jobs:
           git config --local user.name $REF_GIT_USERNAME
           git config --local user.email $REF_GIT_EMAIL
           git config --local pull.rebase true
-          test -z "$(git status --porcelain)" || git commit -am "Sync Reference From ${{ github.repository }} Build No. ${{ github.run_number }}"
+          test -z "$(git status --porcelain)" || (git add -A && git commit -m "Sync Reference From ${{ github.repository }} Build No. ${{ github.run_number }}")
           (git pull origin $REF_GIT_BRANCH && git push origin $REF_GIT_BRANCH) || \
           (echo "===== Retry Pushing Again =====" && sleep 3 && git pull origin $REF_GIT_BRANCH && git push origin $REF_GIT_BRANCH)
