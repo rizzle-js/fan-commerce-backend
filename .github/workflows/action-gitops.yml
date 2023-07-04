@@ -1,0 +1,72 @@
+name: GitOps Action
+
+on:
+  workflow_call:
+    inputs:
+      targetRepo:
+        required: true
+        type: string
+      gitOpsName:
+        required: true
+        type: string
+      gitOpsTargetPath:
+        required: true
+        type: string
+      imageRepository:
+        required: false
+        type: string
+      appTagName:
+        required: true
+        type: string
+      appTagType:
+        required: true
+        type: string
+    secrets:
+      botPAT:
+        required: true
+
+jobs:
+  gitOps:
+    runs-on: ubuntu-latest
+    env:
+      GITOPS_NAME: ${{ inputs.gitOpsName }}
+      GITOPS_TARGET_PATH: ${{ inputs.gitOpsTargetPath }}
+      IMAGE_REPOSITORY: ${{ inputs.imageRepository }}
+      APP_TAG_NAME: ${{ inputs.appTagName }}
+      APP_TAG_TYPE: ${{ inputs.appTagType }}
+    steps:
+      - name: Checkout Manifests
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.targetRepo }}
+          token: ${{ secrets.botPAT }}
+      - name: Config Kustomize Command
+        id: command
+        shell: bash
+        run: |
+          if [ "$APP_TAG_TYPE" == "IMAGE" ]; then
+            echo "KUSTOMIZE_COMMAND=$(echo kustomize edit set image $GITOPS_NAME=$IMAGE_REPOSITORY:$APP_TAG_NAME)" >> $GITHUB_OUTPUT
+          else
+            echo "KUSTOMIZE_COMMAND=$(echo kustomize edit add annotation -f tag:$APP_TAG_NAME)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set New Tag
+        uses: stefanprodan/kube-tools@v1
+        with:
+          kustomize: 5.0.1
+          command: |
+            cd $GITOPS_TARGET_PATH
+            ${{ steps.command.outputs.KUSTOMIZE_COMMAND }}
+            cat kustomization.yaml
+      - name: Push Update
+        env:
+          MANIFEST_GIT_BRANCH: main
+          MANIFEST_GIT_USERNAME: cicd-bot
+          MANIFEST_GIT_EMAIL: cicd-bot@kakaoent.com
+        run: |
+          git config --local user.name $MANIFEST_GIT_USERNAME
+          git config --local user.email $MANIFEST_GIT_EMAIL
+          git config --local pull.rebase true
+          git diff-index --quiet HEAD || git commit -am "(GCP) Setting $GITOPS_TARGET_PATH tag to $APP_TAG_NAME"
+          (git pull origin $MANIFEST_GIT_BRANCH && git push origin $MANIFEST_GIT_BRANCH) || \
+          (echo "===== Retry Pushing Again =====" && sleep 3 && git pull origin $MANIFEST_GIT_BRANCH && git push origin $MANIFEST_GIT_BRANCH)

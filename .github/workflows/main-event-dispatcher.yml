@@ -105,35 +105,35 @@ jobs:
       gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-#  call-md-api-gitops-action:
-#    name: Call RestApi GitOps Action
-#    needs: [changes, call-shared-ci-action, call-rest-api-ci-action]
-#    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.rest-api == 'true') }}
-#    uses: ./.github/workflows/action-gitops.yml
-#    with:
-#      targetRepo: kakaoent/melon-fan-platform-manifests
-#      gitOpsName: melon-fan-lounge-api
-#      gitOpsTargetPath: k8s/gke/melon-fan-lounge-api/overlays/sandbox
-#      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-lounge-api
-#      appTagName: BUILD-${{ github.run_number }}
-#      appTagType: IMAGE
-#    secrets:
-#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
-#
-#  call-admin-api-gitops-action:
-#    name: Call AdminApi GitOps Action
-#    needs: [changes, call-shared-ci-action, call-admin-api-ci-action]
-#    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true') }}
-#    uses: ./.github/workflows/action-gitops.yml
-#    with:
-#      targetRepo: kakaoent/melon-fan-platform-manifests
-#      gitOpsName: melon-fan-lounge-admin-api
-#      gitOpsTargetPath: k8s/gke/melon-fan-lounge-admin-api/overlays/sandbox
-#      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-lounge-admin-api
-#      appTagName: BUILD-${{ github.run_number }}
-#      appTagType: IMAGE
-#    secrets:
-#      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+  call-md-api-gitops-action:
+    name: Call MD Api GitOps Action
+    needs: [changes, call-shared-ci-action, call-md-api-ci-action]
+    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-api == 'true') }}
+    uses: ./.github/workflows/action-gitops.yml
+    with:
+      targetRepo: kakaoent/melon-fan-platform-manifests
+      gitOpsName: melon-fan-md-api
+      gitOpsTargetPath: k8s/gke/melon-fan-md-api/overlays/sandbox
+      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-md-api
+      appTagName: BUILD-${{ github.run_number }}
+      appTagType: IMAGE
+    secrets:
+      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
+
+  call-admin-api-gitops-action:
+    name: Call AdminApi GitOps Action
+    needs: [changes, call-shared-ci-action, call-admin-api-ci-action]
+    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true') }}
+    uses: ./.github/workflows/action-gitops.yml
+    with:
+      targetRepo: kakaoent/melon-fan-platform-manifests
+      gitOpsName: melon-fan-md-admin-api
+      gitOpsTargetPath: k8s/gke/melon-fan-lounge-md-api/overlays/sandbox
+      imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-md-admin-api
+      appTagName: BUILD-${{ github.run_number }}
+      appTagType: IMAGE
+    secrets:
+      botPAT: ${{ secrets.PAT_GITHUB_ACTION_BOT }}
 #
 #  call-docs-server-gitops-action:
 #    name: Call DocsServer GitOps Action
