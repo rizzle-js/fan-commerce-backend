@@ -59,7 +59,7 @@ jobs:
 
       - name: Download Reference from Cloud Storage Bucket
         run: |
-          gsutil -m cp -r 'gs://$REF_UPLOAD_DESTINATION' ./tmp/$REF_NAME
+          gsutil -m cp -r gs://$REF_UPLOAD_DESTINATION ./tmp/$REF_NAME
 
       - name: Update Reference
         run: |
