@@ -150,8 +150,8 @@ jobs:
       gcpWorkloadIdentityProvider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       gcpServiceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-  call-md-admin-api-ref-update-action:
-    name: Call MD Admin Api Reference Update Action
+  call-admin-api-ref-update-action:
+    name: Call AdminApi Reference Update Action
     needs: [changes, call-shared-ci-action, call-admin-api-ci-action]
     if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true') }}
     uses: ./.github/workflows/action-ref-update.yml

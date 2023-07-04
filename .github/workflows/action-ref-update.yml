@@ -30,6 +30,13 @@ jobs:
       REF_NAME: ${{ inputs.refName }}
       REF_UPLOAD_DESTINATION: ${{ inputs.refUploadDestination }}
       TARGET_PATH: ${{ inputs.targetPath }}
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      issues: read
+      pull-requests: write
     steps:
       - name: Checkout Manifests
         uses: actions/checkout@v3
