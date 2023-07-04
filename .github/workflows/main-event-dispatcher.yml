@@ -128,7 +128,7 @@ jobs:
     with:
       targetRepo: kakaoent/melon-fan-platform-manifests
       gitOpsName: melon-fan-md-admin-api
-      gitOpsTargetPath: k8s/gke/melon-fan-lounge-md-api/overlays/sandbox
+      gitOpsTargetPath: k8s/gke/melon-fan-md-admin-api/overlays/sandbox
       imageRepository: asia-northeast3-docker.pkg.dev/dev-melon-fan-platform-project/fan-platform/melon-fan-md-admin-api
       appTagName: BUILD-${{ github.run_number }}
       appTagType: IMAGE
