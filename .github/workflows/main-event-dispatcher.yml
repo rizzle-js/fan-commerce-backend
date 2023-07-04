@@ -152,8 +152,8 @@ jobs:
 
   call-md-admin-api-ref-update-action:
     name: Call MD Admin Api Reference Update Action
-    needs: [changes, call-shared-ci-action, call-md-admin-api-ci-action]
-    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.md-admin-api == 'true') }}
+    needs: [changes, call-shared-ci-action, call-admin-api-ci-action]
+    if: ${{ github.event_name == 'push' && (needs.changes.outputs.shared == 'true' || needs.changes.outputs.admin-api == 'true') }}
     uses: ./.github/workflows/action-ref-update.yml
     with:
       targetRepo: kakaoent/melon-fan-md-docs
