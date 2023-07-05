@@ -53,7 +53,7 @@ class ProductApiSpec : ApiSpec() {
                 get(ProductController.GET_PRODUCTS)
                     .param("mallId", MALL_ID)
                     .param("tags", "tag1", "tag2")
-                    .param("sort", "RECENT")
+                    .param("sort", ProductSortOption.RECENT.name)
                     .param("page", "1")
                     .param("size", "10")
             ).andDocument(
@@ -61,7 +61,7 @@ class ProductApiSpec : ApiSpec() {
                 queryParams {
                     "mallId" means "몰 ID"
                     "tags" means "상품 태그 목록"
-                    "sort" means "정렬 기준"
+                    "sort" means "정렬 기준(${ProductSortOption.values().joinToString()})"
                     "page" means "페이지"
                     "size" means "페이지 크기"
                 },
@@ -69,7 +69,7 @@ class ProductApiSpec : ApiSpec() {
                     "products[]" type ARRAY means "상품 목록"
                     "products[].productId" type STRING means "상품 ID"
                     "products[].name" type STRING means "상품 이름"
-                    "products[].status" type STRING means "상품 상태"
+                    "products[].status" type STRING means "상품 상태(${Product.Status.values().joinToString()})})"
                     "products[].price" type NUMBER means "상품 가격"
                     "products[].displayedAt" type NUMBER means "상품 등록일"
                     "products[].thumbnailImageUrl" type STRING means "상품 썸네일 이미지 URL"
