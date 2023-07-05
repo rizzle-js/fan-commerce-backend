@@ -41,6 +41,10 @@ dependencies {
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     implementation("org.hibernate:hibernate-micrometer:6.2.5.Final")
 
+
+    testImplementation(testFixtures(project(":context")))
+    integrationTestImplementation(testFixtures(project(":context")))
+
     //api docs
     apiDocsTestImplementation(testFixtures(project(":internal-config")))
     apiDocsTestImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
