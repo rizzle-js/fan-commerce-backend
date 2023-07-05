@@ -7,7 +7,6 @@ import com.kakaoent.md.docs.responseBody
 import com.kakaoent.md.domain.product.Product
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.payload.JsonFieldType.*

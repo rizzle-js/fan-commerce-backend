@@ -2,7 +2,6 @@ package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.IntegrationTestSpec
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCTS
-import com.kakaoent.md.domain.mall.MallProduct
 import com.kakaoent.md.domain.mall.MallProductRepository
 import com.kakaoent.md.domain.product.ProductRepository
 import com.kakaoent.md.fixture.product.mallProduct
@@ -10,7 +9,6 @@ import com.kakaoent.md.fixture.product.product
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.collections.shouldBeSortedWith
 import io.kotest.matchers.shouldBe
-import jakarta.persistence.EntityManager
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.transaction.PlatformTransactionManager
