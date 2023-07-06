@@ -1,11 +1,14 @@
 package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.IntegrationTestSpec
+import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.domain.mall.MallProductRepository
 import com.kakaoent.md.domain.product.ProductRepository
 import com.kakaoent.md.fixture.product.mallProduct
 import com.kakaoent.md.fixture.product.product
+import com.kakaoent.md.fixture.product.productOption
+import com.kakaoent.md.fixture.product.productOptionGroup
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.collections.shouldBeSortedWith
 import io.kotest.matchers.shouldBe
@@ -66,8 +69,44 @@ class ProductTest(
             }.responseBody<ProductsResponse>()
                 .also {
                     it.products.size shouldBe size.toInt()
-                    it.products shouldBeSortedWith compareByDescending { p ->  p.displayedAt }
+                    it.products shouldBeSortedWith compareByDescending { p -> p.displayedAt }
                     it.hasMore shouldBe true
+                }
+        }
+
+        scenario("상품 상세를 조회하다") {
+            val productId = "300000000"
+
+            transactional {
+                val optionGroup1 = productOptionGroup(
+                    name = "사이즈",
+                    productOptions = listOf(
+                        productOption("S"),
+                        productOption("M"),
+                        productOption("L")
+                    )
+                )
+                val optionGroup2 = productOptionGroup(
+                    name = "색상",
+                    productOptions = listOf(
+                        productOption("RED"),
+                        productOption("BLUE"),
+                    )
+                )
+
+                productRepository.save(
+                    product(productId = productId, productOptionGroups = listOf(optionGroup1, optionGroup2))
+                )
+            }
+
+            mockMvc.get(GET_PRODUCT, productId) {
+            }.andExpect {
+                status { isOk() }
+            }.andDo {
+                print()
+            }.responseBody<ProductResponse>()
+                .also {
+                    it.productId shouldBe productId
                 }
         }
     }

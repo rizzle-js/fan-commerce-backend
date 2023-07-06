@@ -1,6 +1,8 @@
 package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.domain.product.Product
+import com.kakaoent.md.domain.product.SalesProduct
+import com.kakaoent.md.support.Language
 import java.time.Instant
 
 class ProductsResponse(
@@ -13,24 +15,42 @@ data class ProductView(
     val name: String,
     val status: Product.Status,
     val price: Long,
-    val displayedAt: Instant,
+    val displayedAt: Instant?,
     val thumbnailImageUrl: String,
     val badges: ProductBadges
 ) {
     companion object {
-        fun from(product: Product): ProductView = ProductView(
+        fun of(product: Product, language: Language = Language.KOREAN): ProductView = ProductView(
             productId = product.productId,
-            name = "상품 이름",
+            name = product.getName(language),
             status = product.status,
             price = product.price,
             displayedAt = product.displayedAt,
-            thumbnailImageUrl = "상품 이미지 주소",
+            thumbnailImageUrl = product.thumbnailImageUrl,
             badges = ProductBadges(
                 isNew = product.isNew,
             )
         )
     }
 }
+
+data class ProductResponse(
+    val productId: String,
+    val name: String,
+    val price: Long,
+    val optionGroups: List<ProductOptionGroupView>
+)
+
+data class ProductOptionGroupView(
+    val productOptionGroupId: Long,
+    val name: String,
+    val options: List<ProductOptionView>,
+)
+
+data class ProductOptionView(
+    val productOptionId: Long,
+    val value: String,
+)
 
 data class ProductBadges(
     val isNew: Boolean,

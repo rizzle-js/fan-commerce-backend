@@ -1,6 +1,7 @@
 package com.kakaoent.md.domain.product
 
 import com.kakaoent.md.domain.AuditingEntity
+import com.kakaoent.md.support.Language
 import com.kakaoent.md.support.Period
 import jakarta.persistence.*
 import java.math.BigDecimal
@@ -30,12 +31,10 @@ class Product(
 ) : AuditingEntity() {
 
     @Column(name = "name", nullable = false, length = 100)
-    var name: String = name
-        protected set
+    protected var name: String = name
 
     @Column(name = "description", nullable = false, length = 255)
-    var description: String = description
-        protected set
+    protected var description: String = description
 
     @Column(name = "price", nullable = false)
     var price: Long = price
@@ -77,6 +76,10 @@ class Product(
 
     fun removeProductOptionGroup(productOptionGroup: ProductOptionGroup) {
         _optionGroups.remove(productOptionGroup)
+    }
+
+    fun getName(language: Language = Language.KOREAN): String {
+        return this.name
     }
 
     enum class Status(val value: String) {

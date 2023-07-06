@@ -2,6 +2,8 @@ package com.kakaoent.md.fixture.product
 
 import com.kakaoent.md.domain.mall.MallProduct
 import com.kakaoent.md.domain.product.Product
+import com.kakaoent.md.domain.product.ProductOption
+import com.kakaoent.md.domain.product.ProductOptionGroup
 import com.kakaoent.md.support.Period
 import java.math.BigDecimal
 import java.time.Instant
@@ -19,6 +21,7 @@ fun product(
     displayType: Product.DisplayType = Product.DisplayType.DISPLAY,
     displayedAt: Instant = Instant.EPOCH,
     status: Product.Status = Product.Status.ON_SALE,
+    productOptionGroups: List<ProductOptionGroup> = emptyList(),
 ): Product = Product(
     productId = productId,
     price = price,
@@ -28,7 +31,25 @@ fun product(
     thumbnailImageUrl = thumbnailImageUrl,
     displayedAt = displayedAt,
     salesPeriod = salesPeriod,
-    status = status
+    status = status,
+).apply {
+    productOptionGroups.onEach {
+        addProductOptionGroup(it)
+    }
+}
+
+fun productOptionGroup(
+    name: String,
+    productOptions: List<ProductOption> = listOf(),
+): ProductOptionGroup = ProductOptionGroup(
+    name = name,
+    productOptions = productOptions
+)
+
+fun productOption(
+    value: String,
+): ProductOption = ProductOption(
+    value = value
 )
 
 fun mallProduct(

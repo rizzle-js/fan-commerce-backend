@@ -23,7 +23,15 @@ class ProductController(
         )
     }
 
+    @GetMapping(GET_PRODUCT)
+    fun getProduct(
+        @PathVariable("productId") productId: String,
+    ): ProductResponse {
+        return productService.getProduct(productId)
+    }
+
     companion object {
         const val GET_PRODUCTS = "/products"
+        const val GET_PRODUCT = "/products/{productId}"
     }
 }
