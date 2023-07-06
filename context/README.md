@@ -122,7 +122,7 @@ class Parent(
 
 #### 2.부모는 Soft Delete, 자식은 Hard Delete인 경우
 부모 엔티티가 Soft Delete, 자식 엔티티는 Hard Delete를 사용하는 경우 부모만 삭제한다.
-자식 엔티티는 쿼리를 통해 명시적으로 삭제한다.
+자식 엔티티는 필요 시 쿼리를 통해 명시적으로 삭제한다.
 (이런 경우가 있을까?)
 ```kotlin
 @Entity
@@ -183,7 +183,7 @@ class Parent: AuditingEntity() {
 
 #### 2. 부모는 Soft Delete, 자식은 Hard Delete인 경우
 부모 엔티티가 Soft Delete, 자식 엔티티는 Hard Delete를 사용하는 경우 부모만 삭제한다.
-자식 엔티티는 쿼리를 통해 명시적으로 삭제한다.
+자식 엔티티는 필요 시 쿼리를 통해 명시적으로 삭제한다.
 ```kotlin
 @Entity
 @Table(name = "parent")
