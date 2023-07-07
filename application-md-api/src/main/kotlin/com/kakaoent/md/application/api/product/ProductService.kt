@@ -38,18 +38,20 @@ class ProductService(
             productId = product.productId,
             name = product.getName(language),
             price = product.price,
-            optionGroups = product.optionGroups.map { optionGroup ->
-                ProductOptionGroupView(
-                    productOptionGroupId = optionGroup.id,
-                    name = optionGroup.name,
-                    options = optionGroup.productOptions.map { option ->
-                        ProductOptionView(
-                            productOptionId = option.id,
-                            value = option.value,
-                        )
-                    }
+            options = product.options.map { option ->
+                ProductOptionView(
+                    productOptionId = option.id,
+                    value = option.value,
                 )
-            }
+            },
+            receiving = ReceivingView(
+                type = product.receiving.type,
+                receivingDates = product.receiving.receivingDates.map { receivingDate ->
+                    ReceivingDateView(
+                        date = receivingDate.date,
+                    )
+                }
+            )
         )
     }
 }

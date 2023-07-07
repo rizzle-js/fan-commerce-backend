@@ -5,10 +5,11 @@ import com.kakaoent.md.application.api.product.ProductController.Companion.GET_P
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.domain.mall.MallProductRepository
 import com.kakaoent.md.domain.product.ProductRepository
+import com.kakaoent.md.domain.product.Receiving
+import com.kakaoent.md.domain.product.ReceivingDate
 import com.kakaoent.md.fixture.product.mallProduct
 import com.kakaoent.md.fixture.product.product
 import com.kakaoent.md.fixture.product.productOption
-import com.kakaoent.md.fixture.product.productOptionGroup
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.collections.shouldBeSortedWith
 import io.kotest.matchers.shouldBe
@@ -17,7 +18,11 @@ import org.springframework.test.web.servlet.get
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.DefaultTransactionDefinition
 import java.time.Instant
+import java.time.LocalDate
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
+@OptIn(ExperimentalTime::class)
 class ProductTest(
     private val mockMvc: MockMvc,
     private val productRepository: ProductRepository,
@@ -78,36 +83,40 @@ class ProductTest(
             val productId = "300000000"
 
             transactional {
-                val optionGroup1 = productOptionGroup(
-                    name = "사이즈",
-                    productOptions = listOf(
-                        productOption("S"),
-                        productOption("M"),
-                        productOption("L")
-                    )
-                )
-                val optionGroup2 = productOptionGroup(
-                    name = "색상",
-                    productOptions = listOf(
-                        productOption("RED"),
-                        productOption("BLUE"),
-                    )
+                val productOptions = listOf(
+                    productOption("S / RED"),
+                    productOption("M / BLUE"),
+                    productOption("L / GREEN"),
                 )
 
                 productRepository.save(
-                    product(productId = productId, productOptionGroups = listOf(optionGroup1, optionGroup2))
+                    product(
+                        productId = productId,
+                        productOptions = productOptions,
+                        receiving = Receiving(
+                            type = Receiving.Type.PICK_UP,
+                            receivingDates = listOf(
+                                ReceivingDate(date = LocalDate.of(2023, 8, 1)),
+                                ReceivingDate(date = LocalDate.of(2023, 8, 2)),
+                            )
+                        )
+                    )
                 )
             }
 
-            mockMvc.get(GET_PRODUCT, productId) {
-            }.andExpect {
-                status { isOk() }
-            }.andDo {
-                print()
-            }.responseBody<ProductResponse>()
-                .also {
-                    it.productId shouldBe productId
-                }
+            val cost = measureTime {
+                mockMvc.get(GET_PRODUCT, productId) {
+                }.andExpect {
+                    status { isOk() }
+                }.andDo {
+                    print()
+                }.responseBody<ProductResponse>()
+                    .also {
+                        it.productId shouldBe productId
+                    }
+            }
+
+            println(cost)
         }
     }
 })

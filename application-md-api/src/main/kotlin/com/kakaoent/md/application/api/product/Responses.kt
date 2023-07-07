@@ -1,9 +1,11 @@
 package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.domain.product.Product
+import com.kakaoent.md.domain.product.Receiving
 import com.kakaoent.md.domain.product.SalesProduct
 import com.kakaoent.md.support.Language
 import java.time.Instant
+import java.time.LocalDate
 
 class ProductsResponse(
     val products: List<ProductView>,
@@ -38,18 +40,22 @@ data class ProductResponse(
     val productId: String,
     val name: String,
     val price: Long,
-    val optionGroups: List<ProductOptionGroupView>
-)
-
-data class ProductOptionGroupView(
-    val productOptionGroupId: Long,
-    val name: String,
     val options: List<ProductOptionView>,
+    val receiving: ReceivingView,
 )
 
 data class ProductOptionView(
     val productOptionId: Long,
     val value: String,
+)
+
+data class ReceivingView(
+    val type: Receiving.Type,
+    val receivingDates: List<ReceivingDateView>
+)
+
+data class ReceivingDateView(
+    val date: LocalDate,
 )
 
 data class ProductBadges(

@@ -1,11 +1,13 @@
 package com.kakaoent.md.domain.product
 
 import com.kakaoent.md.domain.AuditingEntity
+import com.kakaoent.md.domain.BaseEntity
 import com.kakaoent.md.support.Language
 import com.kakaoent.md.support.Period
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.Instant
+import java.time.LocalDate
 
 @Entity
 @Table(name = "product")
@@ -28,6 +30,8 @@ class Product(
     salesPeriod: Period,
 
     displayedAt: Instant?,
+
+    receiving: Receiving,
 ) : AuditingEntity() {
 
     @Column(name = "name", nullable = false, length = 100)
@@ -67,18 +71,23 @@ class Product(
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "product_id")
-    protected val _optionGroups: MutableList<ProductOptionGroup> = mutableListOf()
-    val optionGroups: List<ProductOptionGroup> get() = _optionGroups.toList()
+    protected val _options: MutableList<ProductOption> = mutableListOf()
+    val options: List<ProductOption> get() = _options.toList()
 
-    fun addProductOptionGroup(productOptionGroup: ProductOptionGroup) {
-        _optionGroups.add(productOptionGroup)
+    @Embedded
+    var receiving: Receiving = receiving
+        protected set
+
+    fun addProductOption(productOption: ProductOption) {
+        _options.add(productOption)
     }
 
-    fun removeProductOptionGroup(productOptionGroup: ProductOptionGroup) {
-        _optionGroups.remove(productOptionGroup)
+    fun removeProductOption(productOption: ProductOption) {
+        _options.remove(productOption)
     }
 
     fun getName(language: Language = Language.KOREAN): String {
+        //todo: 다국어 지원
         return this.name
     }
 
@@ -95,3 +104,29 @@ class Product(
         HIDE("미전시")
     }
 }
+
+@Embeddable
+class Receiving(
+    @Enumerated(EnumType.STRING)
+    @Column(name = "receiving_type", nullable = false, length = 20)
+    val type: Type,
+
+    receivingDates: List<ReceivingDate> = emptyList(),
+) {
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "receiving_id")
+    protected val _receivingDates: MutableList<ReceivingDate> = receivingDates.toMutableList()
+    val receivingDates: List<ReceivingDate> get() = _receivingDates.toList()
+
+    enum class Type(val code: Int, val value: String) {
+        PICK_UP(1, "현장수령"),
+        DELIVERY(2, "배송"),
+    }
+}
+
+@Entity
+@Table(name = "receiving_date")
+class ReceivingDate(
+    val date: LocalDate
+): BaseEntity()
