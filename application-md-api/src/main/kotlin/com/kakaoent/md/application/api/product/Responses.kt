@@ -40,10 +40,16 @@ data class ProductResponse(
     val productId: String,
     val name: String,
     val price: Long,
-    val options: List<ProductOptionView>,
+    val optionGroups: List<ProductOptionGroupView>,
     val receiving: ReceivingView,
+    val badges: ProductBadges
 )
 
+data class ProductOptionGroupView(
+    val productOptionGroupId: Long,
+    val name: String,
+    val options: List<ProductOptionView>,
+)
 data class ProductOptionView(
     val productOptionId: Long,
     val value: String,

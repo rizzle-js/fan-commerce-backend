@@ -71,24 +71,24 @@ class Product(
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "product_id")
-    protected val _options: MutableList<ProductOption> = mutableListOf()
-    val options: List<ProductOption> get() = _options.toList()
+    protected val _productOptionGroups: MutableList<ProductOptionGroup> = mutableListOf()
+    val productOptionGroups: List<ProductOptionGroup> get() = _productOptionGroups.toList()
 
     @Embedded
     var receiving: Receiving = receiving
         protected set
 
-    fun addProductOption(productOption: ProductOption) {
-        _options.add(productOption)
-    }
-
-    fun removeProductOption(productOption: ProductOption) {
-        _options.remove(productOption)
-    }
-
     fun getName(language: Language = Language.KOREAN): String {
         //todo: 다국어 지원
         return this.name
+    }
+
+    fun addProductOptionGroup(productOptionGroup: ProductOptionGroup) {
+        _productOptionGroups.add(productOptionGroup)
+    }
+
+    fun removeProductOptionGroup(productOptionGroup: ProductOptionGroup) {
+        _productOptionGroups.remove(productOptionGroup)
     }
 
     enum class Status(val value: String) {

@@ -10,6 +10,7 @@ import com.kakaoent.md.domain.product.ReceivingDate
 import com.kakaoent.md.fixture.product.mallProduct
 import com.kakaoent.md.fixture.product.product
 import com.kakaoent.md.fixture.product.productOption
+import com.kakaoent.md.fixture.product.productOptionGroup
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.collections.shouldBeSortedWith
 import io.kotest.matchers.shouldBe
@@ -83,16 +84,19 @@ class ProductTest(
             val productId = "300000000"
 
             transactional {
-                val productOptions = listOf(
-                    productOption("S / RED"),
-                    productOption("M / BLUE"),
-                    productOption("L / GREEN"),
+                val productOptionGroup = productOptionGroup(
+                    name = "옵션",
+                    productOptions = listOf(
+                        "S / RED",
+                        "M / BLUE",
+                        "L / GREEN"
+                    )
                 )
 
                 productRepository.save(
                     product(
                         productId = productId,
-                        productOptions = productOptions,
+                        productOptionGroups = listOf(productOptionGroup),
                         receiving = Receiving(
                             type = Receiving.Type.PICK_UP,
                             receivingDates = listOf(

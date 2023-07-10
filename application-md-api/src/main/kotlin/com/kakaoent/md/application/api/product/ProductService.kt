@@ -38,10 +38,16 @@ class ProductService(
             productId = product.productId,
             name = product.getName(language),
             price = product.price,
-            options = product.options.map { option ->
-                ProductOptionView(
-                    productOptionId = option.id,
-                    value = option.value,
+            optionGroups = product.productOptionGroups.map { optionGroup ->
+                ProductOptionGroupView(
+                    productOptionGroupId = optionGroup.id,
+                    name = optionGroup.name,
+                    options = optionGroup.productOptions.map { option ->
+                        ProductOptionView(
+                            productOptionId = option.id,
+                            value = option.value,
+                        )
+                    }
                 )
             },
             receiving = ReceivingView(
@@ -51,6 +57,9 @@ class ProductService(
                         date = receivingDate.date,
                     )
                 }
+            ),
+            badges = ProductBadges(
+                isNew = false, // todo
             )
         )
     }

@@ -22,8 +22,6 @@ internal interface ProductCrudRepository : CrudRepository<Product, Long>, JpaSpe
         WHERE mp.mallId = :mallId AND p.deleted = false
     """)
     fun findByMallId(mallId: String, pageable: Pageable): Slice<Product>
-
-    override fun findAll(spec: Specification<Product>): List<Product>
 }
 
 @Repository
