@@ -4,13 +4,8 @@ import com.kakaoent.md.IntegrationTestSpec
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCT
 import com.kakaoent.md.application.api.product.ProductController.Companion.GET_PRODUCTS
 import com.kakaoent.md.domain.mall.MallProductRepository
-import com.kakaoent.md.domain.product.ProductRepository
-import com.kakaoent.md.domain.product.Receiving
-import com.kakaoent.md.domain.product.ReceivingDate
-import com.kakaoent.md.fixture.product.mallProduct
-import com.kakaoent.md.fixture.product.product
-import com.kakaoent.md.fixture.product.productOption
-import com.kakaoent.md.fixture.product.productOptionGroup
+import com.kakaoent.md.domain.product.*
+import com.kakaoent.md.fixture.product.*
 import com.kakaoent.md.responseBody
 import io.kotest.matchers.collections.shouldBeSortedWith
 import io.kotest.matchers.shouldBe
@@ -28,6 +23,7 @@ class ProductTest(
     private val mockMvc: MockMvc,
     private val productRepository: ProductRepository,
     private val mallProductRepository: MallProductRepository,
+    private val salesProductRepository: SalesProductRepository,
     private val platformTransactionManager: PlatformTransactionManager
 ) : IntegrationTestSpec({
 
@@ -87,13 +83,13 @@ class ProductTest(
                 val productOptionGroup = productOptionGroup(
                     name = "옵션",
                     productOptions = listOf(
-                        "S / RED",
-                        "M / BLUE",
-                        "L / GREEN"
+                        productOption("S / RED"),
+                        productOption("M / BLUE"),
+                        productOption("L / GREEN")
                     )
                 )
 
-                productRepository.save(
+                val product = productRepository.save(
                     product(
                         productId = productId,
                         productOptionGroups = listOf(productOptionGroup),
@@ -106,6 +102,29 @@ class ProductTest(
                         )
                     )
                 )
+
+                val salesProduct1 = salesProduct(
+                    productId = product.productId,
+                    salesProductId = "1",
+                    productOptions = listOf(productOptionGroup.productOptions[0])
+                )
+
+                val salesProduct2 = salesProduct(
+                    productId = product.productId,
+                    salesProductId = "2",
+                    productOptions = listOf(productOptionGroup.productOptions[1])
+                )
+
+                val salesProduct3 = salesProduct(
+                    productId = product.productId,
+                    salesProductId = "3",
+                    productOptions = listOf(productOptionGroup.productOptions[2]),
+                    status = SalesProduct.SalesStatus.SOLD_OUT
+                )
+
+                salesProductRepository.save(salesProduct1)
+                salesProductRepository.save(salesProduct2)
+                salesProductRepository.save(salesProduct3)
             }
 
             val cost = measureTime {

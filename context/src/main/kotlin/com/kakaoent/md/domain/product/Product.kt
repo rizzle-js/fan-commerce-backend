@@ -72,7 +72,7 @@ class Product(
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "product_id")
     protected val _productOptionGroups: MutableList<ProductOptionGroup> = mutableListOf()
-    val productOptionGroups: List<ProductOptionGroup> get() = _productOptionGroups.toList()
+    val productOptionGroups: List<ProductOptionGroup> get() = _productOptionGroups.sortedBy { it.ordering }
 
     @Embedded
     var receiving: Receiving = receiving
@@ -117,7 +117,7 @@ class Receiving(
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "receiving_id")
     protected val _receivingDates: MutableList<ReceivingDate> = receivingDates.toMutableList()
-    val receivingDates: List<ReceivingDate> get() = _receivingDates.toList()
+    val receivingDates: List<ReceivingDate> get() = _receivingDates.sortedBy { it.date }
 
     enum class Type(val code: Int, val value: String) {
         PICK_UP(1, "현장수령"),

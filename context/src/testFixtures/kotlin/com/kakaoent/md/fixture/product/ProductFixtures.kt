@@ -1,10 +1,7 @@
 package com.kakaoent.md.fixture.product
 
 import com.kakaoent.md.domain.mall.MallProduct
-import com.kakaoent.md.domain.product.Product
-import com.kakaoent.md.domain.product.ProductOption
-import com.kakaoent.md.domain.product.ProductOptionGroup
-import com.kakaoent.md.domain.product.Receiving
+import com.kakaoent.md.domain.product.*
 import com.kakaoent.md.support.Period
 import java.math.BigDecimal
 import java.time.Instant
@@ -43,22 +40,37 @@ fun product(
 
 fun productOptionGroup(
     name: String,
-    productOptions: List<String> = emptyList(),
+    productOptions: List<ProductOption> = emptyList(),
 ): ProductOptionGroup = ProductOptionGroup(
     name = name,
 ).apply {
     productOptions.onEach {
-        addProductOption(productOption(productOptionGroup = this, value = it))
+        addProductOption(it)
     }
 }
 
 fun productOption(
-    productOptionGroup: ProductOptionGroup,
     value: String,
 ): ProductOption = ProductOption(
-    productOptionGroup = productOptionGroup,
     value = value
 )
+
+fun salesProduct(
+    productId: String,
+    salesProductId: String,
+    quantity: Long = 10,
+    status: SalesProduct.SalesStatus = SalesProduct.SalesStatus.ON_SALE,
+    productOptions: List<ProductOption> = emptyList()
+): SalesProduct = SalesProduct(
+    productId = productId,
+    salesProductId = salesProductId,
+    quantity = quantity,
+    salesStatus = status,
+).apply {
+    productOptions.onEach {
+        addSalesProductOption(it)
+    }
+}
 
 fun mallProduct(
     mallId: String,

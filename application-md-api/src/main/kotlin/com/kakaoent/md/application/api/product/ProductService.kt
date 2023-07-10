@@ -1,7 +1,7 @@
 package com.kakaoent.md.application.api.product
 
 import com.kakaoent.md.PagingParams
-import com.kakaoent.md.domain.product.ProductRepository
+import com.kakaoent.md.domain.product.*
 import com.kakaoent.md.support.Language
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class ProductService(
     private val productRepository: ProductRepository,
+    private val salesProductRepository: SalesProductRepository,
 ) {
 
     fun getProducts(
@@ -32,13 +33,19 @@ class ProductService(
 
     fun getProduct(productId: String, language: Language = Language.KOREAN): ProductResponse {
 
-        val product = productRepository.getByProductId(productId)
+        val product: Product = productRepository.getByProductId(productId)
+
+        val salesProducts: List<SalesProduct> = salesProductRepository.findByProductId(productId)
+
+        val optionGroups: List<ProductOptionGroup> = product.productOptionGroups
+
+        val lastOptionGroup: ProductOptionGroup = optionGroups.last()
 
         return ProductResponse(
             productId = product.productId,
             name = product.getName(language),
             price = product.price,
-            optionGroups = product.productOptionGroups.map { optionGroup ->
+            optionGroups = optionGroups.map { optionGroup ->
                 ProductOptionGroupView(
                     productOptionGroupId = optionGroup.id,
                     name = optionGroup.name,
@@ -46,6 +53,7 @@ class ProductService(
                         ProductOptionView(
                             productOptionId = option.id,
                             value = option.value,
+                            salesStatus = if (optionGroup.id == lastOptionGroup.id) salesProducts.fromOption(option)?.salesStatus else null
                         )
                     }
                 )

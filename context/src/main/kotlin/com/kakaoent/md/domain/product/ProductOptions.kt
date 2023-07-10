@@ -7,20 +7,21 @@ import jakarta.persistence.*
 @Table(name = "product_option_group")
 class ProductOptionGroup(
     name: String,
-    priority: Int = 0,
+    ordering: Int = 0,
 ) : BaseEntity() {
 
     @Column(name = "name", nullable = false, length = 100)
     var name: String = name
         protected set
 
-    @Column(name = "priority", nullable = false)
-    var priority: Int = priority
+    @Column(name = "ordering", nullable = false)
+    var ordering: Int = ordering
         protected set
 
-    @OneToMany(mappedBy = "productOptionGroup", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "product_option_group_id")
     protected var _productOptions: MutableList<ProductOption> = mutableListOf()
-    val productOptions: List<ProductOption> get() = _productOptions.toList()
+    val productOptions: List<ProductOption> get() = _productOptions.sortedBy { it.ordering }
 
     fun addProductOption(productOption: ProductOption) {
         _productOptions.add(productOption)
@@ -35,18 +36,14 @@ class ProductOptionGroup(
 @Table(name = "product_option")
 class ProductOption(
     value: String,
-    priority: Int = 0,
-
-    @ManyToOne
-    @JoinColumn(name = "product_option_group_id", nullable = false)
-    val productOptionGroup: ProductOptionGroup,
+    ordering: Int = 0,
 ) : BaseEntity() {
 
     @Column(name = "value", nullable = false, length = 100)
     var value: String = value
         protected set
 
-    @Column(name = "priority", nullable = false)
-    var priority: Int = priority
+    @Column(name = "ordering", nullable = false)
+    var ordering: Int = ordering
         protected set
 }

@@ -53,6 +53,7 @@ data class ProductOptionGroupView(
 data class ProductOptionView(
     val productOptionId: Long,
     val value: String,
+    val salesStatus: SalesProduct.SalesStatus? = null,
 )
 
 data class ReceivingView(
