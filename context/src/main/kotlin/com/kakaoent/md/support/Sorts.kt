@@ -2,12 +2,12 @@ package com.kakaoent.md.support
 
 import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Direction
+import org.springframework.data.mapping.toDotPath
+import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 
-fun <T, R> sortBy(prop: KProperty1<T, R?>): Sort = Sort.by(prop.name)
+fun <U> sortBy(direction: Direction, prop: KProperty<U>): Sort = Sort.by(direction, prop.toDotPath())
 
-fun <T, R> sortBy(direction: Direction, prop: KProperty1<T, R?>): Sort = Sort.by(direction, prop.name)
+fun <U> descendingBy(prop: KProperty<U>): Sort = sortBy(Direction.DESC, prop)
 
-fun <T, R> descendingBy(prop: KProperty1<T, R?>): Sort = sortBy(Direction.DESC, prop)
-
-fun <T, R> ascendingBy(prop: KProperty1<T, R?>): Sort = sortBy(Direction.ASC, prop)
+fun <U> ascendingBy(prop: KProperty<U>): Sort = sortBy(Direction.ASC, prop)

@@ -18,8 +18,9 @@ internal interface ProductCrudRepository : CrudRepository<Product, Long>, JpaSpe
     @Query("""
         SELECT p
         FROM Product p
-        JOIN MallProduct mp ON p.productId = mp.productId
-        WHERE mp.mallId = :mallId AND p.deleted = false
+        JOIN MallProduct mp ON p.productId = mp.productId and mp.mallId = :mallId
+        WHERE p.displaying.displayType = 'DISPLAY'
+            AND p.deleted = false 
     """)
     fun findByMallId(mallId: String, pageable: Pageable): Slice<Product>
 }
@@ -31,6 +32,8 @@ internal class ProductRepositoryImpl(
     override fun save(product: Product): Product = repository.save(product)
 
     override fun findByProductId(productId: String): Product? = repository.findByProductId(productId).orElse(null)
+
+    override fun findOne(spec: Specification<Product>): Product? = repository.findOne(spec).orElse(null)
 
     override fun findAll(spec: Specification<Product>): List<Product> = repository.findAll(spec)
 

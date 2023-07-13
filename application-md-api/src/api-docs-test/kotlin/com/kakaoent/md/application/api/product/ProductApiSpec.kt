@@ -60,7 +60,7 @@ class ProductApiSpec : ApiSpec() {
                 "ProductApiSpec 상품 목록 조회",
                 queryParams {
                     "mallId" means "몰 ID"
-                    "tags" means "상품 태그 목록"
+                    "tags" means "상품 태그 목록" optional true
                     "sort" means "정렬 기준(${ProductSortOption.values().joinToString()})"
                     "page" means "페이지"
                     "size" means "페이지 크기"

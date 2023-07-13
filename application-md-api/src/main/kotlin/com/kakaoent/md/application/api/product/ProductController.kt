@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class ProductController(
-    private val productService: ProductService
+    private val productFacadeService: ProductFacadeService
 ) {
 
     @GetMapping(GET_PRODUCTS)
@@ -15,7 +15,7 @@ class ProductController(
         @RequestParam("sort", required = false) sortOption: ProductSortOption?,
         pagingParam: PagingParams,
     ): ProductsResponse {
-        return productService.getProducts(
+        return productFacadeService.getProducts(
             mallId = mallId,
             tags = tags ?: emptyList(),
             sortOption = sortOption ?: ProductSortOption.RECENT,
@@ -27,7 +27,7 @@ class ProductController(
     fun getProduct(
         @PathVariable("productId") productId: String,
     ): ProductResponse {
-        return productService.getProduct(productId)
+        return productFacadeService.getProduct(productId)
     }
 
     companion object {

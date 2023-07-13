@@ -23,33 +23,45 @@ class Product(
 
     feeRate: BigDecimal = BigDecimal.ZERO,
 
-    thumbnailImageUrl: String,
+    purchaseLimits: Int?,
 
     status: Status,
 
     salesPeriod: Period,
 
-    displayedAt: Instant?,
+    displaying: Displaying,
 
     receiving: Receiving,
+
+    badge: Badge,
+
+    tax: Tax,
+
+    production: Production,
+
+    salesInformationDisclosure: SalesInformationDisclosure,
+
+    certification: Certification,
 ) : AuditingEntity() {
 
     @Column(name = "name", nullable = false, length = 100)
-    protected var name: String = name
+    var name: String = name
+        protected set
 
     @Column(name = "description", nullable = false, length = 255)
-    protected var description: String = description
+    var description: String = description
+        protected set
 
     @Column(name = "price", nullable = false)
     var price: Long = price
         protected set
 
-    @Column(name = "fee_rate", nullable = false)
-    var feeRate: BigDecimal = feeRate
+    @Column(name = "purchase_limits", nullable = true)
+    var purchaseLimits: Int? = purchaseLimits
         protected set
 
-    @Column(name = "thumbnail_image_url", nullable = false, length = 255)
-    var thumbnailImageUrl: String = thumbnailImageUrl
+    @Column(name = "fee_rate", nullable = false)
+    var feeRate: BigDecimal = feeRate
         protected set
 
     @Enumerated(EnumType.STRING)
@@ -57,8 +69,24 @@ class Product(
     var status: Status = status
         protected set
 
-    @Column(name = "displayed_at", nullable = false)
-    var displayedAt: Instant? = displayedAt
+    @Embedded
+    var receiving: Receiving = receiving
+        protected set
+
+    @Embedded
+    var badge: Badge = badge
+        protected set
+
+    @Embedded
+    var displaying: Displaying = displaying
+        protected set
+
+    @Embedded
+    var tax: Tax = tax
+        protected set
+
+    @Embedded
+    var production: Production = production
         protected set
 
     @Embedded
@@ -69,18 +97,42 @@ class Product(
     var salesPeriod: Period = salesPeriod
         protected set
 
+    @Embedded
+    var salesInformationDisclosure: SalesInformationDisclosure = salesInformationDisclosure
+        protected set
+
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "product_id")
     protected val _productOptionGroups: MutableList<ProductOptionGroup> = mutableListOf()
     val productOptionGroups: List<ProductOptionGroup> get() = _productOptionGroups.sortedBy { it.ordering }
 
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "product_id")
+    protected val _productImages: MutableList<ProductImage> = mutableListOf()
+
+    val thumbnailImage: ProductImage? get() = _productImages.find { it.type == ProductImage.Type.THUMBNAIL }
+
+    val careLabelImage: ProductImage? get() = _productImages.find { it.type == ProductImage.Type.CARE_LABEL }
+
+    val productImages: List<ProductImage> get() = _productImages.filter { it.type == ProductImage.Type.PRODUCT }
+
+    val detailImages: List<ProductImage> get() = _productImages.filter { it.type == ProductImage.Type.DETAIL }
+
     @Embedded
-    var receiving: Receiving = receiving
+    var certification: Certification = certification
         protected set
 
     fun getName(language: Language = Language.KOREAN): String {
         //todo: 다국어 지원
         return this.name
+    }
+
+    fun displayNew(time: Instant): Boolean {
+        if (badge.applyNew.not()) return false
+        val displayedAt = displaying.displayedAt ?: return false
+        val until = displayedAt.plusSeconds(60 * 60 * 24 * 7)
+        return time.isBefore(until)
     }
 
     fun addProductOptionGroup(productOptionGroup: ProductOptionGroup) {
@@ -91,17 +143,20 @@ class Product(
         _productOptionGroups.remove(productOptionGroup)
     }
 
+    fun addProductImage(productImage: ProductImage) {
+        _productImages.add(productImage)
+    }
+
+    fun removeProductImage(productImage: ProductImage) {
+        _productImages.remove(productImage)
+    }
+
     enum class Status(val value: String) {
         UPCOMING("판매 예정"),
         ON_SALE("판매 가능"),
         SOLD_OUT("품절"),
         STOP_SALE("판매 중지"),
         CLOSE_SALE("판매 완료")
-    }
-
-    enum class DisplayType(val value: String) {
-        DISPLAY("전시"),
-        HIDE("미전시")
     }
 }
 
@@ -115,7 +170,7 @@ class Receiving(
 ) {
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JoinColumn(name = "receiving_id")
+    @JoinColumn(name = "product_id")
     protected val _receivingDates: MutableList<ReceivingDate> = receivingDates.toMutableList()
     val receivingDates: List<ReceivingDate> get() = _receivingDates.sortedBy { it.date }
 
@@ -128,5 +183,29 @@ class Receiving(
 @Entity
 @Table(name = "receiving_date")
 class ReceivingDate(
+    @Column(name = "date", nullable = false)
     val date: LocalDate
-): BaseEntity()
+) : BaseEntity()
+
+@Entity
+@Table(name = "product_image")
+class ProductImage(
+    @Column(name = "image_url", nullable = false, length = 255)
+    val imageUrl: String,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 20)
+    val type: Type,
+
+    @Column(name = "ordering", nullable = true)
+    val ordering: Int?,
+) : BaseEntity() {
+
+    enum class Type(val value: String) {
+        THUMBNAIL("썸네일"),
+        PRODUCT("상품"),
+        DETAIL("상세"),
+        CARE_LABEL("케어라벨"),
+        ETC("기타"),
+    }
+}

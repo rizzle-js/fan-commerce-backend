@@ -12,29 +12,41 @@ fun product(
     name: String = "상품 이름",
     description: String = "상품 설명",
     feeRate: BigDecimal = BigDecimal.ZERO,
-    associatedMelonTicketId: String? = null,
-    limitPurchaseQuantity: Long? = null,
-    thumbnailImageUrl: String = "상품 이미지 주소",
+    purchaseLimits: Int? = null,
     salesPeriod: Period = Period.ALWAYS,
-    displayType: Product.DisplayType = Product.DisplayType.DISPLAY,
-    displayedAt: Instant = Instant.EPOCH,
+    displayedAt: Instant? = Instant.EPOCH,
+    displayType: Displaying.DisplayType = Displaying.DisplayType.DISPLAY,
     status: Product.Status = Product.Status.ON_SALE,
     productOptionGroups: List<ProductOptionGroup> = emptyList(),
+    images: List<ProductImage> = emptyList(),
     receiving: Receiving = Receiving(type = Receiving.Type.PICK_UP),
+    badge: Badge = Badge(true),
+    certification: Certification = Certification.none(),
+    tax: Tax = Tax.taxFree(),
+    production: Production = Production.alwaysOn(),
+    salesInformationDisclosure: SalesInformationDisclosure = SalesInformationDisclosure.empty(),
 ): Product = Product(
     productId = productId,
     price = price,
     name = name,
     description = description,
     feeRate = feeRate,
-    thumbnailImageUrl = thumbnailImageUrl,
-    displayedAt = displayedAt,
+    purchaseLimits = purchaseLimits,
+    displaying = Displaying(displayType = displayType, displayedAt = displayedAt),
     salesPeriod = salesPeriod,
     status = status,
     receiving = receiving,
+    badge = badge,
+    certification = certification,
+    tax = tax,
+    production = production,
+    salesInformationDisclosure = salesInformationDisclosure,
 ).apply {
     productOptionGroups.onEach {
         addProductOptionGroup(it)
+    }
+    images.onEach {
+        addProductImage(it)
     }
 }
 
@@ -54,23 +66,6 @@ fun productOption(
 ): ProductOption = ProductOption(
     value = value
 )
-
-fun salesProduct(
-    productId: String,
-    salesProductId: String,
-    quantity: Long = 10,
-    status: SalesProduct.SalesStatus = SalesProduct.SalesStatus.ON_SALE,
-    productOptions: List<ProductOption> = emptyList()
-): SalesProduct = SalesProduct(
-    productId = productId,
-    salesProductId = salesProductId,
-    quantity = quantity,
-    salesStatus = status,
-).apply {
-    productOptions.onEach {
-        addSalesProductOption(it)
-    }
-}
 
 fun mallProduct(
     mallId: String,

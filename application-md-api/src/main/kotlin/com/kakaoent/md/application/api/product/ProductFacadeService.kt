@@ -6,10 +6,11 @@ import com.kakaoent.md.support.Language
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 @Service
 @Transactional(readOnly = true)
-class ProductService(
+class ProductFacadeService(
     private val productRepository: ProductRepository,
     private val salesProductRepository: SalesProductRepository,
 ) {
@@ -31,7 +32,11 @@ class ProductService(
         )
     }
 
-    fun getProduct(productId: String, language: Language = Language.KOREAN): ProductResponse {
+    fun getProduct(
+        productId: String,
+        language: Language = Language.KOREAN,
+        now: Instant = Instant.now(),
+    ): ProductResponse {
 
         val product: Product = productRepository.getByProductId(productId)
 
@@ -45,6 +50,10 @@ class ProductService(
             productId = product.productId,
             name = product.getName(language),
             price = product.price,
+            purchaseLimits = null,
+            productImages = product.productImages.map { productImage ->
+                ImageView(imageUrl = productImage.imageUrl)
+            },
             optionGroups = optionGroups.map { optionGroup ->
                 ProductOptionGroupView(
                     productOptionGroupId = optionGroup.id,
@@ -60,15 +69,21 @@ class ProductService(
             },
             receiving = ReceivingView(
                 type = product.receiving.type,
-                receivingDates = product.receiving.receivingDates.map { receivingDate ->
-                    ReceivingDateView(
-                        date = receivingDate.date,
-                    )
+                receivingDates = product.receiving.receivingDates.map {
+                    ReceivingDateView(date = it.date)
                 }
             ),
             badges = ProductBadges(
-                isNew = false, // todo
-            )
+                isNew = product.displayNew(now)
+            ),
+            detail = ProductDetailView(
+                content = "",
+                detailImages = product.detailImages.map { productImage ->
+                    ImageView(imageUrl = productImage.imageUrl)
+                },
+                sizes = ""
+            ),
+            salesInformation = SalesInformationView.from(product.salesInformationDisclosure),
         )
     }
 }

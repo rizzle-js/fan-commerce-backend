@@ -12,6 +12,8 @@ interface ProductRepository {
 
     fun findByProductId(productId: String): Product?
 
+    fun findOne(spec: Specification<Product>): Product?
+
     fun findAll(spec: Specification<Product>): List<Product>
 
     fun findByMallId(mallId: String, pageable: Pageable): Slice<Product>
