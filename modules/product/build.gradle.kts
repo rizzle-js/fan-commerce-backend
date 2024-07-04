@@ -12,7 +12,6 @@ noArg {
 }
 
 dependencies {
-    api(project(":core"))
     api(project(":shared"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation(kotlin("test"))

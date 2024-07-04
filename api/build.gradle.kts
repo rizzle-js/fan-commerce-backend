@@ -7,7 +7,6 @@ fun DependencyHandlerScope.implementation(projects: List<Project>) {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(project(":shared"))
     implementation(appModules())
     implementation("org.springframework.boot:spring-boot-starter-actuator")

@@ -1,18 +1,16 @@
 plugins {
-    kotlin("jvm")
+    `java-test-fixtures`
+    kotlin("plugin.jpa")
+    kotlin("plugin.noarg")
+    id("org.jetbrains.kotlin.plugin.allopen")
 }
 
-repositories {
-    mavenCentral()
+noArg {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(21)
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 }

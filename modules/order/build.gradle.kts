@@ -12,7 +12,6 @@ noArg {
 }
 
 dependencies {
-    api(project(":core"))
     api(project(":shared"))
     implementation(project(":modules:product"))
 
