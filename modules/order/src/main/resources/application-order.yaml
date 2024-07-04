@@ -1,0 +1,7 @@
+app.name: order
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+app.name: order-dev
