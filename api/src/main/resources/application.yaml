@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: fan-shop
+  config:
+    import:
+      - application-shared.yaml
+
+server:
+  port: 8080
+  shutdown: graceful
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          context:
+            config.*: TRACE
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 10103
+---
+spring:
+  config:
+    activate:
+      on-profile: dev

@@ -1,6 +1,0 @@
-spring:
-  config:
-    activate:
-      on-profile: test
-    import:
-        - application-external.yaml
